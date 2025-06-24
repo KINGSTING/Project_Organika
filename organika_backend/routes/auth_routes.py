@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
-from organika-backend/models.py import User, db
+from ..models import User, db
 from werkzeug.security import check_password_hash
 
 auth_bp = Blueprint("auth", __name__)

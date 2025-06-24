@@ -6,17 +6,17 @@ function Plantilla() {
   const [response, setResponse] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:5000/plantilla", {
-        test_input: input,
-      });
-      setResponse(res.data.msg);
-    } catch (err) {
-      console.error("Error:", err);
-      setResponse("Error sending request");
-    }
-  };
+  e.preventDefault();
+  try {
+    const res = await axios.post("http://localhost:5000/plantilla/", {
+      test_input: input,
+    });
+    setResponse(res.data.msg);
+  } catch (err) {
+    console.error("Error:", err);
+    setResponse("Error sending request");
+  }
+};
 
   return (
     <div className="p-4">
