@@ -1,0 +1,1 @@
+DATABASE_URL=postgresql://neondb_owner:npg_zFejt23GdDuO@ep-withered-night-a8w2ojls-pooler.eastus2.azure.neon.tech/project_organika_db?sslmode=require
