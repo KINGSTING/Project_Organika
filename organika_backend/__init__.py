@@ -1,18 +1,24 @@
 from flask import Flask
+from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from .config import Config
 
-db = SQLAlchemy()
+metadata = MetaData(schema="public")
+db = SQLAlchemy(metadata=metadata)
 jwt = JWTManager()
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    print("Connected to DB:", app.config["SQLALCHEMY_DATABASE_URI"])
+
     db.init_app(app)
     jwt.init_app(app)
+
+    # ✅ Enable CORS globally (do NOT comment this out)
     CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
 
     from .routes.auth_routes import auth_bp
