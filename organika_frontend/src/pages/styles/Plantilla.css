@@ -1,0 +1,129 @@
+.plantilla-section {
+  min-height: 100vh;
+  background-color: #f4f7f9;
+  padding: 2rem;
+}
+
+.plantilla-form-container {
+  background-color: white;
+  max-width: 900px;
+  margin: auto;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #215c41;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.plantilla-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.form-group input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-footer {
+  grid-column: span 2;
+  text-align: right;
+}
+
+.form-footer button {
+  background-color: #215c41;
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-footer button:hover {
+  background-color: #1a4a34;
+}
+
+.form-message {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: green;
+  font-weight: 600;
+}
+
+.plantilla-table-container {
+  margin-top: 3rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+}
+
+.table-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #215C41;
+}
+
+.plantilla-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.plantilla-table th,
+.plantilla-table td {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.plantilla-table th {
+  background-color: #215C41;
+  color: white;
+}
+
+.plantilla-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.edit-btn,
+.delete-btn {
+  margin-right: 8px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: black;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
+import "./styles/Plantilla.css"; // Link to external CSS
 
-function AddPlantillaItem() {
+function Plantilla() {
   const [formData, setFormData] = useState({
     item_code: "",
     position_title: "",
@@ -9,7 +10,7 @@ function AddPlantillaItem() {
     office: "",
     status: "",
     funding_status: "",
-    employee_id: "", // optional
+    employee_id: "",
   });
 
   const [message, setMessage] = useState("");
@@ -34,51 +35,57 @@ function AddPlantillaItem() {
       );
 
       setMessage(res.data.msg);
+      setFormData({
+        item_code: "",
+        position_title: "",
+        salary_grade: "",
+        office: "",
+        status: "",
+        funding_status: "",
+        employee_id: "",
+      });
     } catch (err) {
       console.error(err);
-      if (err.response && err.response.data && err.response.data.error) {
-        setMessage("Error: " + err.response.data.error);
-      } else {
-        setMessage("An unknown error occurred.");
-      }
+      setMessage(
+        err.response?.data?.error
+          ? "Error: " + err.response.data.error
+          : "An unknown error occurred."
+      );
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded">
-      <h2 className="text-2xl font-bold mb-4">📁 Add Plantilla Item</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {[
-          ["item_code", "Item Code"],
-          ["position_title", "Position Title"],
-          ["salary_grade", "Salary Grade"],
-          ["office", "Office"],
-          ["status", "Status"],
-          ["funding_status", "Funding Status"],
-          ["employee_id", "Employee ID (optional)"],
-        ].map(([name, label]) => (
-          <div key={name}>
-            <label className="block text-sm font-medium mb-1">{label}</label>
-            <input
-              type="text"
-              name={name}
-              value={formData[name]}
-              onChange={handleChange}
-              className="w-full border p-2 rounded"
-              required={name !== "employee_id"}
-            />
-          </div>
-        ))}
-        <button
-          type="submit"
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          Submit
-        </button>
-      </form>
-      {message && <p className="mt-4 text-green-700">{message}</p>}
+    <div className="plantilla-table-container">
+      <table className="plantilla-table">
+        <thead>
+          <tr>
+            <th>Item Code</th>
+            <th>Position Title</th>
+            <th>Salary Grade</th>
+            <th>Office/Dept</th>
+            <th>Funding Status</th>
+            <th>Employee</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* Example static row */}
+          <tr>
+            <td>001-23</td>
+            <td>Administrative Officer</td>
+            <td>18</td>
+            <td>HRMO</td>
+            <td>National</td>
+            <td>Juan Dela Cruz</td>
+            <td>
+              <button className="edit-btn">✏️</button>
+              <button className="delete-btn">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default AddPlantillaItem;
+export default Plantilla;
