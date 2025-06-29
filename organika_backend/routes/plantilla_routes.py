@@ -25,7 +25,7 @@ def create_plantilla_item():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 400
 
-@plantilla_bp.route("/", methods=["GET"])
+@plantilla_bp.route("/plantilla", methods=["GET"])
 def get_plantilla_items():
     items = PlantillaItem.query.order_by(PlantillaItem.id.desc()).all()
     return jsonify([{
