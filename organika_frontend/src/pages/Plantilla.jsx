@@ -16,11 +16,38 @@ function Plantilla() {
   const [message, setMessage] = useState("");
   const [plantillaItems, setPlantillaItems] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredItems, setFilteredItems] = useState([]);
 
+  // Fetch items from backend
+  const fetchItems = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/plantilla/plantilla", {
+        withCredentials: true,
+      });
+      setPlantillaItems(res.data);
+      setFilteredItems(res.data);
+    } catch (err) {
+      console.error("Failed to fetch plantilla items:", err);
+    }
+  };
+
+  // Search function
+  const handleSearch = () => {
+    const filtered = plantillaItems.filter((item) =>
+      Object.values(item).some((val) =>
+        val?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+    setFilteredItems(filtered);
+  };
+
+  // Form field handler
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Submit new plantilla item
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -46,8 +73,8 @@ function Plantilla() {
         funding_status: "",
         employee_id: "",
       });
-      fetchItems();
       setShowForm(false);
+      fetchItems();
     } catch (err) {
       console.error(err);
       setMessage(
@@ -58,23 +85,27 @@ function Plantilla() {
     }
   };
 
-  const fetchItems = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/plantilla", {
-        withCredentials: true,
-      });
-      setPlantillaItems(res.data);
-    } catch (err) {
-      console.error("Failed to fetch plantilla items:", err);
-    }
-  };
-
   useEffect(() => {
     fetchItems();
   }, []);
 
   return (
     <section className="plantilla-section">
+      {/* Search Bar */}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search plantilla..."
+          className="search-input"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button className="search-button" onClick={handleSearch}>
+          🔍 Search
+        </button>
+      </div>
+
+      {/* Table */}
       <div className="plantilla-table-container">
         <h2 className="table-heading">📄 Plantilla Items</h2>
         <table className="plantilla-table">
@@ -90,14 +121,12 @@ function Plantilla() {
             </tr>
           </thead>
           <tbody>
-            {plantillaItems.length === 0 ? (
+            {filteredItems.length === 0 ? (
               <tr>
-                <td colSpan="7" className="text-center">
-                  No records found.
-                </td>
+                <td colSpan="7" className="text-center">No records found.</td>
               </tr>
             ) : (
-              plantillaItems.map((item) => (
+              filteredItems.map((item) => (
                 <tr key={item.id}>
                   <td>{item.item_code}</td>
                   <td>{item.position_title}</td>
@@ -121,47 +150,47 @@ function Plantilla() {
         className="floating-add-btn"
         onClick={() => setShowForm(true)}
         title="Add Plantilla Item"
-      >➕
+      >
+        ➕
       </button>
 
-     {showForm && (
-      <div className="modal-overlay" onClick={() => setShowForm(false)}>
-        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          {/* ❌ Close Button */}
-          <button className="modal-close" onClick={() => setShowForm(false)}>
-            ❌
-          </button>
-
-          <h2 className="form-title">➕ Add New Plantilla Item</h2>
-          <form onSubmit={handleSubmit} className="plantilla-form">
-            {[
-              ["item_code", "Item Code"],
-              ["position_title", "Position Title"],
-              ["salary_grade", "Salary Grade"],
-              ["office", "Office"],
-              ["status", "Status"],
-              ["funding_status", "Funding Status"],
-              ["employee_id", "Employee ID (optional)"],
-            ].map(([name, label]) => (
-              <div key={name} className="form-group">
-                <label>{label}</label>
-                <input
-                  type="text"
-                  name={name}
-                  value={formData[name]}
-                  onChange={handleChange}
-                  required={name !== "employee_id"}
-                />
+      {/* Modal Form */}
+      {showForm && (
+        <div className="modal-overlay" onClick={() => setShowForm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowForm(false)}>
+              ❌
+            </button>
+            <h2 className="form-title">➕ Add New Plantilla Item</h2>
+            <form onSubmit={handleSubmit} className="plantilla-form">
+              {[
+                ["item_code", "Item Code"],
+                ["position_title", "Position Title"],
+                ["salary_grade", "Salary Grade"],
+                ["office", "Office"],
+                ["status", "Status"],
+                ["funding_status", "Funding Status"],
+                ["employee_id", "Employee ID (optional)"],
+              ].map(([name, label]) => (
+                <div key={name} className="form-group">
+                  <label>{label}</label>
+                  <input
+                    type="text"
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    required={name !== "employee_id"}
+                  />
+                </div>
+              ))}
+              <div className="form-footer">
+                <button type="submit">Submit</button>
               </div>
-            ))}
-            <div className="form-footer">
-              <button type="submit">Submit</button>
-            </div>
-          </form>
-          {message && <div className="form-message">{message}</div>}
+            </form>
+            {message && <div className="form-message">{message}</div>}
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </section>
   );
 }
