@@ -1,24 +1,37 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
 from ..models import Employee, db
+from sqlalchemy.exc import IntegrityError
 
 employee_bp = Blueprint("employee", __name__)
 
-@employee_bp.route("/", methods=["GET"])
-@jwt_required()
-def list_employees():
-    employees = Employee.query.all()
-    return jsonify([{
-        "id": e.id,
-        "full_name": e.full_name,
-        "position_title": e.position_title
-    } for e in employees])
+@employee_bp.route("/create_employee", methods=["POST"])
+def create_employee():
+    data = request.get_json()
+    try:
+        new_item = Employee(
+            id=data["item_code"],
+            position_title=data["position_title"],
+            salary_grade=data["salary_grade"],
+            office=data["office"],
+            status=data.get("status"),
+            funding_status=data["funding_status"],
+            employee_id=data.get("employee_id"),
+        )
+        db.session.add(new_item)
+        db.session.commit()
+        return jsonify({"msg": "Plantilla item created successfully!"}), 201
 
-@employee_bp.route("/", methods=["POST"])
-@jwt_required()
-def add_employee():
-    data = request.json
-    emp = Employee(**data)
-    db.session.add(emp)
-    db.session.commit()
-    return jsonify({"msg": "Employee added"}), 201
+    except IntegrityError as e:
+        db.session.rollback()
+        if "plantilla_items_item_code_key" in str(e.orig):
+            return jsonify({"error": "Item code already exists."}), 400
+        return jsonify({"error": "Database integrity error."}), 400
+
+
+@employee_bp.route("/employees", methods=["GET"])
+def get_employees():
+    from ..models import Employee  # adjust this import if needed
+    employees = Employee.query.order_by(Employee.full_name.asc()).all()
+    return jsonify([
+        {"id": emp.id, "full_name": emp.full_name} for emp in employees
+    ])

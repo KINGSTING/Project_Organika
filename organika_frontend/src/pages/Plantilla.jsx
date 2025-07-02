@@ -18,8 +18,9 @@ function Plantilla() {
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
+  const [editMode, setEditMode] = useState(false);
+  const [editItemId, setEditItemId] = useState(null);
 
-  // Fetch items from backend
   const fetchItems = async () => {
     try {
       const res = await axios.get("http://localhost:5000/plantilla/plantilla", {
@@ -32,7 +33,6 @@ function Plantilla() {
     }
   };
 
-  // Search function
   const handleSearch = () => {
     const filtered = plantillaItems.filter((item) =>
       Object.values(item).some((val) =>
@@ -42,26 +42,33 @@ function Plantilla() {
     setFilteredItems(filtered);
   };
 
-  // Form field handler
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Submit new plantilla item
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const payload = {
         ...formData,
         salary_grade: parseInt(formData.salary_grade),
-        employee_id: formData.employee_id || null,
+        employee_id: formData.employee_id ? parseInt(formData.employee_id) : null,
       };
 
-      const res = await axios.post(
-        "http://localhost:5000/plantilla/create_plantilla_item",
-        payload,
-        { withCredentials: true }
-      );
+      let res;
+      if (editMode && editItemId) {
+        res = await axios.put(
+          `http://localhost:5000/plantilla/update_plantilla_item/${editItemId}`,
+          payload,
+          { withCredentials: true }
+        );
+      } else {
+        res = await axios.post(
+          "http://localhost:5000/plantilla/create_plantilla_item",
+          payload,
+          { withCredentials: true }
+        );
+      }
 
       setMessage(res.data.msg);
       setFormData({
@@ -74,6 +81,8 @@ function Plantilla() {
         employee_id: "",
       });
       setShowForm(false);
+      setEditMode(false);
+      setEditItemId(null);
       fetchItems();
     } catch (err) {
       console.error(err);
@@ -81,6 +90,44 @@ function Plantilla() {
         err.response?.data?.error
           ? "Error: " + err.response.data.error
           : "An unknown error occurred."
+      );
+    }
+  };
+
+  const handleEditClick = (item) => {
+    setFormData({
+      item_code: item.item_code,
+      position_title: item.position_title,
+      salary_grade: item.salary_grade.toString(),
+      office: item.office,
+      status: item.status,
+      funding_status: item.funding_status,
+      employee_id: item.employee_id?.toString() || "",
+    });
+    setEditItemId(item.id);
+    setEditMode(true);
+    setShowForm(true);
+  };
+
+  const handleDeleteClick = async (item) => {
+    if (!window.confirm(`Are you sure you want to delete item ${item.item_code}?`)) {
+      return;
+    }
+
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/plantilla/delete_plantilla_item/${item.id}`,
+        { withCredentials: true }
+      );
+
+      setMessage(res.data.msg);
+      fetchItems();
+    } catch (err) {
+      console.error(err);
+      setMessage(
+        err.response?.data?.error
+          ? "Error: " + err.response.data.error
+          : "An unknown error occurred while deleting."
       );
     }
   };
@@ -133,10 +180,10 @@ function Plantilla() {
                   <td>{item.salary_grade}</td>
                   <td>{item.office}</td>
                   <td>{item.funding_status}</td>
-                  <td>{item.employee_id ?? "—"}</td>
+                  <td>{item.employee_name || "Vacant"}</td>
                   <td>
-                    <button className="edit-btn">✏️</button>
-                    <button className="delete-btn">🗑️</button>
+                    <button className="edit-btn" onClick={() => handleEditClick(item)}>✏️</button>
+                    <button className="delete-btn" onClick={() => handleDeleteClick(item)}>🗑️</button>
                   </td>
                 </tr>
               ))
@@ -148,7 +195,19 @@ function Plantilla() {
       {/* Floating Add Button */}
       <button
         className="floating-add-btn"
-        onClick={() => setShowForm(true)}
+        onClick={() => {
+          setShowForm(true);
+          setEditMode(false);
+          setFormData({
+            item_code: "",
+            position_title: "",
+            salary_grade: "",
+            office: "",
+            status: "",
+            funding_status: "",
+            employee_id: "",
+          });
+        }}
         title="Add Plantilla Item"
       >
         ➕
@@ -161,7 +220,9 @@ function Plantilla() {
             <button className="modal-close" onClick={() => setShowForm(false)}>
               ❌
             </button>
-            <h2 className="form-title">➕ Add New Plantilla Item</h2>
+            <h2 className="form-title">
+              {editMode ? "✏️ Edit Plantilla Item" : "➕ Add New Plantilla Item"}
+            </h2>
             <form onSubmit={handleSubmit} className="plantilla-form">
               {[
                 ["item_code", "Item Code"],
@@ -184,7 +245,7 @@ function Plantilla() {
                 </div>
               ))}
               <div className="form-footer">
-                <button type="submit">Submit</button>
+                <button type="submit">{editMode ? "Update" : "Submit"}</button>
               </div>
             </form>
             {message && <div className="form-message">{message}</div>}

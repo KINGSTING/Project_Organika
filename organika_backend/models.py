@@ -45,10 +45,10 @@ class PlantillaItem(db.Model):
     office = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(20))
     funding_status = db.Column(db.String(20), nullable=False)
-    employee_id = db.Column(db.Integer, db.ForeignKey('public.employees.id'), nullable=True)
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    employee = db.relationship("Employee", back_populates="plantilla_item")
+    employee = db.relationship("Employee", backref="plantilla_items", lazy="joined")
 
     def __repr__(self):
         return f"<PlantillaItem {self.item_code}>"
