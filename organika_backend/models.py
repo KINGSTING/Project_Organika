@@ -24,12 +24,15 @@ class Employee(db.Model):
     appointment_date = db.Column(db.Date)
     employment_status = db.Column(db.String(50))
     eligibility = db.Column(db.String(100))
+    photo_url = db.Column(db.String, nullable=True)
+    emblem_url = db.Column(db.String, nullable=True)
+    office = db.Column(db.String, nullable=True)
 
+    # One-to-one relationship
     plantilla_item = db.relationship(
         "PlantillaItem",
         back_populates="employee",
-        uselist=False,
-        foreign_keys="PlantillaItem.employee_id"  # Correct way
+        uselist=False
     )
 
     def __repr__(self):
@@ -37,6 +40,7 @@ class Employee(db.Model):
 
 class PlantillaItem(db.Model):
     __tablename__ = "plantilla_items"
+    __table_args__ = {'schema': 'public'}
 
     id = db.Column(db.Integer, primary_key=True)
     item_code = db.Column(db.String(50), unique=True, nullable=False)
@@ -45,10 +49,15 @@ class PlantillaItem(db.Model):
     office = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(20))
     funding_status = db.Column(db.String(20), nullable=False)
-    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=True)
+    employee_id = db.Column(db.Integer, db.ForeignKey('public.employees.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    employee = db.relationship("Employee", backref="plantilla_items", lazy="joined")
+    # Connect the other side of the one-to-one
+    employee = db.relationship(
+        "Employee",
+        back_populates="plantilla_item",
+        lazy="joined"
+    )
 
     def __repr__(self):
         return f"<PlantillaItem {self.item_code}>"
