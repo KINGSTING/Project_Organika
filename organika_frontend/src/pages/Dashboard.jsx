@@ -1,41 +1,74 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+import "./styles/Dashboard.css"; // make sure this file exists and contains your styling
 
 function Dashboard() {
   const [welcomeMessage, setWelcomeMessage] = useState("Welcome to the Dashboard!");
+  const [analytics, setAnalytics] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate fetching data later
+    // Animate welcome message
     setTimeout(() => {
       setWelcomeMessage("📊 Dashboard Overview");
     }, 500);
+
+    // Fetch analytics from backend
+    axios.get("http://localhost:5000/api/dashboard-overview") // use full URL if needed
+      .then((res) => {
+        console.log("[Dashboard] Fetched analytics:", res.data);
+        setAnalytics(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Dashboard data fetch error:", err);
+        setLoading(false);
+      });
   }, []);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h2 className="text-3xl font-bold mb-4">{welcomeMessage}</h2>
+    <div className="dashboard-container">
+      <h2 className="title">{welcomeMessage}</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-white p-4 shadow rounded-lg">
-          <h3 className="text-lg font-semibold">📁 Plantilla Items</h3>
-          <p className="text-sm text-gray-600">Manage government plantilla positions.</p>
-        </div>
+      {loading ? (
+        <div className="text-muted">Loading data...</div>
+      ) : analytics ? (
+        <>
+          <div className="summary-cards">
+            <SummaryCard title="📁 Total Plantilla Items" value={analytics.total_items} delay={0} />
+            <SummaryCard title="✅ Filled" value={analytics.filled} delay={1} />
+            <SummaryCard title="🕳️ Vacant" value={analytics.vacant} delay={2} />
+            <SummaryCard title="❄️ Frozen" value={analytics.frozen} delay={3} />
+            <SummaryCard title="💰 Funded" value={analytics.funded} delay={4} />
+            <SummaryCard title="🚫 Unfunded" value={analytics.unfunded} delay={5} />
+          </div>
 
-        <div className="bg-white p-4 shadow rounded-lg">
-          <h3 className="text-lg font-semibold">👥 Employees</h3>
-          <p className="text-sm text-gray-600">View and manage employee data.</p>
-        </div>
+          <div className="office-section">
+            <h3>📌 Plantilla by Office</h3>
+            <ul>
+              {analytics.by_office?.map((item, index) => (
+                <li key={index}>
+                  <strong>{item.office}</strong>: {item.count} items
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      ) : (
+        <div className="text-muted">No data found.</div>
+      )}
+    </div>
+  );
+}
 
-        <div className="bg-white p-4 shadow rounded-lg">
-          <h3 className="text-lg font-semibold">⚙️ Settings</h3>
-          <p className="text-sm text-gray-600">Configure app preferences.</p>
-        </div>
-      </div>
-
-      <div className="mt-8 bg-white p-4 rounded shadow">
-        <p className="text-gray-700">
-          You can expand this dashboard to include charts, real-time stats, and quick action buttons.
-        </p>
-      </div>
+function SummaryCard({ title, value, delay }) {
+  return (
+    <div
+      className="summary-card"
+      style={{ animationDelay: `${delay * 0.1}s` }}
+    >
+      <h3>{title}</h3>
+      <p>{value}</p>
     </div>
   );
 }

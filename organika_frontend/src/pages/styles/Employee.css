@@ -428,3 +428,19 @@
 .details-edit-form button:hover {
   background-color: #005fa3;
 }
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.employee-card {
+  animation: fadeSlideUp 0.4s ease forwards;
+  opacity: 0;
+}

@@ -24,9 +24,11 @@ def create_app():
     from .routes.auth_routes import auth_bp
     from .routes.plantilla_routes import plantilla_bp
     from .routes.employee_routes import employee_bp
+    from .routes.dashboard_routes import dashboard_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(plantilla_bp, url_prefix="/plantilla")
     app.register_blueprint(employee_bp, url_prefix="/employees")
+    app.register_blueprint(dashboard_bp, url_prefix="/")
 
     return app
