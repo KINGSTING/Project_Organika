@@ -168,6 +168,7 @@ function Employee() {
 
   return (
     <section className="employee-page">
+        {/* Employee Search and Filter */}
       <div className="search-bar">
         <input
           type="text"
@@ -222,7 +223,7 @@ function Employee() {
           )}
         </div>
       </div>
-
+        {/* Employee Grid */}
       <div className="employee-grid">
         {filteredEmployees.length === 0 ? (
           <div className="employee-card placeholder">
@@ -241,16 +242,16 @@ function Employee() {
             >
               <div className="image-wrapper">
                 <img src={emp.photo_url} alt={emp.full_name} className="employee-photo" />
-                <img src={emp.emblem_url} alt="Emblem" className="emblem" />
+                <img src={emp.emblem_url || "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png"} alt="Emblem" className="emblem" />
               </div>
               <div className="employee-name">{emp.full_name}</div>
             </div>
           ))
         )}
       </div>
-
+        {/* Employee Add Button */}
       <button className="floating-add-btn" onClick={() => setShowForm(true)} title="Add Employee">➕</button>
-
+        {/* Employee Add Window */}
       {showForm && (
         <div className="modal-overlay" onClick={() => setShowForm(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
@@ -281,7 +282,7 @@ function Employee() {
           </div>
         </div>
       )}
-
+        {/* Employee Detailed Window */}
       {selectedEmployee && (
         <div className="details-modal-overlay" onClick={() => { setSelectedEmployee(null); setEditMode(false); }}>
           <div className="details-modal-content" onClick={e => e.stopPropagation()}>
