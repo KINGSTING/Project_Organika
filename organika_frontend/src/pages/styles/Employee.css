@@ -38,9 +38,6 @@
   height: 160px;
   border-radius: 0.8rem;
   background-color: #e0e0e0;
-
-  /* Remove this line to allow emblem to overflow */
-  /* overflow: hidden; */
 }
 
 .employee-photo {
@@ -62,10 +59,9 @@
   object-fit: cover;
   background: #eee;
   z-index: 2;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2); /* optional for pop */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Employee Name */
 .employee-name,
 .placeholder-name {
   margin-top: 1rem;
@@ -74,7 +70,6 @@
   color: #222;
 }
 
-/* Placeholder Styles */
 .placeholder-photo {
   width: 100%;
   height: 100%;
@@ -82,21 +77,6 @@
   border-radius: 0.8rem;
 }
 
-.emblem {
-  background-color: #bbb;
-}
-
-/* Optional Loading Animation */
-@keyframes shimmer {
-  0% {
-    background-position: -400px 0;
-  }
-  100% {
-    background-position: 400px 0;
-  }
-}
-
-.placeholder-photo,
 .placeholder-emblem,
 .placeholder-name {
   background: linear-gradient(90deg, #eeeeee 25%, #dddddd 50%, #eeeeee 75%);
@@ -104,38 +84,92 @@
   animation: shimmer 1.5s infinite linear;
 }
 
-/* Search Bar */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
 .search-bar {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 1rem 0;
 }
 
 .search-input {
-  padding: 8px 12px;
+  padding: 8px;
+  width: 250px;
+  border-radius: 4px;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-  width: 280px;
 }
 
 .search-button {
-  background-color: #215c41;
+  padding: 8px 12px;
+  background-color: #28a745;
   color: white;
-  padding: 8px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
 }
 
 .search-button:hover {
   background-color: #1a4a34;
 }
 
-/* Floating Add Button */
+.filter-dropdown-wrapper {
+  position: relative;
+}
+
+.filter-toggle-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  padding: 1rem;
+  width: 250px;
+}
+
+.filter-group {
+  margin-bottom: 0.75rem;
+}
+
+.filter-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.filter-dropdown select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.apply-filter-btn {
+  background-color: #2c7a7b;
+  color: white;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .floating-add-btn {
   position: fixed;
   bottom: 30px;
@@ -156,7 +190,6 @@
   background-color: #1a4a34;
 }
 
-/* Modal overlay remains the same */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -170,18 +203,16 @@
   z-index: 10;
 }
 
-/* Modal content wider and cleaner */
 .modal-content {
   background: #fff;
   border-radius: 10px;
   padding: 2rem;
-  width: 800px; /* Wider form */
+  width: 800px;
   max-width: 90%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   position: relative;
 }
 
-/* Close button */
 .modal-close {
   position: absolute;
   top: 1rem;
@@ -190,22 +221,32 @@
   border: none;
   font-size: 1.8rem;
   cursor: pointer;
+  color: #e63946;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-/* Form layout in 2 columns for larger screens */
+.modal-close:hover {
+  color: #e63946;
+}
+
+.form-title {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
 .employee-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
 }
 
-/* Make file input span full width */
 .employee-form .form-group:nth-child(7),
 .employee-form .form-group:nth-child(8) {
   grid-column: span 2;
 }
 
-/* Form field group */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -223,7 +264,6 @@
   border-radius: 5px;
 }
 
-/* Submit button styling */
 .employee-form button[type="submit"] {
   grid-column: span 2;
   padding: 0.75rem;
@@ -240,7 +280,6 @@
   background-color: #005fa3;
 }
 
-/* Message text */
 .form-message {
   grid-column: span 2;
   text-align: center;
@@ -248,70 +287,6 @@
   color: green;
   font-weight: 500;
 }
-
-/* Close Button */
-.modal-close {
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  font-size: 24px;
-  background: none;
-  border: none;
-  color: #e63946;
-  cursor: pointer;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.modal-close:hover {
-  color: #e63946;
-}
-
-/* Modal Title */
-.form-title {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-/* Form Styles */
-.employee-form .form-group {
-  margin-bottom: 12px;
-}
-
-.employee-form label {
-  display: block;
-  margin-bottom: 4px;
-  font-weight: bold;
-}
-
-.employee-form input {
-  width: 100%;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.form-footer {
-  margin-top: 16px;
-  text-align: center;
-}
-
-.form-footer button {
-  padding: 10px 16px;
-  background-color: #215c41;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.form-footer button:hover {
-  background-color: #1a4a34;
-}
-
 
 .details-modal-overlay {
   position: fixed;
