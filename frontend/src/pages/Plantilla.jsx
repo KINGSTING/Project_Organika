@@ -25,9 +25,9 @@ function Plantilla() {
 
   const fetchItems = async () => {
     try {
-      const res = axios.get("${API_BASE}/plantilla/plantilla", {
-        withCredentials: true,
-      });
+      const res = await axios.get(`${API_BASE}/plantilla/plantilla`, {
+          withCredentials: true,
+        });
       setPlantillaItems(res.data);
       setFilteredItems(res.data);
     } catch (err) {
@@ -60,13 +60,13 @@ function Plantilla() {
       let res;
       if (editMode && editItemId) {
         res = await axios.put(
-          "${API_BASE}/plantilla/update_plantilla_item/${editItemId}",
+          `${API_BASE}/plantilla/update_plantilla_item/${editItemId}`,
           payload,
           { withCredentials: true }
         );
       } else {
         res = await axios.post(
-          "${API_BASE}/plantilla/create_plantilla_item",
+          `${API_BASE}/plantilla/create_plantilla_item`,
           payload,
           { withCredentials: true }
         );
