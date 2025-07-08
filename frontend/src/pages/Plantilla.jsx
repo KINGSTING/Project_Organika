@@ -266,7 +266,7 @@ function Plantilla() {
                       onChange={handleChange}
                       required
                     >
-                      <option value="">Select an office</option>
+                      <option value="" disabled selected>Select an office</option>
                       {offices.map((office) => (
                         <option key={office} value={office}>
                           {office}
