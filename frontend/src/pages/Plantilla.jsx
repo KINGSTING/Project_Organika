@@ -22,12 +22,11 @@ function Plantilla() {
   const [editItemId, setEditItemId] = useState(null);
   const API_BASE = import.meta.env.VITE_API_BASE || "https://your-backend.onrender.com";
 
-
   const fetchItems = async () => {
     try {
       const res = await axios.get(`${API_BASE}/plantilla/plantilla`, {
-          withCredentials: true,
-        });
+        withCredentials: true,
+      });
       setPlantillaItems(res.data);
       setFilteredItems(res.data);
     } catch (err) {
@@ -118,7 +117,7 @@ function Plantilla() {
 
     try {
       const res = await axios.delete(
-        "${API_BASE}/plantilla//delete_plantilla_item/${item.id}",
+        `${API_BASE}/plantilla/delete_plantilla_item/${item.id}`,
         { withCredentials: true }
       );
 
