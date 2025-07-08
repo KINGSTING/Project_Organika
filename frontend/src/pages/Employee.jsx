@@ -50,6 +50,7 @@ function Employee() {
     "Municipal Social Welfare and Development Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
     "Municipal Disaster Risk and Reduction and Management Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png"
   };
+  const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
 
   useEffect(() => {
     fetchEmployees();
@@ -57,7 +58,7 @@ function Employee() {
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/employees/get_employee", { withCredentials: true });
+      const res = await axios.get(`${API_BASE}/employees/get_employee`, { withCredentials: true });
       setEmployees(res.data);
       setFilteredEmployees(res.data);
     } catch (err) {
@@ -102,7 +103,7 @@ function Employee() {
       return;
     }
     try {
-      const res = await axios.post("http://localhost:5000/employees/create_employee", formData, { withCredentials: true });
+      const res = await axios.post(`${API_BASE}/employees/create_employee`, formData, { withCredentials: true });
       setMessage(res.data.msg || "Employee added successfully!");
       setFormData({
         full_name: "",
@@ -125,7 +126,7 @@ function Employee() {
     e.preventDefault();
     try {
       await axios.put(
-        `http://localhost:5000/employees/update_employee/${selectedEmployee.id}`,
+        `${API_BASE}/employees/update_employee/${selectedEmployee.id}`,
         editFormData,
         { withCredentials: true }
       );
@@ -138,7 +139,7 @@ function Employee() {
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete this employee?")) return;
     try {
-      await axios.delete("http://localhost:5000/employees/delete_employee", {
+      await axios.delete(`${API_BASE}/employees/delete_employee`, {
         data: { id: selectedEmployee.id },
         withCredentials: true,
       });
