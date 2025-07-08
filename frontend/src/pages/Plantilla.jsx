@@ -20,7 +20,7 @@ function Plantilla() {
   const [filteredItems, setFilteredItems] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
-  const API_BASE = import.meta.env.VITE_API_BASE || "https://your-backend.onrender.com";
+  const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
 
   const fetchItems = async () => {
     try {

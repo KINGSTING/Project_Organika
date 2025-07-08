@@ -6,6 +6,7 @@ function Dashboard() {
   const [welcomeMessage, setWelcomeMessage] = useState("Welcome to the Dashboard!");
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
+  const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
 
   useEffect(() => {
     // Animate welcome message
@@ -14,7 +15,7 @@ function Dashboard() {
     }, 500);
 
     // Fetch analytics from backend
-    axios.get("http://localhost:5000/api/dashboard-overview") // use full URL if needed
+    axios.get("https://project-organika.onrender.com/api/dashboard-overview") // use full URL if needed
       .then((res) => {
         console.log("[Dashboard] Fetched analytics:", res.data);
         setAnalytics(res.data);
