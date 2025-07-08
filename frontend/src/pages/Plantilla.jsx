@@ -21,6 +21,28 @@ function Plantilla() {
   const [editMode, setEditMode] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
+  const offices = [
+  "Sangguniang Bayan",
+  "General Services Office",
+  "Municipal Treasury Office",
+  "Municipal Civil Registrar Office",
+  "Municipal Health Office",
+  "Municipal Mayor's Offce",
+  "Municipal Planning and Development Office",
+  "Municipal Budget Office",
+  "Municipal Assessor's Office",
+  "Municipal Agriculture's Office",
+  "Public Employment Services Office",
+  "Municipal Accounting",
+  "Municipal Engineering Office",
+  "Legal Services Office",
+  "Municipal Environment and Natural Resources Office",
+  "Municipal Human Resource Management and Development Office",
+  "Secretary To the Sangguniang Bayan Office",
+  "Municipal Economic Enterprise and Development Office",
+  "Municipal Social Welfare and Development Office",
+  "Municipal Disaster Risk and Reduction and Management Office"
+    ];
 
   const fetchItems = async () => {
     try {
@@ -236,15 +258,33 @@ function Plantilla() {
               ].map(([name, label]) => (
                 <div key={name} className="form-group">
                   <label>{label}</label>
-                  <input
-                    type="text"
-                    name={name}
-                    value={formData[name]}
-                    onChange={handleChange}
-                    required={name !== "employee_id"}
-                  />
+
+                  {name === "office" ? (
+                    <select
+                      name="office"
+                      value={formData.office}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Select an office</option>
+                      {offices.map((office) => (
+                        <option key={office} value={office}>
+                          {office}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      name={name}
+                      value={formData[name]}
+                      onChange={handleChange}
+                      required={name !== "employee_id"}
+                    />
+                  )}
                 </div>
               ))}
+
               <div className="form-footer">
                 <button type="submit">{editMode ? "Update" : "Submit"}</button>
               </div>
