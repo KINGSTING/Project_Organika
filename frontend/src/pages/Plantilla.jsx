@@ -20,10 +20,12 @@ function Plantilla() {
   const [filteredItems, setFilteredItems] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
+  const API_BASE = import.meta.env.VITE_API_BASE || "https://your-backend.onrender.com";
+
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/plantilla/plantilla", {
+      const res = axios.get("${API_BASE}/plantilla/plantilla", {
         withCredentials: true,
       });
       setPlantillaItems(res.data);
