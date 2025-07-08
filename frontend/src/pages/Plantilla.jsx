@@ -60,13 +60,13 @@ function Plantilla() {
       let res;
       if (editMode && editItemId) {
         res = await axios.put(
-          `http://localhost:5000/plantilla/update_plantilla_item/${editItemId}`,
+          "${API_BASE}/plantilla/update_plantilla_item/${editItemId}",
           payload,
           { withCredentials: true }
         );
       } else {
         res = await axios.post(
-          "http://localhost:5000/plantilla/create_plantilla_item",
+          "${API_BASE}/plantilla/create_plantilla_item",
           payload,
           { withCredentials: true }
         );
@@ -118,7 +118,7 @@ function Plantilla() {
 
     try {
       const res = await axios.delete(
-        `http://localhost:5000/plantilla/delete_plantilla_item/${item.id}`,
+        "${API_BASE}/plantilla//delete_plantilla_item/${item.id}",
         { withCredentials: true }
       );
 
