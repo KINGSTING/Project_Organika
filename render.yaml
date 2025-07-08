@@ -2,12 +2,11 @@ services:
   - type: web
     name: organika-backend
     env: python
-    buildCommand: cd backend && pip install -r ../requirements.txt
-    startCommand: gunicorn app:app
     plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn backend.wsgi:app"
     envVars:
       - key: FLASK_ENV
         value: production
-      - key: SECRET_KEY
-        value: your-secret-key
-      # Add any other env vars you use
+      - key: PORT
+        value: 10000
