@@ -1,2 +1,2 @@
-FLASK_APP=organika_backend
+FLASK_APP=backend
 FLASK_ENV=development

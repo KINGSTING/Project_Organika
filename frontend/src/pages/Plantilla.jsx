@@ -8,8 +8,9 @@ function Plantilla() {
     position_title: "",
     salary_grade: "",
     office: "",
-    status: "",
-    funding_status: "",
+    step: "",
+    annual_salary_authorized: "",
+    annual_salary_actual: "",
     employee_id: "",
   });
 
@@ -21,28 +22,29 @@ function Plantilla() {
   const [editMode, setEditMode] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
+
   const offices = [
-  "Sangguniang Bayan",
-  "General Services Office",
-  "Municipal Treasury Office",
-  "Municipal Civil Registrar Office",
-  "Municipal Health Office",
-  "Municipal Mayor's Offce",
-  "Municipal Planning and Development Office",
-  "Municipal Budget Office",
-  "Municipal Assessor's Office",
-  "Municipal Agriculture's Office",
-  "Public Employment Services Office",
-  "Municipal Accounting",
-  "Municipal Engineering Office",
-  "Legal Services Office",
-  "Municipal Environment and Natural Resources Office",
-  "Municipal Human Resource Management and Development Office",
-  "Secretary To the Sangguniang Bayan Office",
-  "Municipal Economic Enterprise and Development Office",
-  "Municipal Social Welfare and Development Office",
-  "Municipal Disaster Risk and Reduction and Management Office"
-    ];
+    "Sangguniang Bayan",
+    "General Services Office",
+    "Municipal Treasury Office",
+    "Municipal Civil Registrar Office",
+    "Municipal Health Office",
+    "Municipal Mayor's Offce",
+    "Municipal Planning and Development Office",
+    "Municipal Budget Office",
+    "Municipal Assessor's Office",
+    "Municipal Agriculture's Office",
+    "Public Employment Services Office",
+    "Municipal Accounting",
+    "Municipal Engineering Office",
+    "Legal Services Office",
+    "Municipal Environment and Natural Resources Office",
+    "Municipal Human Resource Management and Development Office",
+    "Secretary To the Sangguniang Bayan Office",
+    "Municipal Economic Enterprise and Development Office",
+    "Municipal Social Welfare and Development Office",
+    "Municipal Disaster Risk and Reduction and Management Office"
+  ];
 
   const fetchItems = async () => {
     try {
@@ -75,6 +77,9 @@ function Plantilla() {
       const payload = {
         ...formData,
         salary_grade: parseInt(formData.salary_grade),
+        step: parseInt(formData.step),
+        annual_salary_authorized: parseFloat(formData.annual_salary_authorized),
+        annual_salary_actual: parseFloat(formData.annual_salary_actual),
         employee_id: formData.employee_id ? parseInt(formData.employee_id) : null,
       };
 
@@ -99,8 +104,9 @@ function Plantilla() {
         position_title: "",
         salary_grade: "",
         office: "",
-        status: "",
-        funding_status: "",
+        step: "",
+        annual_salary_authorized: "",
+        annual_salary_actual: "",
         employee_id: "",
       });
       setShowForm(false);
@@ -123,8 +129,9 @@ function Plantilla() {
       position_title: item.position_title,
       salary_grade: item.salary_grade.toString(),
       office: item.office,
-      status: item.status,
-      funding_status: item.funding_status,
+      step: item.step?.toString() || "",
+      annual_salary_authorized: item.annual_salary_authorized?.toString() || "",
+      annual_salary_actual: item.annual_salary_actual?.toString() || "",
       employee_id: item.employee_id?.toString() || "",
     });
     setEditItemId(item.id);
@@ -142,7 +149,6 @@ function Plantilla() {
         `${API_BASE}/plantilla/delete_plantilla_item/${item.id}`,
         { withCredentials: true }
       );
-
       setMessage(res.data.msg);
       fetchItems();
     } catch (err) {
@@ -226,8 +232,9 @@ function Plantilla() {
             position_title: "",
             salary_grade: "",
             office: "",
-            status: "",
-            funding_status: "",
+            step: "",
+            annual_salary_authorized: "",
+            annual_salary_actual: "",
             employee_id: "",
           });
         }}
@@ -240,51 +247,46 @@ function Plantilla() {
       {showForm && (
         <div className="modal-overlay" onClick={() => setShowForm(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setShowForm(false)}>
-              ❌
-            </button>
-            <h2 className="form-title">
-              {editMode ? "✏️ Edit Plantilla Item" : "➕ Add New Plantilla Item"}
-            </h2>
+            <button className="modal-close" onClick={() => setShowForm(false)}>❌</button>
+            <h2 className="form-title">{editMode ? "✏️ Edit Plantilla Item" : "➕ Add New Plantilla Item"}</h2>
             <form onSubmit={handleSubmit} className="plantilla-form">
-              {[
-                ["item_code", "Item Code"],
-                ["position_title", "Position Title"],
-                ["salary_grade", "Salary Grade"],
-                ["office", "Office"],
-                ["status", "Status"],
-                ["funding_status", "Funding Status"],
-                ["employee_id", "Employee ID (optional)"],
-              ].map(([name, label]) => (
-                <div key={name} className="form-group">
-                  <label>{label}</label>
-
-                  {name === "office" ? (
-                    <select
-                      name="office"
-                      value={formData.office}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="" disabled selected>Select an office</option>
-                      {offices.map((office) => (
-                        <option key={office} value={office}>
-                          {office}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input
-                      type="text"
-                      name={name}
-                      value={formData[name]}
-                      onChange={handleChange}
-                      required={name !== "employee_id"}
-                    />
-                  )}
-                </div>
-              ))}
-
+              <div className="form-group">
+                <label>Item Code</label>
+                <input type="text" name="item_code" value={formData.item_code} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>Position Title</label>
+                <input type="text" name="position_title" value={formData.position_title} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>Salary Grade</label>
+                <input type="number" name="salary_grade" value={formData.salary_grade} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>Step</label>
+                <input type="number" name="step" value={formData.step} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>Office</label>
+                <select name="office" value={formData.office} onChange={handleChange} required>
+                  <option value="" disabled>Select an office</option>
+                  {offices.map((office) => (
+                    <option key={office} value={office}>{office}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Annual Salary (Authorized)</label>
+                <input type="number" step="0.01" name="annual_salary_authorized" value={formData.annual_salary_authorized} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>Annual Salary (Actual)</label>
+                <input type="number" step="0.01" name="annual_salary_actual" value={formData.annual_salary_actual} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>Employee ID (optional)</label>
+                <input type="number" name="employee_id" value={formData.employee_id} onChange={handleChange} />
+              </div>
               <div className="form-footer">
                 <button type="submit">{editMode ? "Update" : "Submit"}</button>
               </div>
