@@ -181,54 +181,83 @@ function Plantilla() {
 
   return (
     <section className="plantilla-section">
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search plantilla..."
-          className="search-input"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-        />
-        <button onClick={handleSearch}>🔍 Search</button>
-        <button
-          onClick={() => {
-            const filtered = plantillaItems.filter((item) => {
-              return (!filters.office || item.office === filters.office)
-                && (!filters.salary_grade || item.salary_grade.toString() === filters.salary_grade)
-                && item.item_code.toLowerCase().includes(searchTerm.toLowerCase());
-            });
-            setFilteredItems(filtered);
-          }}
-        >🧮 Filter</button>
-      </div>
+     <div className="search-bar">
+      <input
+        type="text"
+        placeholder="Search plantilla..."
+        className="search-input"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+      />
+      <button onClick={handleSearch}>🔍 Search</button>
 
-      <div className="filter-group">
-        <label>Office/Department</label>
-        <select
-          value={filters.office}
-          onChange={(e) => setFilters({ ...filters, office: e.target.value })}
+      <div className="filter-dropdown-wrapper">
+        <button
+          className="filter-toggle-button"
+          onClick={() => setShowFilterMenu(!showFilterMenu)}
         >
-          <option value="">All</option>
-          {[...new Set(plantillaItems.map((i) => i.office))].map((o) => (
-            <option key={o} value={o}>{o}</option>
-          ))}
-        </select>
-        <label>Salary Grade</label>
-        <select
-          value={filters.salary_grade}
-          onChange={(e) => setFilters({ ...filters, salary_grade: e.target.value })}
-        >
-          <option value="">All</option>
-          {[...new Set(plantillaItems.map((i) => i.salary_grade))].sort((a, b) => a - b).map((s) => (
-            <option key={s} value={s}>{s}</option>
-          ))}
-        </select>
-        <button onClick={() => {
-          setFilters({ office: "", salary_grade: "" });
-          setFilteredItems(plantillaItems);
-        }}>🔄 Reset</button>
+          🧮 Filter
+        </button>
+
+        {showFilterMenu && (
+          <div className="filter-dropdown">
+            <div className="filter-group">
+              <label>Office/Department</label>
+              <select
+                value={filters.office}
+                onChange={(e) => setFilters({ ...filters, office: e.target.value })}
+              >
+                <option value="">All</option>
+                {[...new Set(plantillaItems.map((i) => i.office))].map((o) => (
+                  <option key={o} value={o}>{o}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="filter-group">
+              <label>Salary Grade</label>
+              <select
+                value={filters.salary_grade}
+                onChange={(e) => setFilters({ ...filters, salary_grade: e.target.value })}
+              >
+                <option value="">All</option>
+                {[...new Set(plantillaItems.map((i) => i.salary_grade))].sort((a, b) => a - b).map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              className="apply-filter-btn"
+              onClick={() => {
+                const filtered = plantillaItems.filter((item) => {
+                  return (!filters.office || item.office === filters.office)
+                    && (!filters.salary_grade || item.salary_grade.toString() === filters.salary_grade)
+                    && item.item_code.toLowerCase().includes(searchTerm.toLowerCase());
+                });
+                setFilteredItems(filtered);
+                setShowFilterMenu(false); // ✅ hide menu after applying
+              }}
+            >
+              ✅ Apply Filters
+            </button>
+
+            <button
+              className="apply-filter-btn"
+              style={{ marginTop: "0.5rem", backgroundColor: "#999" }}
+              onClick={() => {
+                setFilters({ office: "", salary_grade: "" });
+                setFilteredItems(plantillaItems);
+                setShowFilterMenu(false);
+              }}
+            >
+              🔄 Reset
+            </button>
+          </div>
+        )}
       </div>
+    </div>
 
       <div className="plantilla-table-container">
         <h2 className="table-heading">📄 Plantilla Items</h2>

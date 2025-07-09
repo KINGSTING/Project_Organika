@@ -277,3 +277,58 @@
 .detail-list li {
   padding: 4px 0;
 }
+
+.filter-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+.filter-toggle-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  padding: 1rem;
+  width: 250px;
+}
+
+.filter-group {
+  margin-bottom: 0.75rem;
+}
+
+.filter-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.filter-dropdown select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.apply-filter-btn {
+  background-color: #2c7a7b;
+  color: white;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
