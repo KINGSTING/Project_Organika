@@ -3,9 +3,9 @@ from .. import db
 from ..models import PlantillaItem
 from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime
 
 plantilla_bp = Blueprint("plantilla", __name__)
-
 
 @plantilla_bp.route("/create_plantilla_item", methods=["POST"])
 def create_plantilla_item():
@@ -16,9 +16,10 @@ def create_plantilla_item():
             position_title=data["position_title"],
             salary_grade=data["salary_grade"],
             office=data["office"],
-            status=data.get("status"),
-            funding_status=data["funding_status"],
-            employee_id=data.get("employee_id"),
+            step=data["step"],
+            annual_salary_authorized=data["annual_salary_authorized"],
+            annual_salary_actual=data["annual_salary_actual"],
+            employee_id=data.get("employee_id")
         )
         db.session.add(new_item)
         db.session.commit()
@@ -39,13 +40,15 @@ def get_plantilla_items():
         "item_code": item.item_code,
         "position_title": item.position_title,
         "salary_grade": item.salary_grade,
+        "step": item.step,
         "office": item.office,
-        "status": item.status,
-        "funding_status": item.funding_status,
+        "annual_salary_authorized": str(item.annual_salary_authorized),
+        "annual_salary_actual": str(item.annual_salary_actual),
         "employee_id": item.employee_id,
         "employee_name": item.employee.full_name if item.employee else None,
         "created_at": item.created_at.isoformat()
     } for item in items])
+
 
 @plantilla_bp.route("/update_plantilla_item/<int:item_id>", methods=["PUT"])
 def update_plantilla_item(item_id):
@@ -59,9 +62,10 @@ def update_plantilla_item(item_id):
         item.item_code = data["item_code"]
         item.position_title = data["position_title"]
         item.salary_grade = data["salary_grade"]
+        item.step = data["step"]
         item.office = data["office"]
-        item.status = data["status"]
-        item.funding_status = data["funding_status"]
+        item.annual_salary_authorized = data["annual_salary_authorized"]
+        item.annual_salary_actual = data["annual_salary_actual"]
         item.employee_id = data.get("employee_id")
 
         db.session.commit()
@@ -69,11 +73,12 @@ def update_plantilla_item(item_id):
 
     except IntegrityError:
         db.session.rollback()
-        return jsonify({"error": "Duplicate item code or other integrity error"}), 400
+        return jsonify({"error": "Duplicate item code or integrity error."}), 400
 
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
 
 @plantilla_bp.route("/delete_plantilla_item/<int:item_id>", methods=["DELETE"])
 def delete_plantilla_item(item_id):
@@ -86,7 +91,6 @@ def delete_plantilla_item(item_id):
         db.session.delete(item)
         db.session.commit()
         return jsonify({"msg": "Plantilla item deleted successfully!"}), 200
-    except Exception as e:
+    except Exception:
         db.session.rollback()
         return jsonify({"error": "Failed to delete plantilla item"}), 500
-

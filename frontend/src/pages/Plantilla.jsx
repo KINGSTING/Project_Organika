@@ -109,6 +109,8 @@ function Plantilla() {
         res = await axios.post(`${API_BASE}/plantilla/create_plantilla_item`, payload, { withCredentials: true });
       }
 
+      console.log("Submitting payload:", payload);
+
       setMessage(res.data.msg);
       setFormData({
         item_code: "",

@@ -1,4 +1,4 @@
-// Fully updated Employee.jsx to reflect the new schema (with all original UI and logic intact)
+// Fully updated Employee.jsx with UI fixes and consistent styling support
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles/Employee.css";
@@ -32,7 +32,7 @@ function Employee() {
   });
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
-  const officeEmblems = { /* full office emblem mapping here */ };
+  const officeEmblems = {};
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
 
   useEffect(() => {
@@ -207,18 +207,23 @@ function Employee() {
         </div>
       )}
 
-      {/* Display Employees */}
       <div className="employee-grid">
         {filteredEmployees.map(emp => (
           <div key={emp.id} className="employee-card" onClick={() => { setSelectedEmployee(emp); setEditMode(false); }}>
-            <img src={emp.photo_url} alt={emp.full_name} className="employee-photo" />
+            <div className="image-wrapper">
+              {emp.photo_url ? (
+                <img src={emp.photo_url} alt={emp.full_name} className="employee-photo" />
+              ) : (
+                <div className="placeholder-photo"></div>
+              )}
+              {emp.emblem_url && <img src={emp.emblem_url} className="emblem" alt="Emblem" />}
+            </div>
             <div className="employee-name">{emp.full_name}</div>
             <div className="employee-office">{emp.office}</div>
           </div>
         ))}
       </div>
 
-      {/* Employee Detail Modal */}
       {selectedEmployee && (
         <div className="details-modal-overlay" onClick={() => { setSelectedEmployee(null); setEditMode(false); }}>
           <div className="details-modal-content" onClick={e => e.stopPropagation()}>
@@ -250,8 +255,10 @@ function Employee() {
                 <p><strong>Date of Birth:</strong> {selectedEmployee.date_of_birth}</p>
                 <p><strong>Original Appointment:</strong> {selectedEmployee.original_appointment_date}</p>
                 <p><strong>Last Promotion:</strong> {selectedEmployee.last_promotion_date}</p>
-                <button onClick={openEdit}>✏️ Edit</button>
-                <button onClick={handleDelete}>🗑️ Delete</button>
+                <div className="details-actions">
+                  <button className="edit-btn" onClick={openEdit}>✏️ Edit</button>
+                  <button className="delete-btn" onClick={handleDelete}>🗑️ Delete</button>
+                </div>
               </div>
             )}
           </div>
