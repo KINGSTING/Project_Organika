@@ -19,7 +19,7 @@ def create_app():
     jwt.init_app(app)
 
     # ✅ Apply CORS to all routes, allow frontend origin
-    CORS(app, resources={r"/*": {"origins": "https://project-organika.netlify.app"}}, supports_credentials=True)
+    CORS(app, origins=["https://project-organika.netlify.app"], supports_credentials=True)
 
     from .routes.auth_routes import auth_bp
     from .routes.plantilla_routes import plantilla_bp
