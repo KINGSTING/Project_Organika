@@ -1,4 +1,4 @@
-// Plantilla.jsx — Corrected with working filter toggle and dropdowns
+// Plantilla.jsx — Fully completed with table and modal logic
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles/Plantilla.css";
@@ -211,7 +211,128 @@ function Plantilla() {
           )}
         </div>
       </div>
-      {/* Table rendering and modal logic continues... */}
+
+      <div className="plantilla-table-container">
+        <h2 className="table-heading">📄 Plantilla Items</h2>
+        <table className="plantilla-table">
+          <thead>
+            <tr>
+              <th>Item Code</th>
+              <th>Position Title</th>
+              <th>Salary Grade</th>
+              <th>Office/Department</th>
+              <th>Employee</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr><td colSpan="6">Loading Plantilla Items...</td></tr>
+            ) : filteredItems.length === 0 ? (
+              <tr><td colSpan="6">No records found.</td></tr>
+            ) : (
+              filteredItems.map((item) => (
+                <tr key={item.id} onClick={() => {
+                  setSelectedItem(item);
+                  setShowDetailModal(true);
+                }}>
+                  <td>{item.item_code}</td>
+                  <td>{item.position_title}</td>
+                  <td>{item.salary_grade}</td>
+                  <td>{item.office}</td>
+                  <td>{item.employee_name || "Vacant"}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {showDetailModal && selectedItem && (
+        <div className="modal-overlay" onClick={() => setShowDetailModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowDetailModal(false)}>❌</button>
+            <h2>📄 Plantilla Item Detail</h2>
+            <ul>
+              <li><strong>Item Code:</strong> {selectedItem.item_code}</li>
+              <li><strong>Position Title:</strong> {selectedItem.position_title}</li>
+              <li><strong>Salary Grade:</strong> {selectedItem.salary_grade}</li>
+              <li><strong>Step:</strong> {selectedItem.step}</li>
+              <li><strong>Office:</strong> {selectedItem.office}</li>
+              <li><strong>Annual Salary (Authorized):</strong> {selectedItem.annual_salary_authorized}</li>
+              <li><strong>Annual Salary (Actual):</strong> {selectedItem.annual_salary_actual}</li>
+              <li><strong>Employee:</strong> {selectedItem.employee_name || "Vacant"}</li>
+            </ul>
+            <div className="form-footer">
+              <button onClick={() => {
+                handleEditClick(selectedItem);
+                setShowDetailModal(false);
+              }}>✏️ Edit</button>
+              <button onClick={() => {
+                handleDeleteClick(selectedItem);
+                setShowDetailModal(false);
+              }}>🗑️ Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <button
+        className="floating-add-btn"
+        onClick={() => {
+          setShowForm(true);
+          setEditMode(false);
+          setFormData({
+            item_code: "",
+            position_title: "",
+            salary_grade: "",
+            office: "",
+            step: "",
+            annual_salary_authorized: "",
+            annual_salary_actual: "",
+            employee_id: "",
+          });
+        }}
+      >
+        ➕
+      </button>
+
+      {showForm && (
+        <div className="modal-overlay" onClick={() => setShowForm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowForm(false)}>❌</button>
+            <h2>{editMode ? "✏️ Edit Plantilla Item" : "➕ Add New Plantilla Item"}</h2>
+            <form onSubmit={handleSubmit} className="plantilla-form">
+              {Object.entries({
+                item_code: "Item Code",
+                position_title: "Position Title",
+                salary_grade: "Salary Grade",
+                office: "Office",
+                step: "Step",
+                annual_salary_authorized: "Annual Salary (Authorized)",
+                annual_salary_actual: "Annual Salary (Actual)",
+                employee_id: "Employee ID",
+              }).map(([name, label]) => (
+                <div key={name} className="form-group">
+                  <label>{label}</label>
+                  <input
+                    type="text"
+                    name={name}
+                    value={formData[name] || ""}
+                    onChange={(e) => setFormData({ ...formData, [name]: e.target.value })}
+                    required={name !== "employee_id"}
+                  />
+                </div>
+              ))}
+              <div className="form-footer">
+                <button type="submit" disabled={submitting}>
+                  {submitting ? "Submitting..." : editMode ? "Update" : "Submit"}
+                </button>
+              </div>
+            </form>
+            {message && <div className="form-message">{message}</div>}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
