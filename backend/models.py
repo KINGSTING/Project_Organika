@@ -14,19 +14,25 @@ class User(db.Model):
     def __repr__(self):
         return f"<User {self.username}>"
 
+
 class Employee(db.Model):
     __tablename__ = "employees"
-    __table_args__ = {'schema': 'public'}
+    __table_args__ = {'schema': 'public'}  # No CHECK constraint here
 
     id = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(100), nullable=False)
-    position_title = db.Column(db.String(100))
-    appointment_date = db.Column(db.Date)
-    employment_status = db.Column(db.String(50))
-    eligibility = db.Column(db.String(100))
+    full_name = db.Column(db.String(150), nullable=False)
+    position_title = db.Column(db.String(100), nullable=True)
+
+    # New fields
+    date_of_birth = db.Column(db.Date, nullable=True)
+    original_appointment_date = db.Column(db.Date, nullable=True)
+    last_promotion_date = db.Column(db.Date, nullable=True)
+
+    employment_status = db.Column(db.String(20), nullable=True)  # No DB constraint
+    eligibility = db.Column(db.String(100), nullable=True)
     photo_url = db.Column(db.String, nullable=True)
     emblem_url = db.Column(db.String, nullable=True)
-    office = db.Column(db.String, nullable=True)
+    office = db.Column(db.String(100), nullable=True)
 
     # One-to-one relationship
     plantilla_item = db.relationship(
