@@ -286,6 +286,7 @@ function Plantilla() {
                   <td>{item.position_title}</td>
                   <td>{item.salary_grade}</td>
                   <td>{item.office}</td>
+                  <td>{item.funding_status}</td>
                   <td>{item.employee_name || "Vacant"}</td>
                 </tr>
               ))
@@ -308,6 +309,7 @@ function Plantilla() {
               <li><strong>Annual Salary (Authorized):</strong> {selectedItem.annual_salary_authorized}</li>
               <li><strong>Annual Salary (Actual):</strong> {selectedItem.annual_salary_actual}</li>
               <li><strong>Employee:</strong> {selectedItem.employee_name || "Vacant"}</li>
+              <li><strong>Funding Status:</strong> {selectedItem.funding_status}</li>
             </ul>
             <div className="form-footer">
               <button onClick={() => {

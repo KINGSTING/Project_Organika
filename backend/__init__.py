@@ -4,10 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from .config import Config
+from flask_migrate import Migrate
 
 metadata = MetaData(schema="public")
 db = SQLAlchemy(metadata=metadata)
 jwt = JWTManager()
+migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
@@ -17,6 +19,7 @@ def create_app():
 
     db.init_app(app)
     jwt.init_app(app)
+    migrate.init_app(app, db)
 
     # ✅ Apply CORS to all routes, allow frontend origin
     CORS(app, origins=["https://project-organika.netlify.app"], supports_credentials=True)

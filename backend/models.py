@@ -40,24 +40,17 @@ class Employee(db.Model):
 
 class PlantillaItem(db.Model):
     __tablename__ = "plantilla_items"
-    __table_args__ = {'schema': 'public'}
+    __table_args__ = {"schema": "public"}  # Make sure it's in 'public'
 
     id = db.Column(db.Integer, primary_key=True)
     item_code = db.Column(db.String(50), unique=True, nullable=False)
     position_title = db.Column(db.String(100), nullable=False)
     salary_grade = db.Column(db.Integer, nullable=False)
     office = db.Column(db.String(100), nullable=False)
-    status = db.Column(db.String(20))
-    funding_status = db.Column(db.String(20), nullable=False)
-    employee_id = db.Column(db.Integer, db.ForeignKey('public.employees.id'), nullable=True)
+    step = db.Column(db.Integer, nullable=False)
+    annual_salary_authorized = db.Column(db.Numeric(12, 2), nullable=False)
+    annual_salary_actual = db.Column(db.Numeric(12, 2), nullable=False)
+    employee_id = db.Column(db.Integer, db.ForeignKey('public.employees.id', ondelete='SET NULL'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # Connect the other side of the one-to-one
-    employee = db.relationship(
-        "Employee",
-        back_populates="plantilla_item",
-        lazy="joined"
-    )
-
-    def __repr__(self):
-        return f"<PlantillaItem {self.item_code}>"
+    employee = db.relationship("Employee", back_populates="plantilla_item", lazy="joined")
