@@ -456,3 +456,49 @@
   padding: 8px;
   text-align: left;
 }
+.service-record-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.service-record-table thead {
+  background-color: #215c41;
+  color: white;
+}
+
+.service-record-table th,
+.service-record-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.service-record-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.service-record-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.details-modal-content h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #215c41;
+}
+
+@media screen and (max-width: 768px) {
+  .service-record-table {
+    font-size: 12px;
+    overflow-x: auto;
+    display: block;
+  }
+}
