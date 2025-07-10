@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ..models import Employee, db
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from .backend/models import ServiceRecord
 
 employee_bp = Blueprint("employee", __name__)
 
@@ -85,3 +86,30 @@ def delete_employee():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Failed to delete employee", "details": str(e)}), 500
+
+@employee_bp.route("/service_records", methods=["GET"])
+def get_service_records():
+    employee_id = request.args.get("employee_id")
+
+    if not employee_id:
+        return jsonify({"error": "Missing employee_id"}), 400
+
+    try:
+        records = ServiceRecord.query.filter_by(employee_id=employee_id).order_by(ServiceRecord.start_date.desc()).all()
+        result = [{
+            "id": r.id,
+            "start_date": r.start_date.isoformat() if r.start_date else None,
+            "end_date": r.end_date.isoformat() if r.end_date else None,
+            "position_title": r.position_title,
+            "status": r.status,
+            "salary_monthly": float(r.salary_monthly) if r.salary_monthly else None,
+            "office": r.office,
+            "leave_without_pay": r.leave_without_pay,
+            "separation_date": r.separation_date.isoformat() if r.separation_date else None,
+            "separation_cause": r.separation_cause,
+            "remarks": r.remarks
+        } for r in records]
+
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

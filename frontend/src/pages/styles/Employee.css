@@ -444,3 +444,15 @@
   animation: fadeSlideUp 0.4s ease forwards;
   opacity: 0;
 }
+.service-record-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.service-record-table th,
+.service-record-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}

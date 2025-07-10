@@ -1,5 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+
+from sqlalchemy.orm import relationship
+
 from . import db
 
 class User(db.Model):
@@ -60,3 +63,26 @@ class PlantillaItem(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     employee = db.relationship("Employee", back_populates="plantilla_item", lazy="joined")
+
+class ServiceRecord(db.Model):
+    __tablename__ = "service_records"
+    __table_args__ = {"schema": "public"}
+
+    id = db.Column(db.Integer, primary_key=True)
+    employee_id = db.Column(db.Integer, db.ForeignKey("public.employees.id", ondelete="CASCADE"), nullable=False)
+
+    position_title = db.Column(db.String(100), nullable=True)
+    start_date = db.Column(db.Date, nullable=True)
+    end_date = db.Column(db.Date, nullable=True)
+    office = db.Column(db.String(150), nullable=True)
+    remarks = db.Column(db.Text, nullable=True)
+    salary_monthly = db.Column(db.Numeric(10, 2), nullable=True)
+    status = db.Column(db.String(50), nullable=True)
+    separation_date = db.Column(db.Date, nullable=True)
+    separation_cause = db.Column(db.String(150), nullable=True)
+    leave_without_pay = db.Column(db.Integer, nullable=True)
+
+    employee = relationship("Employee", backref="service_records", lazy="joined")
+
+    def __repr__(self):
+        return f"<ServiceRecord {self.position_title} for Employee {self.employee_id}>"
