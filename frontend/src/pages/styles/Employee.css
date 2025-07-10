@@ -502,3 +502,24 @@
     display: block;
   }
 }
+.details-modal-content {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  max-width: 95vw;
+  display: inline-block;
+  animation: scaleIn 0.3s ease;
+}
+
+.details-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: auto;
+}
