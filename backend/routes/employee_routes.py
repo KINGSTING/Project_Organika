@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ..models import Employee, db
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from .backend/models import ServiceRecord
+from backend.models import ServiceRecord
 
 employee_bp = Blueprint("employee", __name__)
 
