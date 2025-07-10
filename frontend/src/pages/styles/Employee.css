@@ -503,6 +503,7 @@
   }
 }
 .details-modal-content-2 {
+  position: relative;
   background: white;
   border-radius: 1rem;
   padding: 1.5rem;
@@ -522,4 +523,20 @@
   align-items: center;
   z-index: 1000;
   overflow: auto;
+}
+
+.details-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s ease;
+}
+
+.details-modal-close:hover {
+  color: #333;
 }
