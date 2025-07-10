@@ -15,7 +15,7 @@ function Dashboard() {
     }, 500);
 
     // Fetch analytics from backend
-    axios.get("https://project-organika.onrender.com/api/dashboard-overview") // use full URL if needed
+    axios.get(`${API_BASE}/api/dashboard-overview`)
       .then((res) => {
         console.log("[Dashboard] Fetched analytics:", res.data);
         setAnalytics(res.data);
