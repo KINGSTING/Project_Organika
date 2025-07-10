@@ -1,4 +1,4 @@
-// Fully updated and corrected Employee.jsx with "Show Service Record" modal support
+// Fully updated and corrected Employee.jsx with complete rendering
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles/Employee.css";
@@ -173,7 +173,46 @@ function Employee() {
 
   return (
     <section className="employee-page">
-      {/* ... existing form and card rendering code ... */}
+      <div className="search-bar">
+        <input className="search-input" type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search employee..." />
+        <button className="search-button" onClick={handleSearch}>Search</button>
+        <button className="floating-add-btn" onClick={() => setShowForm(true)}>＋</button>
+      </div>
+
+      {showForm && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="modal-close" onClick={() => setShowForm(false)}>&times;</button>
+            <h3 className="form-title">Add Employee</h3>
+            <form className="employee-form" onSubmit={handleSubmit}>
+              {Object.entries(formData).map(([key, val]) => (
+                <div className="form-group" key={key}>
+                  <label>{key.replace(/_/g, " ").toUpperCase()}</label>
+                  <input
+                    type={key.includes("date") ? "date" : "text"}
+                    name={key}
+                    value={formData[key]}
+                    onChange={handleFormChange}
+                  />
+                </div>
+              ))}
+              <button type="submit">Save</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      <div className="employee-grid">
+        {filteredEmployees.map(emp => (
+          <div className="employee-card" key={emp.id} onClick={() => setSelectedEmployee(emp)}>
+            <div className="image-wrapper">
+              <img src={emp.photo_url} className="employee-photo" alt={emp.full_name} />
+              {emp.emblem_url && <img src={emp.emblem_url} className="emblem" alt="Office Emblem" />}
+            </div>
+            <div className="employee-name">{emp.full_name}</div>
+          </div>
+        ))}
+      </div>
 
       {selectedEmployee && (
         <div className="details-modal-overlay" onClick={() => { setSelectedEmployee(null); setEditMode(false); }}>
@@ -198,7 +237,17 @@ function Employee() {
               </div>
             ) : (
               <form className="details-edit-form" onSubmit={handleEditSubmit}>
-                {/* ... edit form inputs ... */}
+                {Object.entries(editFormData).map(([key, val]) => (
+                  <div className="form-group" key={key}>
+                    <label>{key.replace(/_/g, " ").toUpperCase()}</label>
+                    <input
+                      type={key.includes("date") ? "date" : "text"}
+                      name={key}
+                      value={editFormData[key] || ""}
+                      onChange={handleEditChange}
+                    />
+                  </div>
+                ))}
                 <button type="submit">Save</button>
               </form>
             )}
