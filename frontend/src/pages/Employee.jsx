@@ -36,6 +36,28 @@ function Employee() {
 
   const officeEmblems = {};
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
+  const officeEmblems = {
+      "Sangguniang Bayan": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751896048/KAUSWAGAN-SB-LOGO-150x150_cbsnu6.png",
+      "General Services Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751896047/GSO-logo-02-150x150_tmeknk.png",
+      "Municipal Treasury Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751896047/uswag-Panudlanan-Profile-150x150_uvgdjh.png",
+      "Municipal Civil Registrar Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751896047/Lgu-kauswagan-civil-registrar-logo_kqopdu.jpg",
+      "Municipal Health Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751896047/lgu-kauswagan-health-office-logo_ebmuzm.png",
+      "Municipal Mayor's Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Planning and Development Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Budget Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Assessor's Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Agriculture's Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Public Employment Services Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Accounting": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Engineering Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Legal Services Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Environment and Natural Resources Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Human Resource Management and Development Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Secretary To the Sangguniang Bayan Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Economic Enterprise and Development Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Social Welfare and Development Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+      "Municipal Disaster Risk and Reduction and Management Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
+    };
 
   useEffect(() => {
     fetchEmployees();
@@ -171,6 +193,17 @@ function Employee() {
     setEditMode(true);
   };
 
+  const handleFormChange = (e) => {
+      const { name, value } = e.target;
+      setFormData((prev) => {
+        const updated = { ...prev, [name]: value };
+        if (name === "office" && officeEmblems[value]) {
+          updated.emblem_url = officeEmblems[value]; // auto-update emblem
+        }
+        return updated;
+      });
+    };
+
   return (
     <section className="employee-page">
       <div className="search-bar">
@@ -188,12 +221,27 @@ function Employee() {
               {Object.entries(formData).map(([key, val]) => (
                 <div className="form-group" key={key}>
                   <label>{key.replace(/_/g, " ").toUpperCase()}</label>
-                  <input
-                    type={key.includes("date") ? "date" : "text"}
-                    name={key}
-                    value={formData[key]}
-                    onChange={handleFormChange}
-                  />
+                  {key === "office" ? (
+                    <select
+                      name="office"
+                      value={formData.office}
+                      onChange={handleFormChange}
+                    >
+                      <option value="">Select an office</option>
+                      {Object.keys(officeEmblems).map((office) => (
+                        <option key={office} value={office}>
+                          {office}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type={key.includes("date") ? "date" : "text"}
+                      name={key}
+                      value={formData[key]}
+                      onChange={handleFormChange}
+                    />
+                  )}
                 </div>
               ))}
               <button type="submit">Save</button>
