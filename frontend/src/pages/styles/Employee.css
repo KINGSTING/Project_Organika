@@ -488,7 +488,7 @@
   background-color: #f1f1f1;
 }
 
-.details-modal-content h2 {
+.details-modal-content-2 h2 {
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 1rem;
@@ -502,7 +502,7 @@
     display: block;
   }
 }
-.details-modal-content {
+.details-modal-content-2 {
   background: white;
   border-radius: 1rem;
   padding: 1.5rem;
@@ -513,7 +513,7 @@
   animation: scaleIn 0.3s ease;
 }
 
-.details-modal-overlay {
+.details-modal-overlay-2 {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
