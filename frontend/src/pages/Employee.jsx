@@ -256,8 +256,8 @@ function Employee() {
       )}
 
       {showServiceRecordModal && (
-        <div className="details-modal-overlay" onClick={() => setShowServiceRecordModal(false)}>
-          <div className="details-modal-content" onClick={e => e.stopPropagation()}>
+        <div className="details-modal-overlay-2" onClick={() => setShowServiceRecordModal(false)}>
+          <div className="details-modal-content-2" onClick={e => e.stopPropagation()}>
             <button className="details-modal-close" onClick={() => setShowServiceRecordModal(false)}>&times;</button>
             <h2>Service Record</h2>
             <table className="service-record-table">
@@ -278,8 +278,8 @@ function Employee() {
               <tbody>
                 {serviceRecords.map(record => (
                   <tr key={record.id}>
-                    <td>{record.start_date}</td>
-                    <td>{record.end_date || 'Present'}</td>
+                    <td>{new Date(record.start_date).toLocaleDateString("en-US")}</td>
+                    <td>{record.end_date ? new Date(record.end_date).toLocaleDateString("en-US") : 'Present'}</td>
                     <td>{record.position_title}</td>
                     <td>{record.status}</td>
                     <td>{record.salary_monthly?.toLocaleString()}</td>
