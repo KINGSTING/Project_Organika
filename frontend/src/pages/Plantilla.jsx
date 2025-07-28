@@ -29,6 +29,34 @@ function Plantilla() {
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [feedback, setFeedback] = useState({ message: "", type: "" });
 
+  const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
+  const officeList = [
+    "Sangguniang Bayan",
+    "General Services Office",
+    "Municipal Treasury Office",
+    "Municipal Civil Registrar Office",
+    "Municipal Health Office",
+    "Municipal Mayor's Office",
+    "Municipal Planning and Development Office",
+    "Municipal Budget Office",
+    "Municipal Assessor's Office",
+    "Municipal Agriculture's Office",
+    "Public Employment Services Office",
+    "Municipal Accounting",
+    "Municipal Engineering Office",
+    "Legal Services Office",
+    "Municipal Environment and Natural Resources Office",
+    "Municipal Human Resource Management and Development Office",
+    "Secretary To the Sangguniang Bayan Office",
+    "Municipal Economic Enterprise and Development Office",
+    "Municipal Social Welfare and Development Office",
+    "Municipal Disaster Risk and Reduction and Management Office"
+  ];
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
   useEffect(() => {
     if (feedback.message) {
       const timer = setTimeout(() => {
@@ -38,37 +66,10 @@ function Plantilla() {
     }
   }, [feedback]);
 
-
-  const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
-  const officeList = [
-      "Sangguniang Bayan",
-      "General Services Office",
-      "Municipal Treasury Office",
-      "Municipal Civil Registrar Office",
-      "Municipal Health Office",
-      "Municipal Mayor's Office",
-      "Municipal Planning and Development Office",
-      "Municipal Budget Office",
-      "Municipal Assessor's Office",
-      "Municipal Agriculture's Office",
-      "Public Employment Services Office",
-      "Municipal Accounting",
-      "Municipal Engineering Office",
-      "Legal Services Office",
-      "Municipal Environment and Natural Resources Office",
-      "Municipal Human Resource Management and Development Office",
-      "Secretary To the Sangguniang Bayan Office",
-      "Municipal Economic Enterprise and Development Office",
-      "Municipal Social Welfare and Development Office",
-      "Municipal Disaster Risk and Reduction and Management Office"
-    ];
-
   const fetchItems = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BASE}/plantilla/plantilla`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(`${API_BASE}/plantilla/plantilla`, { withCredentials: true });
       setPlantillaItems(res.data);
       setFilteredItems(res.data);
     } catch (err) {
@@ -77,10 +78,6 @@ function Plantilla() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
 
   const handleSearch = () => {
     const filtered = plantillaItems.filter((item) =>
@@ -108,69 +105,69 @@ function Plantilla() {
   };
 
   const handleDeleteClick = async (item) => {
-      if (!window.confirm(`Are you sure you want to delete item ${item.item_code}?`)) return;
-      try {
-        const res = await axios.delete(`${API_BASE}/plantilla/delete_plantilla_item/${item.id}`, {
-          withCredentials: true,
-        });
-        setFeedback({ message: res.data.msg || "Item deleted.", type: "success" });
-        fetchItems();
-      } catch (err) {
-        console.error(err);
-        setFeedback({ message: "An unknown error occurred while deleting.", type: "error" });
-      }
-    };
+    if (!window.confirm(`Are you sure you want to delete item ${item.item_code}?`)) return;
+    try {
+      const res = await axios.delete(`${API_BASE}/plantilla/delete_plantilla_item/${item.id}`, {
+        withCredentials: true,
+      });
+      setFeedback({ message: res.data.msg || "Item deleted.", type: "success" });
+      fetchItems();
+    } catch (err) {
+      console.error(err);
+      setFeedback({ message: "An unknown error occurred while deleting.", type: "error" });
+    }
+  };
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      setSubmitting(true);
-      setFeedback({ message: "", type: "" });
+    e.preventDefault();
+    setSubmitting(true);
+    setFeedback({ message: "", type: "" });
 
-      try {
-        const payload = {
-          ...formData,
-          salary_grade: parseInt(formData.salary_grade),
-          step: parseInt(formData.step),
-          annual_salary_authorized: parseFloat(formData.annual_salary_authorized),
-          annual_salary_actual: parseFloat(formData.annual_salary_actual),
-          employee_id: formData.employee_id ? parseInt(formData.employee_id) : null,
-        };
+    try {
+      const payload = {
+        ...formData,
+        salary_grade: parseInt(formData.salary_grade),
+        step: parseInt(formData.step),
+        annual_salary_authorized: parseFloat(formData.annual_salary_authorized),
+        annual_salary_actual: parseFloat(formData.annual_salary_actual),
+        employee_id: formData.employee_id ? parseInt(formData.employee_id) : null,
+      };
 
-        let res;
-        if (editMode && editItemId) {
-          res = await axios.put(`${API_BASE}/plantilla/update_plantilla_item/${editItemId}`, payload, {
-            withCredentials: true,
-          });
-          setFeedback({ message: "Plantilla item updated successfully.", type: "success" });
-        } else {
-          res = await axios.post(`${API_BASE}/plantilla/create_plantilla_item`, payload, {
-            withCredentials: true,
-          });
-          setFeedback({ message: "New plantilla item added successfully.", type: "success" });
-        }
-
-        setFormData({
-          item_code: "",
-          position_title: "",
-          salary_grade: "",
-          office: "",
-          step: "",
-          annual_salary_authorized: "",
-          annual_salary_actual: "",
-          employee_id: "",
+      let res;
+      if (editMode && editItemId) {
+        res = await axios.put(`${API_BASE}/plantilla/update_plantilla_item/${editItemId}`, payload, {
+          withCredentials: true,
         });
-
-        setShowForm(false);
-        setEditMode(false);
-        setEditItemId(null);
-        fetchItems();
-      } catch (err) {
-        console.error(err);
-        setFeedback({ message: "An error occurred while submitting the form.", type: "error" });
-      } finally {
-        setSubmitting(false);
+        setFeedback({ message: "Plantilla item updated successfully.", type: "success" });
+      } else {
+        res = await axios.post(`${API_BASE}/plantilla/create_plantilla_item`, payload, {
+          withCredentials: true,
+        });
+        setFeedback({ message: "New plantilla item added successfully.", type: "success" });
       }
-    };
+
+      setFormData({
+        item_code: "",
+        position_title: "",
+        salary_grade: "",
+        office: "",
+        step: "",
+        annual_salary_authorized: "",
+        annual_salary_actual: "",
+        employee_id: "",
+      });
+
+      setShowForm(false);
+      setEditMode(false);
+      setEditItemId(null);
+      fetchItems();
+    } catch (err) {
+      console.error(err);
+      setFeedback({ message: "An error occurred while submitting the form.", type: "error" });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const applyFilters = () => {
     const filtered = plantillaItems.filter((item) => {
@@ -184,11 +181,13 @@ function Plantilla() {
 
   return (
     <section className="plantilla-section">
-        {feedback.message && (
-      <div className={`feedback-banner ${feedback.type}`}>
-        {feedback.message}
-      </div>
-        )}
+      {feedback.message && (
+        <div className={`feedback-banner ${feedback.type}`}>
+          {feedback.message}
+        </div>
+      )}
+
+      {/* Search & Filter */}
       <div className="search-bar">
         <input
           type="text"
@@ -256,6 +255,7 @@ function Plantilla() {
         </div>
       </div>
 
+      {/* Table */}
       <div className="plantilla-table-container">
         <h2 className="table-heading">📄 Plantilla Items</h2>
         <table className="plantilla-table">
@@ -264,7 +264,7 @@ function Plantilla() {
               <th>Item Code</th>
               <th>Position Title</th>
               <th>Salary Grade</th>
-              <th>Office/Department</th>
+              <th>Office</th>
               <th>Employee</th>
             </tr>
           </thead>
@@ -291,6 +291,7 @@ function Plantilla() {
         </table>
       </div>
 
+      {/* Detail Modal */}
       {showDetailModal && selectedItem && (
         <div className="modal-overlay" onClick={() => setShowDetailModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -320,26 +321,25 @@ function Plantilla() {
         </div>
       )}
 
-      <button
-        className="floating-add-btn"
-        onClick={() => {
-          setShowForm(true);
-          setEditMode(false);
-          setFormData({
-            item_code: "",
-            position_title: "",
-            salary_grade: "",
-            office: "",
-            step: "",
-            annual_salary_authorized: "",
-            annual_salary_actual: "",
-            employee_id: "",
-          });
-        }}
-      >
+      {/* Floating Add Button */}
+      <button className="floating-add-btn" onClick={() => {
+        setShowForm(true);
+        setEditMode(false);
+        setFormData({
+          item_code: "",
+          position_title: "",
+          salary_grade: "",
+          office: "",
+          step: "",
+          annual_salary_authorized: "",
+          annual_salary_actual: "",
+          employee_id: "",
+        });
+      }}>
         ➕
       </button>
 
+      {/* Add/Edit Form Modal */}
       {showForm && (
         <div className="modal-overlay" onClick={() => setShowForm(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -371,7 +371,7 @@ function Plantilla() {
               <div className="form-group">
                 <label>Salary Grade</label>
                 <input
-                  type="text"
+                  type="number"
                   name="salary_grade"
                   value={formData.salary_grade}
                   onChange={(e) => setFormData({ ...formData, salary_grade: e.target.value })}
@@ -399,7 +399,7 @@ function Plantilla() {
               <div className="form-group">
                 <label>Step</label>
                 <input
-                  type="text"
+                  type="number"
                   name="step"
                   value={formData.step}
                   onChange={(e) => setFormData({ ...formData, step: e.target.value })}
@@ -410,7 +410,7 @@ function Plantilla() {
               <div className="form-group">
                 <label>Annual Salary (Authorized)</label>
                 <input
-                  type="text"
+                  type="number"
                   name="annual_salary_authorized"
                   value={formData.annual_salary_authorized}
                   onChange={(e) => setFormData({ ...formData, annual_salary_authorized: e.target.value })}
@@ -421,7 +421,7 @@ function Plantilla() {
               <div className="form-group">
                 <label>Annual Salary (Actual)</label>
                 <input
-                  type="text"
+                  type="number"
                   name="annual_salary_actual"
                   value={formData.annual_salary_actual}
                   onChange={(e) => setFormData({ ...formData, annual_salary_actual: e.target.value })}
@@ -432,7 +432,7 @@ function Plantilla() {
               <div className="form-group">
                 <label>Employee ID</label>
                 <input
-                  type="text"
+                  type="number"
                   name="employee_id"
                   value={formData.employee_id}
                   onChange={(e) => setFormData({ ...formData, employee_id: e.target.value })}
@@ -445,8 +445,6 @@ function Plantilla() {
                 </button>
               </div>
             </form>
-              </div>
-            )}
           </div>
         </div>
       )}
