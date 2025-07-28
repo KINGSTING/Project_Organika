@@ -15,7 +15,6 @@ function Plantilla() {
     employee_id: "",
   });
 
-  const [message, setMessage] = useState("");
   const [plantillaItems, setPlantillaItems] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +27,17 @@ function Plantilla() {
   const [submitting, setSubmitting] = useState(false);
   const [filters, setFilters] = useState({ office: "", salary_grade: "" });
   const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [feedback, setFeedback] = useState({ message: "", type: "" });
+
+  useEffect(() => {
+    if (feedback.message) {
+      const timer = setTimeout(() => {
+        setFeedback({ message: "", type: "" });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [feedback]);
+
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const officeList = [
@@ -98,64 +108,69 @@ function Plantilla() {
   };
 
   const handleDeleteClick = async (item) => {
-    if (!window.confirm(`Are you sure you want to delete item ${item.item_code}?`)) return;
-    try {
-      const res = await axios.delete(`${API_BASE}/plantilla/delete_plantilla_item/${item.id}`, {
-        withCredentials: true,
-      });
-      setMessage(res.data.msg);
-      fetchItems();
-    } catch (err) {
-      console.error(err);
-      setMessage("An unknown error occurred while deleting.");
-    }
-  };
+      if (!window.confirm(`Are you sure you want to delete item ${item.item_code}?`)) return;
+      try {
+        const res = await axios.delete(`${API_BASE}/plantilla/delete_plantilla_item/${item.id}`, {
+          withCredentials: true,
+        });
+        setFeedback({ message: res.data.msg || "Item deleted.", type: "success" });
+        fetchItems();
+      } catch (err) {
+        console.error(err);
+        setFeedback({ message: "An unknown error occurred while deleting.", type: "error" });
+      }
+    };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    try {
-      const payload = {
-        ...formData,
-        salary_grade: parseInt(formData.salary_grade),
-        step: parseInt(formData.step),
-        annual_salary_authorized: parseFloat(formData.annual_salary_authorized),
-        annual_salary_actual: parseFloat(formData.annual_salary_actual),
-        employee_id: formData.employee_id ? parseInt(formData.employee_id) : null,
-      };
+      e.preventDefault();
+      setSubmitting(true);
+      setFeedback({ message: "", type: "" });
 
-      let res;
-      if (editMode && editItemId) {
-        res = await axios.put(`${API_BASE}/plantilla/update_plantilla_item/${editItemId}`, payload, { withCredentials: true });
-      } else {
-        res = await axios.post(`${API_BASE}/plantilla/create_plantilla_item`, payload, { withCredentials: true });
+      try {
+        const payload = {
+          ...formData,
+          salary_grade: parseInt(formData.salary_grade),
+          step: parseInt(formData.step),
+          annual_salary_authorized: parseFloat(formData.annual_salary_authorized),
+          annual_salary_actual: parseFloat(formData.annual_salary_actual),
+          employee_id: formData.employee_id ? parseInt(formData.employee_id) : null,
+        };
+
+        let res;
+        if (editMode && editItemId) {
+          res = await axios.put(`${API_BASE}/plantilla/update_plantilla_item/${editItemId}`, payload, {
+            withCredentials: true,
+          });
+          setFeedback({ message: "Plantilla item updated successfully.", type: "success" });
+        } else {
+          res = await axios.post(`${API_BASE}/plantilla/create_plantilla_item`, payload, {
+            withCredentials: true,
+          });
+          setFeedback({ message: "New plantilla item added successfully.", type: "success" });
+        }
+
+        setFormData({
+          item_code: "",
+          position_title: "",
+          salary_grade: "",
+          office: "",
+          step: "",
+          annual_salary_authorized: "",
+          annual_salary_actual: "",
+          employee_id: "",
+        });
+
+        setShowForm(false);
+        setEditMode(false);
+        setEditItemId(null);
+        fetchItems();
+      } catch (err) {
+        console.error(err);
+        setFeedback({ message: "An error occurred while submitting the form.", type: "error" });
+      } finally {
+        setSubmitting(false);
       }
-
-      console.log("Submitting payload:", payload);
-
-      setMessage(res.data.msg);
-      setFormData({
-        item_code: "",
-        position_title: "",
-        salary_grade: "",
-        office: "",
-        step: "",
-        annual_salary_authorized: "",
-        annual_salary_actual: "",
-        employee_id: "",
-      });
-
-      setShowForm(false);
-      setEditMode(false);
-      setEditItemId(null);
-      fetchItems();
-    } catch (err) {
-      console.error(err);
-      setMessage("An unknown error occurred.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    };
 
   const applyFilters = () => {
     const filtered = plantillaItems.filter((item) => {
@@ -425,7 +440,18 @@ function Plantilla() {
                 </button>
               </div>
             </form>
-            {message && <div className="form-message">{message}</div>}
+            {feedback.message && (
+              <div
+                className={`form-feedback ${feedback.type === "success" ? "success" : "error"}`}
+                style={{
+                  marginTop: "1rem",
+                  color: feedback.type === "success" ? "green" : "red",
+                  fontWeight: "bold",
+                }}
+              >
+                {feedback.message}
+              </div>
+            )}
           </div>
         </div>
       )}
