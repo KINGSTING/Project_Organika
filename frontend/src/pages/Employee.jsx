@@ -34,7 +34,6 @@ function Employee() {
   });
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
-  const officeEmblems = {};
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const officeEmblems = {
       "Sangguniang Bayan": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751896048/KAUSWAGAN-SB-LOGO-150x150_cbsnu6.png",
@@ -94,16 +93,6 @@ function Employee() {
     );
   };
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => {
-      const updated = { ...prev, [name]: value };
-      if (name === "office" && officeEmblems[value]) {
-        updated.emblem_url = officeEmblems[value];
-      }
-      return updated;
-    });
-  };
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
