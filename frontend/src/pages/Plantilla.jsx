@@ -326,47 +326,99 @@ function Plantilla() {
             <button className="modal-close" onClick={() => setShowForm(false)}>❌</button>
             <h2>{editMode ? "✏️ Edit Plantilla Item" : "➕ Add New Plantilla Item"}</h2>
             <form onSubmit={handleSubmit} className="plantilla-form">
-              {Object.entries({
-                  item_code: "Item Code",
-                  position_title: "Position Title",
-                  salary_grade: "Salary Grade",
-                  office: "Office",
-                  step: "Step",
-                  annual_salary_authorized: "Annual Salary (Authorized)",
-                  annual_salary_actual: "Annual Salary (Actual)",
-                  employee_id: "Employee ID",
-                }).map(([name, label]) => (
-                  <div key={name} className="form-group">
-                    <label>{label}</label>
-                    {name === "office" ? (
-                      <select
-                        name="office"
-                        value={formData.office}
-                        onChange={(e) =>
-                          setFormData({ ...formData, office: e.target.value })
-                        }
-                        required
-                      >
-                        <option value="">Select an office</option>
-                        {officeList.map((officeOption) => (
-                          <option key={officeOption} value={officeOption}>
-                            {officeOption}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <input
-                        type="text"
-                        name={name}
-                        value={formData[name] || ""}
-                        onChange={(e) =>
-                          setFormData({ ...formData, [name]: e.target.value })
-                        }
-                        required={name !== "employee_id"}
-                      />
-                    )}
-                  </div>
-                ))}
+              <div className="form-group">
+                <label>Item Code</label>
+                <input
+                  type="text"
+                  name="item_code"
+                  value={formData.item_code}
+                  onChange={(e) => setFormData({ ...formData, item_code: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Position Title</label>
+                <input
+                  type="text"
+                  name="position_title"
+                  value={formData.position_title}
+                  onChange={(e) => setFormData({ ...formData, position_title: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Salary Grade</label>
+                <input
+                  type="text"
+                  name="salary_grade"
+                  value={formData.salary_grade}
+                  onChange={(e) => setFormData({ ...formData, salary_grade: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Office</label>
+                <select
+                  name="office"
+                  value={formData.office}
+                  onChange={(e) => setFormData({ ...formData, office: e.target.value })}
+                  required
+                >
+                  <option value="">Select an office</option>
+                  {officeList.map((office) => (
+                    <option key={office} value={office}>
+                      {office}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Step</label>
+                <input
+                  type="text"
+                  name="step"
+                  value={formData.step}
+                  onChange={(e) => setFormData({ ...formData, step: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Annual Salary (Authorized)</label>
+                <input
+                  type="text"
+                  name="annual_salary_authorized"
+                  value={formData.annual_salary_authorized}
+                  onChange={(e) => setFormData({ ...formData, annual_salary_authorized: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Annual Salary (Actual)</label>
+                <input
+                  type="text"
+                  name="annual_salary_actual"
+                  value={formData.annual_salary_actual}
+                  onChange={(e) => setFormData({ ...formData, annual_salary_actual: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Employee ID</label>
+                <input
+                  type="text"
+                  name="employee_id"
+                  value={formData.employee_id}
+                  onChange={(e) => setFormData({ ...formData, employee_id: e.target.value })}
+                />
+              </div>
+
               <div className="form-footer">
                 <button type="submit" disabled={submitting}>
                   {submitting ? "Submitting..." : editMode ? "Update" : "Submit"}
