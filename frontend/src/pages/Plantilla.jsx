@@ -30,6 +30,28 @@ function Plantilla() {
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
+  const officeList = [
+      "Sangguniang Bayan",
+      "General Services Office",
+      "Municipal Treasury Office",
+      "Municipal Civil Registrar Office",
+      "Municipal Health Office",
+      "Municipal Mayor's Office",
+      "Municipal Planning and Development Office",
+      "Municipal Budget Office",
+      "Municipal Assessor's Office",
+      "Municipal Agriculture's Office",
+      "Public Employment Services Office",
+      "Municipal Accounting",
+      "Municipal Engineering Office",
+      "Legal Services Office",
+      "Municipal Environment and Natural Resources Office",
+      "Municipal Human Resource Management and Development Office",
+      "Secretary To the Sangguniang Bayan Office",
+      "Municipal Economic Enterprise and Development Office",
+      "Municipal Social Welfare and Development Office",
+      "Municipal Disaster Risk and Reduction and Management Office"
+    ];
 
   const fetchItems = async () => {
     try {
@@ -305,26 +327,46 @@ function Plantilla() {
             <h2>{editMode ? "✏️ Edit Plantilla Item" : "➕ Add New Plantilla Item"}</h2>
             <form onSubmit={handleSubmit} className="plantilla-form">
               {Object.entries({
-                item_code: "Item Code",
-                position_title: "Position Title",
-                salary_grade: "Salary Grade",
-                office: "Office",
-                step: "Step",
-                annual_salary_authorized: "Annual Salary (Authorized)",
-                annual_salary_actual: "Annual Salary (Actual)",
-                employee_id: "Employee ID",
-              }).map(([name, label]) => (
-                <div key={name} className="form-group">
-                  <label>{label}</label>
-                  <input
-                    type="text"
-                    name={name}
-                    value={formData[name] || ""}
-                    onChange={(e) => setFormData({ ...formData, [name]: e.target.value })}
-                    required={name !== "employee_id"}
-                  />
-                </div>
-              ))}
+                  item_code: "Item Code",
+                  position_title: "Position Title",
+                  salary_grade: "Salary Grade",
+                  office: "Office",
+                  step: "Step",
+                  annual_salary_authorized: "Annual Salary (Authorized)",
+                  annual_salary_actual: "Annual Salary (Actual)",
+                  employee_id: "Employee ID",
+                }).map(([name, label]) => (
+                  <div key={name} className="form-group">
+                    <label>{label}</label>
+                    {name === "office" ? (
+                      <select
+                        name="office"
+                        value={formData.office}
+                        onChange={(e) =>
+                          setFormData({ ...formData, office: e.target.value })
+                        }
+                        required
+                      >
+                        <option value="">Select an office</option>
+                        {officeList.map((officeOption) => (
+                          <option key={officeOption} value={officeOption}>
+                            {officeOption}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        name={name}
+                        value={formData[name] || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, [name]: e.target.value })
+                        }
+                        required={name !== "employee_id"}
+                      />
+                    )}
+                  </div>
+                ))}
               <div className="form-footer">
                 <button type="submit" disabled={submitting}>
                   {submitting ? "Submitting..." : editMode ? "Update" : "Submit"}
