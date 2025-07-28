@@ -317,7 +317,7 @@ function Employee() {
                   <th>Status</th>
                   <th>Salary</th>
                   <th>Office</th>
-                  <th>LWOP</th>
+                  <th>Leave without Pay</th>
                   <th>Separation</th>
                   <th>Cause</th>
                   <th>Remarks</th>

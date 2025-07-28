@@ -30,6 +30,8 @@ class Employee(db.Model):
     date_of_birth = db.Column(db.Date, nullable=True)
     original_appointment_date = db.Column(db.Date, nullable=True)
     last_promotion_date = db.Column(db.Date, nullable=True)
+    GSIS_BP_NR = db.Column(db.Integer, nullable=True)
+    TIN_NR = db.Column(db.Integer, nullable=True)
 
     employment_status = db.Column(db.String(20), nullable=True)  # No DB constraint
     eligibility = db.Column(db.String(100), nullable=True)

@@ -17,6 +17,8 @@ def create_employee():
             photo_url=data.get("photo_url"),
             emblem_url=data.get("emblem_url"),
             office=data["office"],
+            GSIS_BP = data["GSIS_BP_NR"],
+            TIN = data["TIN_NR"]
         )
         db.session.add(new_employee)
         db.session.commit()
@@ -38,6 +40,8 @@ def get_employees():
             "employment_status": emp.employment_status,
             "eligibility": emp.eligibility,
             "office": emp.office,
+            "GSIS_BP_NR": emp.GSIS_BP_NR,
+            "TIN_NR": emp.TIN_NR
         }
         for emp in employees
     ])
@@ -59,6 +63,8 @@ def update_employee(emp_id):
         employee.photo_url = data.get("photo_url", employee.photo_url)
         employee.emblem_url = data.get("emblem_url", employee.emblem_url)
         employee.office = data.get("office", employee.office)
+        employee.GSIS_BP_NR = data.get("GSIS_BP_NR", employee.GSIS_BP_NR)
+        employee.TIN_NR = data.get("TIN_NR", employee.TIN_NR)
 
         db.session.commit()
         return jsonify({"msg": "Employee updated successfully!"}), 200
