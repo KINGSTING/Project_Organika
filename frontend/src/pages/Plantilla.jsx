@@ -184,6 +184,11 @@ function Plantilla() {
 
   return (
     <section className="plantilla-section">
+        {feedback.message && (
+      <div className={`feedback-banner ${feedback.type}`}>
+        {feedback.message}
+      </div>
+        )}
       <div className="search-bar">
         <input
           type="text"
@@ -440,16 +445,6 @@ function Plantilla() {
                 </button>
               </div>
             </form>
-            {feedback.message && (
-              <div
-                className={`form-feedback ${feedback.type === "success" ? "success" : "error"}`}
-                style={{
-                  marginTop: "1rem",
-                  color: feedback.type === "success" ? "green" : "red",
-                  fontWeight: "bold",
-                }}
-              >
-                {feedback.message}
               </div>
             )}
           </div>
