@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles/Employee.css";
 
-function Employee() {
+function Employee({ setShowModal }) {
   const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredEmployees, setFilteredEmployees] = useState([]);
@@ -35,7 +35,6 @@ function Employee() {
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-  const [showModal, setShowModal] = useState(false);
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const officeEmblems = {
@@ -64,6 +63,10 @@ function Employee() {
   useEffect(() => {
     fetchEmployees();
   }, []);
+
+  useEffect(() => {
+  setShowModal?.(showForm);
+}, [showForm, setShowModal]);
 
   const fetchEmployees = async () => {
     try {
