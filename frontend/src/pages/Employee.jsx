@@ -1,4 +1,3 @@
-// Fully updated and corrected Employee.jsx with complete rendering
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles/Employee.css";
@@ -65,8 +64,15 @@ function Employee({ setShowModal }) {
   }, []);
 
   useEffect(() => {
-  setShowModal?.(showForm);
-}, [showForm, setShowModal]);
+      setShowModal?.(showForm);
+    }, [showForm, setShowModal]);
+
+  useEffect(() => {
+      const filtered = employees.filter((emp) =>
+        emp.full_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredEmployees(filtered);
+    }, [searchTerm, employees]);
 
   const fetchEmployees = async () => {
     try {
@@ -98,7 +104,6 @@ function Employee({ setShowModal }) {
       )
     );
   };
-
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
@@ -197,7 +202,7 @@ function Employee({ setShowModal }) {
         }
         return updated;
       });
-    };
+  };
 
   return (
     <section className="employee-page">
