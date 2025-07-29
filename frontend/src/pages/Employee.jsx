@@ -34,7 +34,8 @@ function Employee() {
   });
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);q
+  const handleCloseModal = () => setShowModal(false);
+  const [showModal, setShowModal] = useState(false);
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const officeEmblems = {
@@ -204,52 +205,39 @@ function Employee() {
       </div>
 
       {showForm && (
-  <div className="modal-overlay">
-    <div className="modal-content">
-      <button className="modal-close" onClick={() => setShowForm(false)}>
-        &times;
-      </button>
-      <h3 className="form-title">Add New Employee</h3>
-      <form className="employee-form" onSubmit={handleSubmit}>
-        {Object.entries(formData).map(([key, val]) => (
-          <div className="form-group" key={key}>
-            <label htmlFor={key}>
-              {key.replace(/_/g, " ").toUpperCase()}
-            </label>
-            {key === "office" ? (
-              <select
-                id={key}
-                name="office"
-                value={formData.office}
-                onChange={handleFormChange}
-              >
-                <option value="">Select an office</option>
-                {Object.keys(officeEmblems).map((office) => (
-                  <option key={office} value={office}>
-                    {office}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                type={key.includes("date") ? "date" : "text"}
-                id={key}
-                name={key}
-                value={formData[key]}
-                onChange={handleFormChange}
-              />
-            )}
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="modal-close" onClick={() => setShowForm(false)}>&times;</button>
+            <h3 className="form-title">Add New Employee</h3>
+            <form className="employee-form" onSubmit={handleSubmit}>
+              {Object.entries(formData).map(([key, val]) => (
+                <div className="form-group" key={key}>
+                  <label htmlFor={key}>{key.replace(/_/g, " ").toUpperCase()}</label>
+                  {key === "office" ? (
+                    <select id={key} name={key} value={val} onChange={handleFormChange}>
+                      <option value="">Select an office</option>
+                      {Object.keys(officeEmblems).map((office) => (
+                        <option key={office} value={office}>{office}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type={key.includes("date") ? "date" : "text"}
+                      id={key}
+                      name={key}
+                      value={val}
+                      onChange={handleFormChange}
+                    />
+                  )}
+                </div>
+              ))}
+              <div className="form-footer">
+                <button type="submit" className="submit-btn">➕ Save Employee</button>
+              </div>
+            </form>
           </div>
-        ))}
-        <div className="form-footer">
-          <button type="submit" className="submit-btn">
-            ➕ Save Employee
-          </button>
         </div>
-      </form>
-    </div>
-  </div>
-)}
+      )}
 
       <div className="employee-grid">
         {filteredEmployees.map(emp => (
@@ -292,7 +280,7 @@ function Employee() {
                     <input
                       type={key.includes("date") ? "date" : "text"}
                       name={key}
-                      value={editFormData[key] || ""}
+                      value={val || ""}
                       onChange={handleEditChange}
                     />
                   </div>
