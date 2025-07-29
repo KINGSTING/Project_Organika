@@ -49,6 +49,11 @@
 }
 
 /* Buttons */
+.form-footer {
+   display: flex;
+  gap: 8px;
+}
+
 .edit-btn,
 .delete-btn {
   margin-right: 8px;
@@ -65,12 +70,12 @@
 }
 
 .edit-btn {
-  background-color: #ffc107;
+  background-color: #FF8C00;
   color: black;
 }
 
 .delete-btn {
-  background-color: #dc3545;
+  background-color: #800000;
   color: white;
 }
 
