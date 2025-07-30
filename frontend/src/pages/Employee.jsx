@@ -17,7 +17,7 @@ function Employee({ setShowModal }) {
     office: "",
     date_of_birth: "",
     original_appointment_date: "",
-    last_promotion_date: ""
+    last_promotion_date: "",
     photo_url: ""
   });
   const [showForm, setShowForm] = useState(false);
