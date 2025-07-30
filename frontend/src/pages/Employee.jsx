@@ -458,6 +458,7 @@ function Employee({ setShowModal }) {
           </div>
         </div>
       )}
+
     </section>
   );
 }
