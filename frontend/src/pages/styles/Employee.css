@@ -492,7 +492,8 @@
 /* Button Actions */
 .details-actions {
   display: flex;
-  justify-content: space-between;
+  gap: 10px; /* Adjust spacing between buttons */
+  justify-content: flex-start; /* Align buttons to the start */
   margin-top: 1.5rem;
 }
 
