@@ -286,22 +286,22 @@ function Employee({ setShowModal }) {
                           <label htmlFor={key}>{key.replace(/_/g, " ").toUpperCase()}</label>
 
                           {key === "photo_url" ? (
-                            <>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => handleImageUpload(e, key, setFormData)}
-                              />
-                              {val && <img src={val} alt="Preview" style={{ width: "100px", marginTop: "8px" }} />}
-                            </>
-                          ) : key === "office" ? (
-                            <select id={key} name={key} value={val} onChange={handleFormChange}>
-                              <option value="">Select an office</option>
-                              {Object.keys(officeEmblems).map((office) => (
-                                <option key={office} value={office}>{office}</option>
-                              ))}
-                            </select>
-                          ) : {key === "employment_status" ? (
+                              <>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => handleImageUpload(e, key, setFormData)}
+                                />
+                                {val && <img src={val} alt="Preview" style={{ width: "100px", marginTop: "8px" }} />}
+                              </>
+                            ) : key === "office" ? (
+                              <select id={key} name={key} value={val} onChange={handleFormChange}>
+                                <option value="">Select an office</option>
+                                {Object.keys(officeEmblems).map((office) => (
+                                  <option key={office} value={office}>{office}</option>
+                                ))}
+                              </select>
+                            ) : key === "employment_status" ? (
                               <select id={key} name={key} value={val} onChange={handleFormChange}>
                                 <option value="">Select employment status</option>
                                 <option value="Elected">Elected</option>
@@ -310,14 +310,14 @@ function Employee({ setShowModal }) {
                                 <option value="Conterminus">Conterminus</option>
                               </select>
                             ) : (
-                            <input
-                              type={key.includes("date") ? "date" : "text"}
-                              id={key}
-                              name={key}
-                              value={val}
-                              onChange={handleFormChange}
-                            />
-                          )}
+                              <input
+                                type={key.includes("date") ? "date" : "text"}
+                                id={key}
+                                name={key}
+                                value={val}
+                                onChange={handleFormChange}
+                              />
+                            )}
                         </div>
                       );
                     })}
@@ -407,6 +407,25 @@ function Employee({ setShowModal }) {
                       </div>
                     );
                   }
+
+                  if (key === "employment_status") {
+                      return (
+                        <div className="form-group" key={key}>
+                          <label>EMPLOYMENT STATUS</label>
+                          <select
+                            name={key}
+                            value={val}
+                            onChange={handleEditChange}
+                          >
+                            <option value="">-- Select Status --</option>
+                            <option value="Elected">Elected</option>
+                            <option value="Permanent">Permanent</option>
+                            <option value="Temporary">Temporary</option>
+                            <option value="Conterminus">Conterminus</option>
+                          </select>
+                        </div>
+                      );
+                    }
 
                   return (
                     <div className="form-group" key={key}>
