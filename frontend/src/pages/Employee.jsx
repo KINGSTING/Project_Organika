@@ -105,7 +105,6 @@ function Employee({ setShowModal }) {
     );
   };
 
-
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditFormData(prev => {
@@ -199,11 +198,12 @@ function Employee({ setShowModal }) {
       setFormData((prev) => {
         const updated = { ...prev, [name]: value };
         if (name === "office" && officeEmblems[value]) {
-          updated.emblem_url = officeEmblems[value]; // auto-update emblem
+          updated.emblem_url = officeEmblems[value];
         }
         return updated;
       });
     };
+
 
   const applyFilters = () => {
       let filtered = employees;
@@ -272,27 +272,30 @@ function Employee({ setShowModal }) {
               <h3 className="form-title">Add New Employee</h3>
               <form className="employee-form" onSubmit={handleSubmit}>
                 <div className="form-grid">
-                  {Object.entries(formData).map(([key, val]) => (
-                    <div className="form-group" key={key}>
-                      <label htmlFor={key}>{key.replace(/_/g, " ").toUpperCase()}</label>
-                      {key === "office" ? (
-                        <select id={key} name={key} value={val} onChange={handleFormChange}>
-                          <option value="">Select an office</option>
-                          {Object.keys(officeEmblems).map((office) => (
-                            <option key={office} value={office}>{office}</option>
-                          ))}
-                        </select>
-                      ) : (
-                        <input
-                          type={key.includes("date") ? "date" : "text"}
-                          id={key}
-                          name={key}
-                          value={val}
-                          onChange={handleFormChange}
-                        />
-                      )}
-                    </div>
-                  ))}
+                  {Object.entries(formData).map(([key, val]) => {
+                    if (key === "emblem_url") return null;
+                    return (
+                      <div className="form-group" key={key}>
+                        <label htmlFor={key}>{key.replace(/_/g, " ").toUpperCase()}</label>
+                        {key === "office" ? (
+                          <select id={key} name={key} value={val} onChange={handleFormChange}>
+                            <option value="">Select an office</option>
+                            {Object.keys(officeEmblems).map((office) => (
+                              <option key={office} value={office}>{office}</option>
+                            ))}
+                          </select>
+                        ) : (
+                          <input
+                            type={key.includes("date") ? "date" : "text"}
+                            id={key}
+                            name={key}
+                            value={val}
+                            onChange={handleFormChange}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
                 <div className="form-footer">
                   <button type="submit" className="submit-btn">➕ Save Employee</button>
