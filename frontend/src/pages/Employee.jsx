@@ -105,6 +105,7 @@ function Employee({ setShowModal }) {
     );
   };
 
+
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditFormData(prev => {
@@ -202,15 +203,67 @@ function Employee({ setShowModal }) {
         }
         return updated;
       });
-  };
+    };
 
-  return (
-    <section className="employee-page">
-      <div className="search-bar">
-        <input className="search-input" type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search employee..." />
-        <button className="search-button" onClick={handleSearch}>Search</button>
-        <button className="floating-add-btn" onClick={() => setShowForm(true)}>＋</button>
-      </div>
+  const applyFilters = () => {
+      let filtered = employees;
+
+      if (filters.office) {
+        filtered = filtered.filter(emp => emp.office === filters.office);
+      }
+
+      setFilteredEmployees(filtered);
+    };
+
+    const resetFilters = () => {
+      setFilters({ ...filters, office: "" });
+      setFilteredEmployees(employees);
+    };
+
+    return (
+      <section className="employee-page">
+          <div className="search-bar">
+            <input
+              className="search-input"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search employee..."
+            />
+            <button className="search-button" onClick={handleSearch}>Search</button>
+
+            <div className="filter-wrapper">
+              <button className="filter-button" onClick={() => setShowFilterMenu(prev => !prev)}>
+                Filter
+              </button>
+
+              {showFilterMenu && (
+                <div className="filter-popup">
+                  <label className="filter-label">Office/Department</label>
+                  <select
+                    value={filters.office}
+                    onChange={(e) => setFilters(prev => ({ ...prev, office: e.target.value }))}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        applyFilters();
+                      }
+                    }}
+                  >
+                    <option value="">All</option>
+                    {Object.keys(officeEmblems).map((office) => (
+                      <option key={office} value={office}>{office}</option>
+                    ))}
+                  </select>
+
+                  <button className="apply-btn" onClick={applyFilters}>✅ Apply Filters</button>
+                  <button className="reset-btn" onClick={resetFilters}>🔁 Reset</button>
+                </div>
+              )}
+            </div>
+
+            <button className="floating-add-btn" onClick={() => setShowForm(true)}>＋</button>
+          </div>
 
       {showForm && (
         <div className="modal-overlay">

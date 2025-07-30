@@ -1,4 +1,4 @@
-/* Base Layout */
+/* ---------------- Base Layout ---------------- */
 .employee-page {
   font-family: "Segoe UI", sans-serif;
   background-color: #f0f0f0;
@@ -6,7 +6,7 @@
   padding: 2rem;
 }
 
-/* Grid Container */
+/* ---------------- Grid Layout ---------------- */
 .employee-grid {
   background-color: #56978c;
   padding: 2rem;
@@ -16,7 +16,7 @@
   gap: 2rem;
 }
 
-/* Card */
+/* ---------------- Employee Card ---------------- */
 .employee-card {
   background: #ffffff;
   border-radius: 1rem;
@@ -33,7 +33,18 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* Image Wrapper */
+@keyframes fadeSlideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ---------------- Image & Emblem ---------------- */
 .image-wrapper {
   position: relative;
   width: 100%;
@@ -47,7 +58,6 @@
   height: 100%;
   object-fit: cover;
   border-radius: 0.8rem;
-  display: block;
 }
 
 .emblem {
@@ -60,122 +70,126 @@
   border: 2px solid #fff;
   object-fit: cover;
   background: #eee;
-  z-index: 2;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
 
-.employee-name,
-.placeholder-name {
-  margin-top: 1rem;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #222;
-}
-
-/* Placeholder Loading */
-.placeholder-photo {
-  width: 100%;
-  height: 100%;
-  background-color: #dcdcdc;
-  border-radius: 0.8rem;
-}
-
-.placeholder-emblem,
-.placeholder-name {
-  background: linear-gradient(90deg, #eeeeee 25%, #dddddd 50%, #eeeeee 75%);
-  background-size: 800px 100%;
-  animation: shimmer 1.5s infinite linear;
-}
-
-@keyframes shimmer {
-  0% { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
-}
-
-/* Search Bar */
-.search-container {
+/* ---------------- Search Bar & Filter ---------------- */
+.search-bar {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .search-input {
-  flex: 2; /* Takes more space */
-  padding: 10px;
+  padding: 10px 12px;
   font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 220px;
 }
 
-.search-button {
-  flex: none;
-  width: 80px;   /* Smaller width */
-  height: 40px;  /* Still 2:1 ratio */
-  background-color: #006400;
+/* Shared styles for buttons */
+.search-button,
+.filter-button,
+.reset-button {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 500;
   color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 14px; /* Slightly smaller text */
+  border-radius: 6px;
   cursor: pointer;
+  flex-shrink: 0;
+  width: 100px;
+  text-align: center;
+}
+
+/* Specific colors */
+.search-button {
+  background-color: #006400;
 }
 
 .search-button:hover {
-  background-color: #004d00; /* darker green on hover */
+  background-color: #004d00;
 }
 
-/* Filter Dropdown */
-.filter-dropdown-wrapper {
+.filter-button {
+  background-color: #1e90ff;
+}
+
+.filter-button:hover {
+  background-color: #187bcd;
+}
+
+.reset-button {
+  background-color: #888;
+}
+
+.reset-button:hover {
+  background-color: #666;
+}
+
+/* ---------------- Filter Popup ---------------- */
+.filter-wrapper {
   position: relative;
+  display: inline-block;
 }
 
-.filter-toggle-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.filter-dropdown {
+.filter-popup {
   position: absolute;
-  top: 40px;
-  right: 0;
-  background: white;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background-color: white;
+  padding: 16px;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   z-index: 100;
-  padding: 1rem;
-  width: 250px;
+  width: 260px;
 }
 
-.filter-group {
-  margin-bottom: 0.75rem;
-}
-
-.filter-group label {
-  display: block;
+.filter-label {
   font-weight: bold;
-  margin-bottom: 0.25rem;
+  display: block;
+  margin-bottom: 6px;
 }
 
-.filter-dropdown select {
-  width: 100%;
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.apply-filter-btn {
-  background-color: #2c7a7b;
-  color: white;
+.filter-popup select {
   width: 100%;
   padding: 8px;
-  border: none;
+  margin-bottom: 12px;
   border-radius: 4px;
-  cursor: pointer;
+  border: 1px solid #ccc;
 }
 
-/* Floating Add Button */
+.apply-btn,
+.reset-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.apply-btn {
+  background-color: #2e8b57;
+  color: white;
+}
+
+.reset-btn {
+  background-color: #888;
+  color: white;
+}
+
+/* ---------------- Floating Add Button ---------------- */
 .floating-add-btn {
   position: fixed;
   bottom: 30px;
@@ -196,285 +210,51 @@
   background-color: #1a4a34;
 }
 
-/* Add Modal */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-.modal-content {
-  background: #fff;
-  border-radius: 10px;
-  padding: 2rem;
-  width: 800px;
-  max-width: 90%;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  position: relative;
-}
-
-.modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  cursor: pointer;
-  color: #e63946;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.modal-close:hover {
-  color: #c92a2a;
-}
-
-.form-title {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  text-align: center;
-  color: #215c41;
-}
-
-.employee-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #333;
-}
-
-.form-group input[type="text"],
-.form-group input[type="file"],
-.form-group input[type="date"],
-.form-group select {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.95rem;
-}
-
-.employee-form .form-group:nth-child(7),
-.employee-form .form-group:nth-child(8) {
-  grid-column: span 2;
-}
-
-.employee-form button[type="submit"] {
-  grid-column: span 2;
-  padding: 0.75rem;
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.employee-form button[type="submit"]:hover {
-  background-color: #005fa3;
-}
-
-.form-message {
-  grid-column: span 2;
-  text-align: center;
-  margin-top: 1rem;
-  font-weight: 500;
-}
-
-.form-message.success {
-  color: #155724;
-  background: #d4edda;
-  padding: 0.75rem;
-  border-radius: 6px;
-}
-
-.form-message.error {
-  color: #721c24;
-  background: #f8d7da;
-  padding: 0.75rem;
-  border-radius: 6px;
-}
-
-/* Employee Details Modal */
-.details-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.details-modal-content {
-  background: white;
-  border-radius: 1rem;
-  padding: 2rem;
-  width: 90%;
-  max-width: 500px;
-  position: relative;
-  animation: scaleIn 0.3s ease;
-}
-
-@keyframes scaleIn {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes fadeSlideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.details-modal-close {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  font-size: 24px;
-  background: none;
-  border: none;
-  color: #e63946;
-  cursor: pointer;
-}
-
-.details-header {
-  text-align: center;
-}
-
-.details-photo {
+/* ---------------- Placeholder Shimmer ---------------- */
+.placeholder-photo {
   width: 100%;
-  max-height: 200px;
-  object-fit: cover;
+  height: 100%;
+  background-color: #dcdcdc;
   border-radius: 0.8rem;
 }
 
-.details-emblem {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  border: 2px solid white;
-  background: white;
+.placeholder-emblem,
+.placeholder-name {
+  background: linear-gradient(90deg, #eeeeee 25%, #dddddd 50%, #eeeeee 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite linear;
 }
 
-.details-body {
-  margin-top: 1.5rem;
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
 }
 
-.details-actions {
-  margin-top: 1.5rem;
-  text-align: center;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.edit-btn,
-.delete-btn {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.edit-btn {
-  background-color: #215c41;
-  color: white;
-}
-
-.edit-btn:hover {
-  background-color: #1a4a34;
-}
-
-.delete-btn {
-  background-color: #e63946;
-  color: white;
-}
-
-.delete-btn:hover {
-  background-color: #c5303c;
-}
-
-/* Service Records Table */
-.service-record-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 14px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.service-record-table thead {
-  background-color: #215c41;
-  color: white;
-}
-
-.service-record-table th,
-.service-record-table td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #e0e0e0;
-  text-align: left;
-  vertical-align: middle;
-}
-
-.service-record-table tbody tr:nth-child(odd) {
-  background-color: #f9f9f9;
-}
-
-.service-record-table tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* Responsive */
+/* ---------------- Responsive ---------------- */
 @media screen and (max-width: 768px) {
+  .employee-form {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    padding: 1rem;
+    max-width: 95%;
+  }
+
   .service-record-table {
     font-size: 12px;
     overflow-x: auto;
     display: block;
   }
 
-  .employee-form {
-    grid-template-columns: 1fr;
-  }
-
-  .form-footer {
+  .search-bar {
     flex-direction: column;
-    gap: 0.75rem;
+    align-items: stretch;
   }
-}
 
-@media (max-width: 768px) {
-  .modal-content {
-    padding: 1rem;
-    max-width: 95%;
+  .search-button,
+  .filter-button,
+  .reset-button {
+    width: 100%;
   }
 }
