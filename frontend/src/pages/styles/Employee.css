@@ -504,11 +504,16 @@
   cursor: pointer;
 }
 
-/* Edit Mode Form */
+/* Edit Mode Form - 2 Columns */
 .details-edit-form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr; /* Two columns of equal width */
   gap: 1rem;
+  width: 800px;               /* Ensure enough width for two columns */
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .details-edit-form .form-group {
@@ -525,10 +530,12 @@
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-size: 1rem;
 }
 
+/* Full-width Submit Button */
 .details-edit-form button[type="submit"] {
-  grid-column: span 2;
+  grid-column: span 2;      /* Span both columns */
   margin-top: 1rem;
   padding: 0.75rem;
   background-color: #28a745;
@@ -539,14 +546,9 @@
   cursor: pointer;
 }
 
-.details-edit-form {
-  width: 1200px;          /* Set to your preferred width */
-  max-width: 90vw;       /* Ensures responsiveness */
-  margin: 0 auto;        /* Center horizontally */
-  padding: 1.5rem;
-  background-color: #fff;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.details-edit-form select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
+
