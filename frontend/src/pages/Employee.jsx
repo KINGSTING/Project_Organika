@@ -193,9 +193,11 @@ function Employee({ setShowModal }) {
   };
 
   const openEdit = () => {
-    setEditFormData(selectedEmployee);
-    setEditMode(true);
-  };
+      setEditFormData(selectedEmployee);
+      setEditMode(true);
+      setShowForm(false);
+      setShowModal(true); // 👈 Hide navbar
+    };
 
   const handleFormChange = (e) => {
       const { name, value } = e.target;
@@ -355,60 +357,64 @@ function Employee({ setShowModal }) {
               </div>
             ) : (
               <form className="details-edit-form" onSubmit={handleEditSubmit}>
-                  {Object.entries(editFormData).map(([key, val]) => {
-                      if (key === "emblem_url") return null; // 🛑 Skip rendering this field
-
-                      if (key === "photo_url") {
-                        return (
-                          <div className="form-group" key={key}>
-                            <label>PHOTO</label>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => handleImageUpload(e, key, setEditFormData)}
-                            />
-                            {val && (
-                              <div className="image-preview">
-                                <img src={val} alt="Uploaded" style={{ width: "100px", marginTop: "10px" }} />
-                              </div>
-                            )}
+                {Object.entries(editFormData).map(([key, val]) => {
+                  if (key === "emblem_url") return null;
+                  if (key === "photo_url") {
+                    return (
+                      <div className="form-group" key={key}>
+                        <label>PHOTO</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload(e, key, setEditFormData)}
+                        />
+                        {val && (
+                          <div className="image-preview">
+                            <img src={val} alt="Uploaded" style={{ width: "100px", marginTop: "10px" }} />
                           </div>
-                        );
-                      }
+                        )}
+                      </div>
+                    );
+                  }
 
-                      if (key === "office") {
-                        return (
-                          <div className="form-group" key={key}>
-                            <label>OFFICE</label>
-                            <select
-                              name={key}
-                              value={val}
-                              onChange={handleEditChange}
-                            >
-                              <option value="">-- Select Office --</option>
-                              <option value="HRMO">HRMO</option>
-                              <option value="Accounting">Accounting</option>
-                              <option value="Registrar">Registrar</option>
-                              <option value="Research Office">Research Office</option>
-                              <option value="OSA">OSA</option>
-                              {/* Add more options as needed */}
-                            </select>
-                          </div>
-                        );
-                      }
+                  if (key === "office") {
+                    return (
+                      <div className="form-group" key={key}>
+                        <label>OFFICE</label>
+                        <select
+                          name={key}
+                          value={val}
+                          onChange={handleEditChange}
+                        >
+                          <option value="">-- Select Office --</option>
+                          <option value="HRMO">HRMO</option>
+                          <option value="Accounting">Accounting</option>
+                          <option value="Registrar">Registrar</option>
+                          <option value="Research Office">Research Office</option>
+                          <option value="OSA">OSA</option>
+                        </select>
+                      </div>
+                    );
+                  }
 
-                      return (
-                        <div className="form-group" key={key}>
-                          <label>{key.replace(/_/g, " ").toUpperCase()}</label>
-                          <input
-                            type={key.includes("date") ? "date" : "text"}
-                            name={key}
-                            value={val || ""}
-                            onChange={handleEditChange}
-                          />
-                        </div>
-                      );
-                    })}
+                  return (
+                    <div className="form-group" key={key}>
+                      <label>{key.replace(/_/g, " ").toUpperCase()}</label>
+                      <input
+                        type={key.includes("date") ? "date" : "text"}
+                        name={key}
+                        value={val || ""}
+                        onChange={handleEditChange}
+                      />
+                    </div>
+                  );
+                })}
+                <button type="submit" className="submit-btn">💾 Save Changes</button>
+              </form> // ✅ Properly close the form here
+            )}
+         </div>
+        </div>
+      )}
 
       {showServiceRecordModal && (
         <div className="details-modal-overlay-2" onClick={() => setShowServiceRecordModal(false)}>
