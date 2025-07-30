@@ -11,7 +11,6 @@ function Employee({ setShowModal }) {
     position_title: "",
     employment_status: "",
     eligibility: "",
-    photo_url: "",
     emblem_url: "",
     GSIS_BP_NR: "",
     TIN_NR: "",
@@ -19,6 +18,7 @@ function Employee({ setShowModal }) {
     date_of_birth: "",
     original_appointment_date: "",
     last_promotion_date: ""
+    photo_url: ""
   });
   const [showForm, setShowForm] = useState(false);
   const [message, setMessage] = useState("");
@@ -301,7 +301,15 @@ function Employee({ setShowModal }) {
                                 <option key={office} value={office}>{office}</option>
                               ))}
                             </select>
-                          ) : (
+                          ) : {key === "employment_status" ? (
+                              <select id={key} name={key} value={val} onChange={handleFormChange}>
+                                <option value="">Select employment status</option>
+                                <option value="Elected">Elected</option>
+                                <option value="Permanent">Permanent</option>
+                                <option value="Temporary">Temporary</option>
+                                <option value="Conterminus">Conterminus</option>
+                              </select>
+                            ) : (
                             <input
                               type={key.includes("date") ? "date" : "text"}
                               id={key}
@@ -361,23 +369,6 @@ function Employee({ setShowModal }) {
               <form className="details-edit-form" onSubmit={handleEditSubmit}>
                 {Object.entries(editFormData).map(([key, val]) => {
                   if (key === "emblem_url") return null;
-                  if (key === "photo_url") {
-                    return (
-                      <div className="form-group" key={key}>
-                        <label>PHOTO</label>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleImageUpload(e, key, setEditFormData)}
-                        />
-                        {val && (
-                          <div className="image-preview">
-                            <img src={val} alt="Uploaded" style={{ width: "100px", marginTop: "10px" }} />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  }
 
                   if (key === "office") {
                       return (
@@ -398,6 +389,24 @@ function Employee({ setShowModal }) {
                         </div>
                       );
                     }
+
+                  if (key === "photo_url") {
+                    return (
+                      <div className="form-group" key={key}>
+                        <label>PHOTO</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload(e, key, setEditFormData)}
+                        />
+                        {val && (
+                          <div className="image-preview">
+                            <img src={val} alt="Uploaded" style={{ width: "100px", marginTop: "10px" }} />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
 
                   return (
                     <div className="form-group" key={key}>
