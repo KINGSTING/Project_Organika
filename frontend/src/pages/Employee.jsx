@@ -378,24 +378,24 @@ function Employee({ setShowModal }) {
                   }
 
                   if (key === "office") {
-                    return (
-                      <div className="form-group" key={key}>
-                        <label>OFFICE</label>
-                        <select
-                          name={key}
-                          value={val}
-                          onChange={handleEditChange}
-                        >
-                          <option value="">-- Select Office --</option>
-                          <option value="HRMO">HRMO</option>
-                          <option value="Accounting">Accounting</option>
-                          <option value="Registrar">Registrar</option>
-                          <option value="Research Office">Research Office</option>
-                          <option value="OSA">OSA</option>
-                        </select>
-                      </div>
-                    );
-                  }
+                      return (
+                        <div className="form-group" key={key}>
+                          <label>OFFICE</label>
+                          <select
+                            name={key}
+                            value={val}
+                            onChange={handleEditChange}
+                          >
+                            <option value="">-- Select Office --</option>
+                            {Object.keys(officeEmblems).map((office) => (
+                              <option key={office} value={office}>
+                                {office}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      );
+                    }
 
                   return (
                     <div className="form-group" key={key}>
