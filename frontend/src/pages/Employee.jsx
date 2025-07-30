@@ -296,14 +296,14 @@ function Employee({ setShowModal }) {
                               </>
                             ) : key === "office" ? (
                               <select id={key} name={key} value={val} onChange={handleFormChange}>
-                                <option value="">Select an office</option>
+                                <option value="" disabled>Select an office</option>
                                 {Object.keys(officeEmblems).map((office) => (
                                   <option key={office} value={office}>{office}</option>
                                 ))}
                               </select>
                             ) : key === "employment_status" ? (
                               <select id={key} name={key} value={val} onChange={handleFormChange}>
-                                <option value="">Select employment status</option>
+                                <option value="" disabled>Select Status</option>
                                 <option value="Elected">Elected</option>
                                 <option value="Permanent">Permanent</option>
                                 <option value="Temporary">Temporary</option>
@@ -379,7 +379,7 @@ function Employee({ setShowModal }) {
                             value={val}
                             onChange={handleEditChange}
                           >
-                            <option value="">-- Select Office --</option>
+                            <option value="" disabled>-- Select Office --</option>
                             {Object.keys(officeEmblems).map((office) => (
                               <option key={office} value={office}>
                                 {office}
@@ -417,7 +417,7 @@ function Employee({ setShowModal }) {
                             value={val}
                             onChange={handleEditChange}
                           >
-                            <option value="">-- Select Status --</option>
+                            <option value="" disabled>-- Select Status --</option>
                             <option value="Elected">Elected</option>
                             <option value="Permanent">Permanent</option>
                             <option value="Temporary">Temporary</option>
@@ -473,7 +473,7 @@ function Employee({ setShowModal }) {
                     <td>{record.end_date ? new Date(record.end_date).toLocaleDateString("en-US") : 'Present'}</td>
                     <td>{record.position_title}</td>
                     <td>{record.status}</td>
-                    <td>{record.salary_monthly?.toLocaleString()}</td>
+                    <td>{record.salary_monthly ? `₱${record.salary_monthly.toLocaleString()}` : ""}</td>
                     <td>{record.office}</td>
                     <td>{record.leave_without_pay}</td>
                     <td>{record.separation_date || ''}</td>
