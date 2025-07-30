@@ -266,39 +266,41 @@ function Employee({ setShowModal }) {
           </div>
 
       {showForm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="modal-close" onClick={() => setShowForm(false)}>&times;</button>
-            <h3 className="form-title">Add New Employee</h3>
-            <form className="employee-form" onSubmit={handleSubmit}>
-              {Object.entries(formData).map(([key, val]) => (
-                <div className="form-group" key={key}>
-                  <label htmlFor={key}>{key.replace(/_/g, " ").toUpperCase()}</label>
-                  {key === "office" ? (
-                    <select id={key} name={key} value={val} onChange={handleFormChange}>
-                      <option value="">Select an office</option>
-                      {Object.keys(officeEmblems).map((office) => (
-                        <option key={office} value={office}>{office}</option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input
-                      type={key.includes("date") ? "date" : "text"}
-                      id={key}
-                      name={key}
-                      value={val}
-                      onChange={handleFormChange}
-                    />
-                  )}
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button className="modal-close" onClick={() => setShowForm(false)}>&times;</button>
+              <h3 className="form-title">Add New Employee</h3>
+              <form className="employee-form" onSubmit={handleSubmit}>
+                <div className="form-grid">
+                  {Object.entries(formData).map(([key, val]) => (
+                    <div className="form-group" key={key}>
+                      <label htmlFor={key}>{key.replace(/_/g, " ").toUpperCase()}</label>
+                      {key === "office" ? (
+                        <select id={key} name={key} value={val} onChange={handleFormChange}>
+                          <option value="">Select an office</option>
+                          {Object.keys(officeEmblems).map((office) => (
+                            <option key={office} value={office}>{office}</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          type={key.includes("date") ? "date" : "text"}
+                          id={key}
+                          name={key}
+                          value={val}
+                          onChange={handleFormChange}
+                        />
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
-              <div className="form-footer">
-                <button type="submit" className="submit-btn">➕ Save Employee</button>
-              </div>
-            </form>
+                <div className="form-footer">
+                  <button type="submit" className="submit-btn">➕ Save Employee</button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       <div className="employee-grid">
         {filteredEmployees.map(emp => (
