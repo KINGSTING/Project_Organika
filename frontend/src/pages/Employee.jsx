@@ -195,7 +195,6 @@ function Employee({ setShowModal }) {
   const openEdit = () => {
     setEditFormData(selectedEmployee);
     setEditMode(true);
-    setShowForm(true); // Open the form
   };
 
   const handleFormChange = (e) => {
