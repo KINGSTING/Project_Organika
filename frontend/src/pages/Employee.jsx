@@ -273,29 +273,40 @@ function Employee({ setShowModal }) {
               <form className="employee-form" onSubmit={handleSubmit}>
                 <div className="form-grid">
                   {Object.entries(formData).map(([key, val]) => {
-                    if (key === "emblem_url") return null;
-                    return (
-                      <div className="form-group" key={key}>
-                        <label htmlFor={key}>{key.replace(/_/g, " ").toUpperCase()}</label>
-                        {key === "office" ? (
-                          <select id={key} name={key} value={val} onChange={handleFormChange}>
-                            <option value="">Select an office</option>
-                            {Object.keys(officeEmblems).map((office) => (
-                              <option key={office} value={office}>{office}</option>
-                            ))}
-                          </select>
-                        ) : (
-                          <input
-                            type={key.includes("date") ? "date" : "text"}
-                            id={key}
-                            name={key}
-                            value={val}
-                            onChange={handleFormChange}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
+                      if (key === "emblem_url") return null;
+
+                      return (
+                        <div className="form-group" key={key}>
+                          <label htmlFor={key}>{key.replace(/_/g, " ").toUpperCase()}</label>
+
+                          {key === "photo_url" ? (
+                            <>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleImageUpload(e, key, setFormData)}
+                              />
+                              {val && <img src={val} alt="Preview" style={{ width: "100px", marginTop: "8px" }} />}
+                            </>
+                          ) : key === "office" ? (
+                            <select id={key} name={key} value={val} onChange={handleFormChange}>
+                              <option value="">Select an office</option>
+                              {Object.keys(officeEmblems).map((office) => (
+                                <option key={office} value={office}>{office}</option>
+                              ))}
+                            </select>
+                          ) : (
+                            <input
+                              type={key.includes("date") ? "date" : "text"}
+                              id={key}
+                              name={key}
+                              value={val}
+                              onChange={handleFormChange}
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
                 </div>
                 <div className="form-footer">
                   <button type="submit" className="submit-btn">➕ Save Employee</button>
@@ -340,19 +351,41 @@ function Employee({ setShowModal }) {
               </div>
             ) : (
               <form className="details-edit-form" onSubmit={handleEditSubmit}>
-                {Object.entries(editFormData).map(([key, val]) => (
-                  <div className="form-group" key={key}>
-                    <label>{key.replace(/_/g, " ").toUpperCase()}</label>
-                    <input
-                      type={key.includes("date") ? "date" : "text"}
-                      name={key}
-                      value={val || ""}
-                      onChange={handleEditChange}
-                    />
-                  </div>
-                ))}
-                <button type="submit">Save</button>
-              </form>
+                  {Object.entries(editFormData).map(([key, val]) => {
+                    if (key === "emblem_url") return null; // 🛑 Skip rendering this field
+
+                    if (key === "photo_url") {
+                      return (
+                        <div className="form-group" key={key}>
+                          <label>PHOTO</label>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, key, setEditFormData)}
+                          />
+                          {val && (
+                            <div className="image-preview">
+                              <img src={val} alt="Uploaded" style={{ width: "100px", marginTop: "10px" }} />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <div className="form-group" key={key}>
+                        <label>{key.replace(/_/g, " ").toUpperCase()}</label>
+                        <input
+                          type={key.includes("date") ? "date" : "text"}
+                          name={key}
+                          value={val || ""}
+                          onChange={handleEditChange}
+                        />
+                      </div>
+                    );
+                  })}
+                  <button type="submit">Save</button>
+                </form>
             )}
           </div>
         </div>
