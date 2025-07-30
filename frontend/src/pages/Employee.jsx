@@ -349,6 +349,8 @@ function Employee({ setShowModal }) {
                 <p><strong>Date of Birth:</strong> {selectedEmployee.date_of_birth}</p>
                 <p><strong>Original Appointment:</strong> {selectedEmployee.original_appointment_date}</p>
                 <p><strong>Last Promotion:</strong> {selectedEmployee.last_promotion_date}</p>
+                <p><strong>GSIS_BP Number:</strong> {selectedEmployee.GSIS_BP_NR}</p>
+                <p><strong>TIN Number:</strong> {selectedEmployee.TIN_NR}</p>
                 <div className="details-actions">
                   <button className="edit-btn" onClick={openEdit}>✏️ Edit</button>
                   <button className="delete-btn" onClick={handleDelete}>🗑️ Delete</button>

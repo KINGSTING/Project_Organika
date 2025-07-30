@@ -449,8 +449,8 @@
 .details-modal-content {
   background-color: #fff;
   border-radius: 10px;
-  max-width: 800px;
-  width: 100%;
+  max-width: 1400px;
+  width: 90%;
   max-height: 90vh;
   overflow-y: auto;
   padding: 2rem;
