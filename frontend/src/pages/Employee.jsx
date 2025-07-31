@@ -193,10 +193,21 @@ function Employee({ setShowModal }) {
   };
 
   const openEdit = () => {
-      setEditFormData(selectedEmployee);
+      setEditFormData({
+        full_name: selectedEmployee.full_name || "",
+        position_title: selectedEmployee.position_title || "",
+        employment_status: selectedEmployee.employment_status || "",
+        eligibility: selectedEmployee.eligibility || "",
+        GSIS_BP_NR: selectedEmployee.GSIS_BP_NR || "",
+        TIN_NR: selectedEmployee.TIN_NR || "",
+        office: selectedEmployee.office || "",
+        date_of_birth: selectedEmployee.date_of_birth || "", // ✅ ensure this is here
+        original_appointment_date: selectedEmployee.original_appointment_date || "",
+        last_promotion_date: selectedEmployee.last_promotion_date || "",
+        photo_url: selectedEmployee.photo_url || "",
+        id: selectedEmployee.id || ""
+      });
       setEditMode(true);
-      setShowForm(false);
-      setShowModal(true); // 👈 Hide navbar
     };
 
   const handleFormChange = (e) => {
