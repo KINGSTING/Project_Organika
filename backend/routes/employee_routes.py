@@ -39,6 +39,7 @@ def get_employees():
             "emblem_url": emp.emblem_url,
             "position_title": emp.position_title,
             "employment_status": emp.employment_status,
+            "date_of_birth": emp.date_of_birth,
             "eligibility": emp.eligibility,
             "office": emp.office,
             "GSIS_BP_NR": emp.GSIS_BP_NR,
@@ -66,6 +67,7 @@ def update_employee(emp_id):
         employee.office = data.get("office", employee.office)
         employee.GSIS_BP_NR = data.get("GSIS_BP_NR", employee.GSIS_BP_NR)
         employee.TIN_NR = data.get("TIN_NR", employee.TIN_NR)
+        employee.date_of_birth = data.get("date_of_birth", employee.date_of_birth)
 
         db.session.commit()
         return jsonify({"msg": "Employee updated successfully!"}), 200
