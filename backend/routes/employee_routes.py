@@ -16,6 +16,7 @@ def create_employee():
             eligibility=data["eligibility"],
             photo_url=data.get("photo_url"),
             emblem_url=data.get("emblem_url"),
+            date_of_birth=data.get("date_of_birth"),
             office=data["office"],
             GSIS_BP = data["GSIS_BP_NR"],
             TIN = data["TIN_NR"]
