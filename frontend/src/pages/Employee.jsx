@@ -361,6 +361,7 @@ function Employee({ setShowModal }) {
               <div>
                 <img src={selectedEmployee.photo_url} alt={selectedEmployee.full_name} className="details-photo" />
                 <h2>{selectedEmployee.full_name}</h2>
+                <p><strong>Position:</strong> {selectedEmployee.id}</p>
                 <p><strong>Position:</strong> {selectedEmployee.position_title}</p>
                 <p><strong>Office:</strong> {selectedEmployee.office}</p>
                 <p><strong>Status:</strong> {selectedEmployee.employment_status}</p>
