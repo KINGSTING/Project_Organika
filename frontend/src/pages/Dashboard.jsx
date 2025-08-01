@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import axios from "axios";
-import "./styles/Dashboard.css"; // Ensure this file exists and is styled properly
+import "./styles/Dashboard.css";
 
 function Dashboard() {
   const [welcomeMessage, setWelcomeMessage] = useState("Welcome to the Dashboard!");
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28FD0', '#FF6B6B'];
 
   useEffect(() => {
-    // Animate welcome message after slight delay
     const timer = setTimeout(() => {
       setWelcomeMessage("📊 Dashboard Overview");
     }, 500);
 
-    // Fetch dashboard analytics
     axios.get(`${API_BASE}/`)
       .then((res) => {
         console.log("[Dashboard] Analytics fetched:", res.data);
@@ -28,7 +28,7 @@ function Dashboard() {
         setLoading(false);
       });
 
-    return () => clearTimeout(timer); // Cleanup timeout
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -56,6 +56,30 @@ function Dashboard() {
             ) : (
               <div className="text-muted">No office data available.</div>
             )}
+          </div>
+
+          <div className="pie-chart-section">
+            <h3>📊 Distribution of Items by Office</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={analytics.by_office}
+                  dataKey="count"
+                  nameKey="office"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#8884d8"
+                  label
+                >
+                  {analytics.by_office.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </>
       ) : (
