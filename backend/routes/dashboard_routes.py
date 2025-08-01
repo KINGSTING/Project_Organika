@@ -3,7 +3,7 @@ from ..models import db, PlantillaItem, Employee
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
-@dashboard_bp.route("/api/dashboard-overview", methods=["GET"])
+@dashboard_bp.route("/dashboard-overview", methods=["GET"])
 def dashboard_overview():
     print("[API] /api/dashboard-overview called")
 
