@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./styles/Dashboard.css"; // make sure this file exists and contains your styling
+import "./styles/Dashboard.css"; // Ensure this file exists and is styled properly
 
 function Dashboard() {
   const [welcomeMessage, setWelcomeMessage] = useState("Welcome to the Dashboard!");
@@ -9,22 +9,26 @@ function Dashboard() {
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
 
   useEffect(() => {
-    // Animate welcome message
-    setTimeout(() => {
+    // Animate welcome message after slight delay
+    const timer = setTimeout(() => {
       setWelcomeMessage("📊 Dashboard Overview");
     }, 500);
 
-    // Fetch analytics from backend
-    axios.get(`${API_BASE}/api/dashboard-overview`)
+    // Fetch dashboard analytics
+    axios.get(`${API_BASE}/`)
       .then((res) => {
-        console.log("[Dashboard] Fetched analytics:", res.data);
+        console.log("[Dashboard] Analytics fetched:", res.data);
         setAnalytics(res.data);
-        setLoading(false);
       })
       .catch((err) => {
-        console.error("Dashboard data fetch error:", err);
+        console.error("[Dashboard] Failed to fetch analytics:", err);
+        setAnalytics(null);
+      })
+      .finally(() => {
         setLoading(false);
       });
+
+    return () => clearTimeout(timer); // Cleanup timeout
   }, []);
 
   return (
@@ -37,26 +41,25 @@ function Dashboard() {
         <>
           <div className="summary-cards">
             <SummaryCard title="📁 Total Plantilla Items" value={analytics.total_items} delay={0} />
-            <SummaryCard title="✅ Filled" value={analytics.filled} delay={1} />
-            <SummaryCard title="🕳️ Vacant" value={analytics.vacant} delay={2} />
-            <SummaryCard title="❄️ Frozen" value={analytics.frozen} delay={3} />
-            <SummaryCard title="💰 Funded" value={analytics.funded} delay={4} />
-            <SummaryCard title="🚫 Unfunded" value={analytics.unfunded} delay={5} />
           </div>
 
           <div className="office-section">
             <h3>📌 Plantilla by Office</h3>
-            <ul>
-              {analytics.by_office?.map((item, index) => (
-                <li key={index}>
-                  <strong>{item.office}</strong>: {item.count} items
-                </li>
-              ))}
-            </ul>
+            {analytics.by_office.length > 0 ? (
+              <ul>
+                {analytics.by_office.map((item, index) => (
+                  <li key={index}>
+                    <strong>{item.office}</strong>: {item.count} items
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="text-muted">No office data available.</div>
+            )}
           </div>
         </>
       ) : (
-        <div className="text-muted">No data found.</div>
+        <div className="text-muted">No data available.</div>
       )}
     </div>
   );
