@@ -41,20 +41,20 @@ def dashboard_overview():
 
     # Get Longest Serving
     longest_serving = (
-        db.session.query(Employee.full_name, Employee.original_appointment)
-        .filter(Employee.original_appointment.isnot(None))
-        .order_by(Employee.original_appointment.asc())
+        db.session.query(Employee.full_name, Employee.original_appointment_date)
+        .filter(Employee.original_appointment_date.isnot(None))
+        .order_by(Employee.original_appointment_date.asc())
         .first()
     )
 
     # Get Newest Hired Employees (might be more than one with same latest date)
     newest_date_subquery = (
-        db.session.query(db.func.max(Employee.original_appointment))
+        db.session.query(db.func.max(Employee.original_appointment_date))
         .scalar()
     )
     newest_hired = (
-        db.session.query(Employee.full_name, Employee.original_appointment)
-        .filter(Employee.original_appointment == newest_date_subquery)
+        db.session.query(Employee.full_name, Employee.original_appointment_date)
+        .filter(Employee.original_appointment_date == newest_date_subquery)
         .all()
     )
 
@@ -75,12 +75,12 @@ def dashboard_overview():
         ],
         "longest_serving": {
             "full_name": longest_serving.full_name,
-            "original_appointment": longest_serving.original_appointment.isoformat()
+            "original_appointment": longest_serving.original_appointment_date.isoformat()
         } if longest_serving else None,
         "newest_hired": [
             {
                 "full_name": emp.full_name,
-                "original_appointment": emp.original_appointment.isoformat()
+                "original_appointment": emp.original_appointment_date.isoformat()
             } for emp in newest_hired
         ] if newest_hired else []
     }
