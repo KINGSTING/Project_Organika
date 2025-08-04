@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from ..models import Employee, db
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from backend.models import ServiceRecord
+from datetime import datetime
 
 employee_bp = Blueprint("employee", __name__)
 
@@ -67,10 +68,23 @@ def update_employee(emp_id):
         employee.office = data.get("office", employee.office)
         employee.GSIS_BP_NR = data.get("GSIS_BP_NR", employee.GSIS_BP_NR)
         employee.TIN_NR = data.get("TIN_NR", employee.TIN_NR)
-        employee.date_of_birth = data.get("date_of_birth", employee.date_of_birth)
+
+        # Safely parse dates
+        dob = data.get("date_of_birth")
+        if dob:
+            employee.date_of_birth = datetime.strptime(dob, "%Y-%m-%d").date()
+
+        original_appointment = data.get("original_appointment_date")
+        if original_appointment:
+            employee.original_appointment_date = datetime.strptime(original_appointment, "%Y-%m-%d").date()
+
+        last_promotion = data.get("last_promotion_date")
+        if last_promotion:
+            employee.last_promotion_date = datetime.strptime(last_promotion, "%Y-%m-%d").date()
 
         db.session.commit()
         return jsonify({"msg": "Employee updated successfully!"}), 200
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Update failed", "details": str(e)}), 500
