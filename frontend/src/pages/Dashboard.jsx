@@ -16,6 +16,16 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28FD0', '#FF6B6B'];
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+
+  const openModal = (title) => {
+    setModalTitle(title);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+
 
   useEffect(() => {
     const timer = setTimeout(() => setWelcomeMessage("📊 Dashboard Overview"), 500);
@@ -37,6 +47,11 @@ function Dashboard() {
 
       <div className="summary-cards">
         <SummaryCard title="📁 Total Plantilla Items" value={analytics.total_items} delay={0} />
+        <SummaryCard title="👨‍💼 Employed" value={analytics.total_employed} onClick={() => openModal("Employed")} />
+        <SummaryCard title="🧑‍⚖️ Elected Officials" value={analytics.total_elected} onClick={() => openModal("Elected")} />
+        <SummaryCard title="👩‍💼 Permanent" value={analytics.total_permanent} onClick={() => openModal("Permanent")} />
+        <SummaryCard title="🔒 Conterminous" value={analytics.total_conterminous} onClick={() => openModal("Conterminous")} />
+        <SummaryCard title="📄 Temporary" value={analytics.total_temporary} onClick={() => openModal("Temporary")} />
       </div>
 
       <section className="office-section">
@@ -98,11 +113,27 @@ function Dashboard() {
       </section>
     </div>
   );
+
+  {modalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>{modalTitle} Details</h2>
+            <p>More detailed information about {modalTitle} here...</p>
+            <button onClick={closeModal}>Close</button>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
-function SummaryCard({ title, value, delay }) {
+function SummaryCard({ title, value, delay = 0, onClick }) {
   return (
-    <div className="summary-card" style={{ animationDelay: `${delay * 0.1}s` }}>
+    <div
+      className="summary-card"
+      style={{ animationDelay: `${delay * 0.1}s` }}
+      onClick={onClick}
+    >
       <h3>{title}</h3>
       <p>{value}</p>
     </div>
