@@ -10,7 +10,6 @@ function App() {
 
   return (
     <Router>
-      <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png" />
       <div className="min-h-screen flex flex-col bg-gray-50">
         {/* Conditionally render Navbar */}
         {!showModal && <Navbar />}
