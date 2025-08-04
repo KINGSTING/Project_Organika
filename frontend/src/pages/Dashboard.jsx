@@ -99,15 +99,17 @@ function Dashboard() {
         <section className="birthday-section">
           <h2>🎉 Upcoming Birthdays</h2>
           <table className="birthday-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Birthday</th>
-                <th>Age</th>
-              </tr>
-            </thead>
+            {upcomingBirthdays.length > 0 && (
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Office</th>
+                  <th>Birthday</th>
+                  <th>Age</th>
+                </tr>
+              </thead>
+            )}
             <tbody>
               {upcomingBirthdays.map((emp, i) => {
                 const isToday = new Date(emp.date).toDateString() === new Date().toDateString();
@@ -129,6 +131,10 @@ function Dashboard() {
               })}
             </tbody>
           </table>
+
+          {upcomingBirthdays.length === 0 && (
+            <p className="no-birthdays">No upcoming birthdays 🎂</p>
+          )}
         </section>
 
         <section className="office-section mt-6">

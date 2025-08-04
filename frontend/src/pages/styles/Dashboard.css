@@ -293,3 +293,9 @@ body {
 .birthday-balloon::after {
   content: " 🎈";
 }
+
+.no-birthdays {
+  margin-top: 10px;
+  color: #666;
+  font-style: italic;
+}
