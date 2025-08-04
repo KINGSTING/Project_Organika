@@ -129,31 +129,38 @@ function Dashboard() {
       </div>
 
       {modalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>{modalTitle} Details</h2>
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h2>{modalTitle} Details</h2>
 
-            {modalLoading ? (
-              <p>Loading...</p>
-            ) : modalData.length > 0 ? (
-              <ul>
-                {modalData.map((emp, idx) => (
-                  <li key={idx}>
-                    <strong>{emp.full_name}</strong> — {emp.position_title}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No data available for this category.</p>
-            )}
+              {modalLoading ? (
+                <p>Loading...</p>
+              ) : modalData.length > 0 ? (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Position</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {modalData.map((emp, idx) => (
+                      <tr key={idx}>
+                        <td>{emp.full_name}</td>
+                        <td>{emp.position_title}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>No data available for this category.</p>
+              )}
 
-            <button onClick={closeModal}>Close</button>
+              <button onClick={closeModal}>Close</button>
+            </div>
           </div>
-        </div>
-      )}
-    </>
-  );
-}
+        )}
+    }
 
 function SummaryCard({ title, value, delay = 0, onClick }) {
   return (
