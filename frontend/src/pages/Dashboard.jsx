@@ -67,6 +67,20 @@ function Dashboard() {
           <SummaryCard title="👩‍💼 Permanent" value={analytics.total_permanent} onClick={() => openModal("Permanent")} />
           <SummaryCard title="🔒 Conterminous" value={analytics.total_conterminous} onClick={() => openModal("Conterminous")} />
           <SummaryCard title="📄 Temporary" value={analytics.total_temporary} onClick={() => openModal("Temporary")} />
+          <SummaryCard
+            title="🕰️ Longest Serving"
+            value={`${analytics.longest_serving?.full_name || "N/A"} (${analytics.longest_serving?.original_appointment || "-"})`}
+          />
+          <SummaryCard
+            title="🆕 Newest Hired"
+            value={
+              analytics.newest_hired.length > 0
+                ? analytics.newest_hired
+                    .map((emp) => `${emp.full_name} (${emp.original_appointment})`)
+                    .join(", ")
+                : "N/A"
+            }
+          />
         </div>
 
         <section className="office-section">

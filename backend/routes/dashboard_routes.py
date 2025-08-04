@@ -39,6 +39,25 @@ def dashboard_overview():
         .all()
     )
 
+    # Get Longest Serving
+    longest_serving = (
+        db.session.query(Employee.full_name, Employee.original_appointment)
+        .filter(Employee.original_appointment.isnot(None))
+        .order_by(Employee.original_appointment.asc())
+        .first()
+    )
+
+    # Get Newest Hired Employees (might be more than one with same latest date)
+    newest_date_subquery = (
+        db.session.query(db.func.max(Employee.original_appointment))
+        .scalar()
+    )
+    newest_hired = (
+        db.session.query(Employee.full_name, Employee.original_appointment)
+        .filter(Employee.original_appointment == newest_date_subquery)
+        .all()
+    )
+
     result = {
         "total_items": total_items,
         "total_employed": total_employed,
@@ -54,6 +73,16 @@ def dashboard_overview():
             {"salary_grade": grade, "vacancies": vac}
             for grade, vac in vacancy_data
         ],
+        "longest_serving": {
+            "full_name": longest_serving.full_name,
+            "original_appointment": longest_serving.original_appointment.isoformat()
+        } if longest_serving else None,
+        "newest_hired": [
+            {
+                "full_name": emp.full_name,
+                "original_appointment": emp.original_appointment.isoformat()
+            } for emp in newest_hired
+        ] if newest_hired else []
     }
 
     return jsonify(result)

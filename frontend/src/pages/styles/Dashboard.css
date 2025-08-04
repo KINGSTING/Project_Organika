@@ -241,3 +241,7 @@ body {
   overflow-y: auto;
   padding-left: 1rem;
 }
+.summary-card p {
+  word-wrap: break-word;
+  white-space: normal;
+}
