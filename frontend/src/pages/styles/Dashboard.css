@@ -225,3 +225,13 @@ body {
   width: 400px;
   max-width: 90%;
 }
+
+.summary-card {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
