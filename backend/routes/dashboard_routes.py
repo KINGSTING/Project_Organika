@@ -4,6 +4,43 @@ from datetime import datetime, timedelta
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
+
+### ✅ Utility function (not a route)
+def get_upcoming_birthdays_data():
+    today = datetime.today().date()
+    end_date = today + timedelta(days=30)
+
+    employees = Employee.query.filter(Employee.date_of_birth.isnot(None)).all()
+
+    upcoming = []
+
+    for emp in employees:
+        dob = emp.date_of_birth
+        try:
+            birthday_this_year = dob.replace(year=today.year)
+        except ValueError:
+            birthday_this_year = dob.replace(year=today.year, day=28)
+
+        if birthday_this_year < today:
+            try:
+                birthday_this_year = dob.replace(year=today.year + 1)
+            except ValueError:
+                birthday_this_year = dob.replace(year=today.year + 1, day=28)
+
+        days_until_birthday = (birthday_this_year - today).days
+        if 0 <= days_until_birthday <= 30:
+            upcoming.append({
+                "full_name": emp.full_name,
+                "position_title": emp.position_title,
+                "office": emp.office,
+                "date": birthday_this_year.isoformat(),
+                "age": birthday_this_year.year - dob.year
+            })
+
+    return sorted(upcoming, key=lambda x: x["date"])
+
+
+### ✅ Dashboard overview route
 @dashboard_bp.route("/", methods=["GET"])
 def dashboard_overview():
     total_items = PlantillaItem.query.count()
@@ -32,7 +69,7 @@ def dashboard_overview():
         .order_by(Employee.original_appointment_date.asc()) \
         .first()
 
-    # Newest Hired Employees (more than one can share the latest date)
+    # Newest Hired Employees
     newest_date = db.session.query(
         db.func.max(Employee.original_appointment_date)
     ).scalar()
@@ -61,13 +98,20 @@ def dashboard_overview():
                 "full_name": emp.full_name,
                 "original_appointment": emp.original_appointment_date.isoformat()
             } for emp in newest_hired
-        ]
+        ],
+        "upcoming_birthdays": get_upcoming_birthdays_data()
     }
 
-    upcoming_birthdays = get_upcoming_birthdays()
-    result["upcoming_birthdays"] = get_upcoming_birthdays()
     return jsonify(result)
 
+
+### ✅ Optional route to fetch birthdays standalone
+@dashboard_bp.route("/upcoming-birthdays", methods=["GET"])
+def get_upcoming_birthdays_route():
+    return jsonify(get_upcoming_birthdays_data())
+
+
+### ✅ Employees by status route
 @dashboard_bp.route("/employees/<status>", methods=["GET"])
 def get_employees_by_status(status):
     employees = Employee.query \
@@ -79,37 +123,3 @@ def get_employees_by_status(status):
         {"full_name": emp.full_name, "position_title": emp.position_title}
         for emp in employees
     ])
-
-@dashboard_bp.route("/upcoming-birthdays", methods=["GET"])
-def get_upcoming_birthdays():
-    today = datetime.today()
-    end_date = today + timedelta(days=30)
-
-    employees = Employee.query.filter(Employee.date_of_birth.isnot(None)).all()
-
-    upcoming = []
-
-    for emp in employees:
-        dob = emp.date_of_birth
-        try:
-            birthday_this_year = dob.replace(year=today.year)
-        except ValueError:
-            # Handle February 29 on non-leap years
-            birthday_this_year = dob.replace(year=today.year, day=28)
-
-        if birthday_this_year < today:
-            try:
-                birthday_this_year = dob.replace(year=today.year + 1)
-            except ValueError:
-                birthday_this_year = dob.replace(year=today.year + 1, day=28)
-
-        days_until_birthday = (birthday_this_year - today).days
-        if 0 <= days_until_birthday <= 30:
-            upcoming.append({
-                "full_name": emp.full_name,
-                "date": birthday_this_year.strftime("%Y-%m-%d"),
-                "age": birthday_this_year.year - dob.year
-            })
-
-    upcoming.sort(key=lambda x: x["date"])
-    return jsonify(upcoming)
