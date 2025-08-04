@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 import Navbar from "./pages/Navbar";
 import Plantilla from "./pages/Plantilla";
 import Employee from "./pages/Employee";
@@ -10,6 +11,7 @@ function App() {
 
   return (
     <Router>
+        <ToastContainer />
       <div className="min-h-screen flex flex-col bg-gray-50">
         {/* Conditionally render Navbar */}
         {!showModal && <Navbar />}
