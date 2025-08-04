@@ -78,7 +78,7 @@ def get_employees_by_status(status):
         for emp in employees
     ])
 
-@dashboard_bp.route("/upcoming-birthdays", methods=["GET"])
+@dashboard_bp.route("/", methods=["GET"])
 def get_upcoming_birthdays():
     today = datetime.today()
     end_date = today + timedelta(days=30)
