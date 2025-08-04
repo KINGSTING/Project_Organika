@@ -57,3 +57,19 @@ def dashboard_overview():
     }
 
     return jsonify(result)
+
+@dashboard_bp.route("/employees/<status>", methods=["GET"])
+def get_employees_by_status(status):
+    employees = (
+        Employee.query
+        .filter(Employee.employment_status.ilike(status))
+        .with_entities(Employee.full_name, Employee.position_title)
+        .order_by(Employee.full_name)
+        .all()
+    )
+
+    return jsonify([
+        {"full_name": emp.full_name, "position_title": emp.position_title}
+        for emp in employees
+    ])
+

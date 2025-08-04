@@ -235,3 +235,9 @@ body {
   transform: scale(1.03);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
+
+.modal-content ul {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-left: 1rem;
+}

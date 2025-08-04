@@ -14,18 +14,31 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
+  const [modalData, setModalData] = useState([]);
+  const [modalLoading, setModalLoading] = useState(false);
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28FD0', '#FF6B6B'];
 
-  const openModal = (title) => {
+  const openModal = async (title) => {
     setModalTitle(title);
     setModalOpen(true);
+    setModalLoading(true);
+    try {
+      const status = title.toLowerCase().split(" ")[0]; // extract status (e.g., "Permanent")
+      const res = await axios.get(`${API_BASE}/employees/${status}`);
+      setModalData(res.data);
+    } catch (err) {
+      setModalData([]);
+    } finally {
+      setModalLoading(false);
+    }
   };
 
   const closeModal = () => {
     setModalOpen(false);
     setModalTitle("");
+    setModalData([]);
   };
 
   useEffect(() => {
@@ -119,7 +132,21 @@ function Dashboard() {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>{modalTitle} Details</h2>
-            <p>More detailed information about {modalTitle} here...</p>
+
+            {modalLoading ? (
+              <p>Loading...</p>
+            ) : modalData.length > 0 ? (
+              <ul>
+                {modalData.map((emp, idx) => (
+                  <li key={idx}>
+                    <strong>{emp.full_name}</strong> — {emp.position_title}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No data available for this category.</p>
+            )}
+
             <button onClick={closeModal}>Close</button>
           </div>
         </div>
