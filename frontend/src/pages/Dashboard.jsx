@@ -91,14 +91,14 @@ function Dashboard() {
         </div>
 
         <section className="birthday-section p-4 bg-white rounded-xl shadow-md mt-6">
-          <h3 className="text-lg font-semibold mb-2">\ud83c\udf89 Upcoming Birthdays (next 30 days)</h3>
+          <h3 className="text-lg font-semibold mb-2">🎉 Upcoming Birthdays (next 30 days)</h3>
           {upcomingBirthdays.length > 0 ? (
             <ul className="space-y-1">
               {upcomingBirthdays.map((emp, i) => (
                 <li key={i} className="text-sm">
                   <span className="font-medium">{emp.full_name}</span> — {new Date(emp.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                   {` (${emp.age} y/o)`}
-                  {new Date(emp.date).toDateString() === new Date().toDateString() && " \ud83c\udf88"}
+                  {new Date(emp.date).toDateString() === new Date().toDateString() && " 🎈"}
                 </li>
               ))}
             </ul>
@@ -108,7 +108,7 @@ function Dashboard() {
         </section>
 
         <section className="office-section mt-6">
-          <h3>\ud83d\udccc Plantilla by Office</h3>
+          <h3>📌 Plantilla by Office</h3>
           {analytics.by_office.length > 0 ? (
             <ul>
               {analytics.by_office.map((item, i) => (
@@ -123,7 +123,7 @@ function Dashboard() {
         </section>
 
         <section className="pie-chart-section mt-6">
-          <h3>\ud83d\udcca Distribution of Items by Office</h3>
+          <h3>📊 Distribution of Items by Office</h3>
           <ResponsivePie width="100%" height={300}>
             <PieChart>
               <Pie
@@ -146,7 +146,7 @@ function Dashboard() {
         </section>
 
         <section className="bar-chart-section mt-6">
-          <h3>\ud83d\udcca Vacancies by Salary Grade</h3>
+          <h3>📊 Vacancies by Salary Grade</h3>
           {analytics.vacancy_by_grade.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={analytics.vacancy_by_grade} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
