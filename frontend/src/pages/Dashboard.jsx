@@ -159,8 +159,10 @@ function Dashboard() {
               <button onClick={closeModal}>Close</button>
             </div>
           </div>
-        )}
-    }
+     )}
+    </>
+  );
+}
 
 function SummaryCard({ title, value, delay = 0, onClick }) {
   return (
