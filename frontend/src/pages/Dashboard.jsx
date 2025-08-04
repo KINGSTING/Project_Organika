@@ -170,37 +170,37 @@ function Dashboard() {
       </div>
 
       {modalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>{modalTitle} Details</h2>
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h2>{modalTitle} Details</h2>
 
-            {modalLoading ? (
-              <p>Loading...</p>
-            ) : modalData.length > 0 ? (
-              <table className="min-w-full border text-sm mt-4">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border px-4 py-2 text-left">Name</th>
-                    <th className="border px-4 py-2 text-left">Position</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {modalData.map((emp, idx) => (
-                    <tr key={idx}>
-                      <td className="border px-4 py-2">{emp.full_name}</td>
-                      <td className="border px-4 py-2">{emp.position_title}</td>
+              {modalLoading ? (
+                <p>Loading...</p>
+              ) : modalData.length > 0 ? (
+                <table className="modal-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Position</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <p>No data available for this category.</p>
-            )}
+                  </thead>
+                  <tbody>
+                    {modalData.map((emp, idx) => (
+                      <tr key={idx}>
+                        <td>{emp.full_name}</td>
+                        <td>{emp.position_title}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>No data available for this category.</p>
+              )}
 
-            <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded" onClick={closeModal}>Close</button>
+              <button className="modal-close-btn" onClick={closeModal}>Close</button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </>
   );
 }

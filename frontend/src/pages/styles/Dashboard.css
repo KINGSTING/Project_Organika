@@ -106,7 +106,7 @@ body {
   font-style: italic;
 }
 
-/* Modal */
+/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -117,51 +117,90 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
-}
-
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  width: 90%;
-  max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 999;
   animation: fadeIn 0.3s ease-in-out;
 }
 
-.modal-content ul {
-  max-height: 300px;
+.modal-content {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 90%;
+  max-height: 85vh;
   overflow-y: auto;
-  padding-left: 1rem;
+  position: relative;
+  animation: scaleIn 0.4s ease-in-out;
 }
 
-.modal-content button {
-  margin-top: 1rem;
+.modal-content h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  color: #111827;
+}
+
+/* Table inside Modal */
+.modal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+.modal-table th,
+.modal-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+}
+
+.modal-table td {
+  color: #4b5563;
+}
+
+/* Close Button */
+.modal-close-btn {
+  display: inline-block;
   background-color: var(--primary-color);
-  color: white;
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
+  color: #fff;
+  padding: 0.6rem 1.5rem;
   border: none;
+  border-radius: 8px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.modal-content button:hover {
+.modal-close-btn:hover {
   background-color: #1d4ed8;
+  transform: scale(1.05);
 }
 
 /* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
     transform: scale(1);
+    opacity: 1;
   }
 }
 
