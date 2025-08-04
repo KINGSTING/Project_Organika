@@ -96,21 +96,39 @@ function Dashboard() {
           />
         </div>
 
-        <section className="birthday-section p-4 bg-white rounded-xl shadow-md mt-6">
-          <h3 className="text-lg font-semibold mb-2">🎉 Upcoming Birthdays (next 30 days)</h3>
-          {upcomingBirthdays.length > 0 ? (
-            <ul className="space-y-1">
-              {upcomingBirthdays.map((emp, i) => (
-                <li key={i} className="text-sm">
-                  <span className="font-medium">{emp.full_name}</span> — {new Date(emp.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
-                  {` (${emp.age} y/o)`}
-                  {new Date(emp.date).toDateString() === new Date().toDateString() && " 🎈"}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">No upcoming birthdays.</p>
-          )}
+        <section className="birthday-section">
+          <h2>🎉 Upcoming Birthdays</h2>
+          <table className="birthday-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Birthday</th>
+                <th>Age</th>
+              </tr>
+            </thead>
+            <tbody>
+              {upcomingBirthdays.map((emp, i) => {
+                const isToday = new Date(emp.date).toDateString() === new Date().toDateString();
+                return (
+                  <tr key={i} className={isToday ? "birthday-highlight" : ""}>
+                    <td>{emp.full_name}</td>
+                    <td>{emp.position_title || "—"}</td>
+                    <td>{emp.office || "—"}</td>
+                    <td>
+                      {new Date(emp.date).toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                      {isToday && <span className="birthday-balloon"></span>}
+                    </td>
+                    <td>{emp.age}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </section>
 
         <section className="office-section mt-6">

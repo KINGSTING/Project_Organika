@@ -64,6 +64,8 @@ def dashboard_overview():
         ]
     }
 
+    upcoming_birthdays = get_upcoming_birthdays()
+    result["upcoming_birthdays"] = get_upcoming_birthdays()
     return jsonify(result)
 
 @dashboard_bp.route("/employees/<status>", methods=["GET"])
@@ -78,7 +80,7 @@ def get_employees_by_status(status):
         for emp in employees
     ])
 
-@dashboard_bp.route("/", methods=["GET"])
+@dashboard_bp.route("/upcoming-birthdays", methods=["GET"])
 def get_upcoming_birthdays():
     today = datetime.today()
     end_date = today + timedelta(days=30)
