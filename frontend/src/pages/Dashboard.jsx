@@ -76,22 +76,18 @@ function Dashboard() {
         <h2 className="title">{welcomeMessage}</h2>
 
         <div className="summary-cards">
-          <SummaryCard title="\ud83d\udcc1 Total Plantilla Items" value={analytics.total_items} delay={0} />
-          <SummaryCard title="\ud83d\udc68\u200d\ud83d\udcbc Employed" value={analytics.total_employed} onClick={() => openModal("Employed")} />
-          <SummaryCard title="\ud83e\uddd1\u200d\u2696\ufe0f Elected Officials" value={analytics.total_elected} onClick={() => openModal("Elected")} />
-          <SummaryCard title="\ud83d\udc69\u200d\ud83d\udcbc Permanent" value={analytics.total_permanent} onClick={() => openModal("Permanent")} />
-          <SummaryCard title="\ud83d\udd12 Conterminous" value={analytics.total_conterminous} onClick={() => openModal("Conterminous")} />
-          <SummaryCard title="\ud83d\udcc4 Temporary" value={analytics.total_temporary} onClick={() => openModal("Temporary")} />
-          <SummaryCard
-            title="\u23f0 Longest Serving"
-            value={`${analytics.longest_serving?.full_name || "N/A"} (${analytics.longest_serving?.original_appointment || "-"})`}
-          />
-          <SummaryCard
-            title="\ud83c\udd95 Newest Hired"
-            value={analytics.newest_hired.length > 0
-              ? analytics.newest_hired.map(emp => `${emp.full_name} (${emp.original_appointment})`).join(", ")
-              : "N/A"}
-          />
+          <SummaryCard title="🗂 Total Plantilla Items" value={analytics.total_items} />
+          <SummaryCard title="👨‍💼 Employed" value={analytics.total_employed} />
+          <SummaryCard title="🧑‍⚖️ Elected Officials" value={analytics.total_elected} />
+          <SummaryCard title="👩‍💼 Permanent" value={analytics.total_permanent} />
+          <SummaryCard title="🔒 Conterminous" value={analytics.total_conterminous} />
+          <SummaryCard title="📄 Temporary" value={analytics.total_temporary} />
+          <SummaryCard title="⏰ Longest Serving" value={`${analytics.longest_serving?.full_name || "N/A"} (${analytics.longest_serving?.original_appointment || "-"})`} />
+          <SummaryCard title="🆕 Newest Hired" value={
+              analytics.newest_hired.length > 0
+                ? analytics.newest_hired.map(emp => `${emp.full_name} (${emp.original_appointment})`).join(", ")
+                : "N/A"
+            } />
         </div>
 
         <section className="birthday-section p-4 bg-white rounded-xl shadow-md mt-6">
