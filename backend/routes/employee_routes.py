@@ -44,7 +44,9 @@ def get_employees():
             "eligibility": emp.eligibility,
             "office": emp.office,
             "GSIS_BP_NR": emp.GSIS_BP_NR,
-            "TIN_NR": emp.TIN_NR
+            "TIN_NR": emp.TIN_NR,
+            "last_promotion_date": emp.last_promotion_date,
+            "original_appointment_date": emp.original_appointment_date
         }
         for emp in employees
     ])

@@ -192,6 +192,12 @@ function Employee({ setShowModal }) {
     }
   };
 
+   const formatDateForInput = (dateString) => {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      return date.toISOString().split("T")[0]; // "YYYY-MM-DD"
+    };
+
   const openEdit = () => {
       setEditFormData({
         full_name: selectedEmployee.full_name || "",
@@ -201,7 +207,7 @@ function Employee({ setShowModal }) {
         GSIS_BP_NR: selectedEmployee.GSIS_BP_NR || "",
         TIN_NR: selectedEmployee.TIN_NR || "",
         office: selectedEmployee.office || "",
-        date_of_birth: selectedEmployee.date_of_birth || "", // ✅ ensure this is here
+        date_of_birth: selectedEmployee.date_of_birth || "",
         original_appointment_date: selectedEmployee.original_appointment_date || "",
         last_promotion_date: selectedEmployee.last_promotion_date || "",
         photo_url: selectedEmployee.photo_url || "",
