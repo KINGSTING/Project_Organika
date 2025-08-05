@@ -1,46 +1,193 @@
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import "./styles/Navbar.css";
 import logo from "../assets/lgu_kauswagan_logo.png";
 
 function Navbar() {
   const { pathname } = useLocation();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+  const [loginData, setLoginData] = useState({ username: "", password: "" });
+  const [signupData, setSignupData] = useState({ username: "", password: "", role: "viewer" });
+  const [error, setError] = useState("");
+
+  const toggleLoginModal = () => {
+    setError("");
+    setShowLoginModal(!showLoginModal);
+  };
+
+  const openSignupModal = () => {
+    setError("");
+    setShowLoginModal(false);
+    setShowSignupModal(true);
+  };
+
+  const closeSignupModal = () => {
+    setError("");
+    setShowSignupModal(false);
+  };
+
+  // Handle login form submission
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(loginData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("token", data.access_token); // store JWT
+        alert("Login successful");
+        setShowLoginModal(false);
+        window.location.reload(); // Optional
+      } else {
+        setError(data.msg || "Login failed");
+      }
+    } catch (err) {
+      setError("Login error");
+    }
+  };
+
+  // Handle signup form submission
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signupData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Signup successful");
+        setShowSignupModal(false);
+        setShowLoginModal(true);
+      } else {
+        setError(data.msg || "Signup failed");
+      }
+    } catch (err) {
+      setError("Signup error");
+    }
+  };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        {/* Left: Logo and Title */}
-        <div className="navbar-left">
-          <img src={logo} alt="Kauswagan Logo" className="navbar-logo" />
-          <a
-            href="https://kauswagan.gov.ph/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="navbar-title"
-          >
-            Municipality of Kauswagan
-          </a>
-        </div>
+    <>
+      <nav className="navbar">
+        <div className="navbar-container">
+          <div className="navbar-left">
+            <img src={logo} alt="Kauswagan Logo" className="navbar-logo" />
+            <a
+              href="https://kauswagan.gov.ph/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="navbar-title"
+            >
+              Municipality of Kauswagan
+            </a>
+          </div>
 
-        {/* Right: Navigation Links */}
-        <ul className="navbar-links">
-          <li>
-            <Link to="/" className={pathname === "/" ? "active" : ""}>
-              Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link to="/plantilla" className={pathname === "/plantilla" ? "active" : ""}>
-              Plantilla
-            </Link>
-          </li>
-          <li>
-            <Link to="/employee" className={pathname === "/employee" ? "active" : ""}>
-              Employee
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+          <ul className="navbar-links">
+            <li>
+              <Link to="/" className={pathname === "/" ? "active" : ""}>
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link to="/plantilla" className={pathname === "/plantilla" ? "active" : ""}>
+                Plantilla
+              </Link>
+            </li>
+            <li>
+              <Link to="/employee" className={pathname === "/employee" ? "active" : ""}>
+                Employee
+              </Link>
+            </li>
+            <li>
+              <button className="login-icon-button" onClick={toggleLoginModal}>
+                🔐
+              </button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      {/* Admin Login Modal */}
+      {showLoginModal && (
+        <div className="modal-overlay" onClick={toggleLoginModal}>
+          <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={toggleLoginModal}>✖</button>
+            <h2>Admin Login</h2>
+            <form className="login-form" onSubmit={handleLogin}>
+              <input
+                type="text"
+                placeholder="Username"
+                value={loginData.username}
+                onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
+                required
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={loginData.password}
+                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                required
+              />
+              <button type="submit">Login</button>
+            </form>
+            <p style={{ marginTop: "10px" }}>
+              Don’t have an account?{" "}
+              <span
+                onClick={openSignupModal}
+                style={{ color: "blue", cursor: "pointer", textDecoration: "underline" }}
+              >
+                Sign up
+              </span>
+            </p>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+          </div>
+        </div>
+      )}
+
+      {/* Admin Signup Modal */}
+      {showSignupModal && (
+        <div className="modal-overlay" onClick={closeSignupModal}>
+          <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeSignupModal}>✖</button>
+            <h2>Admin Sign Up</h2>
+            <form className="signup-form" onSubmit={handleSignup}>
+              <input
+                type="text"
+                placeholder="Username"
+                value={signupData.username}
+                onChange={(e) => setSignupData({ ...signupData, username: e.target.value })}
+                required
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={signupData.password}
+                onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
+                required
+              />
+              <select
+                value={signupData.role}
+                onChange={(e) => setSignupData({ ...signupData, role: e.target.value })}
+              >
+                <option value="viewer">Viewer</option>
+                <option value="admin">Admin</option>
+              </select>
+              <button type="submit">Register</button>
+            </form>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
