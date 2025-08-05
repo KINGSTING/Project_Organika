@@ -9,7 +9,6 @@ from datetime import datetime
 employee_bp = Blueprint("employee", __name__)
 
 @employee_bp.route("/create_employee", methods=["POST"])
-@jwt_required()
 def create_employee():
     data = request.get_json()
     try:
@@ -56,7 +55,6 @@ def get_employees():
 
 
 @employee_bp.route("/update_employee/<int:emp_id>", methods=["PUT"])
-@jwt_required()
 def update_employee(emp_id):
     data = request.get_json()
 
@@ -97,7 +95,6 @@ def update_employee(emp_id):
 
 
 @employee_bp.route("/delete_employee", methods=["DELETE"])
-@jwt_required()
 def delete_employee():
     data = request.get_json()
     emp_id = data.get("id")
