@@ -8,8 +8,9 @@ function Navbar() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
-  const [signupData, setSignupData] = useState({ username: "", password: "", role: "viewer" });
+  const [signupData, setSignupData] = useState({ username: "", password: "", role: "admin" });
   const [error, setError] = useState("");
+  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 
   const toggleLoginModal = () => {
     setError("");
@@ -27,11 +28,11 @@ function Navbar() {
     setShowSignupModal(false);
   };
 
-  // Handle login form submission
+  // Handle login
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
+      const response = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -40,10 +41,11 @@ function Navbar() {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("token", data.access_token); // store JWT
+        localStorage.setItem("token", data.access_token);
         alert("Login successful");
+        setLoginData({ username: "", password: "" });
         setShowLoginModal(false);
-        window.location.reload(); // Optional
+        window.location.reload();
       } else {
         setError(data.msg || "Login failed");
       }
@@ -52,11 +54,11 @@ function Navbar() {
     }
   };
 
-  // Handle signup form submission
+  // Handle signup
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/auth/signup", {
+      const response = await fetch(`${API_BASE}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(signupData),
@@ -65,6 +67,7 @@ function Navbar() {
       const data = await response.json();
       if (response.ok) {
         alert("Signup successful");
+        setSignupData({ username: "", password: "", role: "admin" });
         setShowSignupModal(false);
         setShowLoginModal(true);
       } else {
@@ -92,31 +95,17 @@ function Navbar() {
           </div>
 
           <ul className="navbar-links">
+            <li><Link to="/" className={pathname === "/" ? "active" : ""}>Dashboard</Link></li>
+            <li><Link to="/plantilla" className={pathname === "/plantilla" ? "active" : ""}>Plantilla</Link></li>
+            <li><Link to="/employee" className={pathname === "/employee" ? "active" : ""}>Employee</Link></li>
             <li>
-              <Link to="/" className={pathname === "/" ? "active" : ""}>
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link to="/plantilla" className={pathname === "/plantilla" ? "active" : ""}>
-                Plantilla
-              </Link>
-            </li>
-            <li>
-              <Link to="/employee" className={pathname === "/employee" ? "active" : ""}>
-                Employee
-              </Link>
-            </li>
-            <li>
-              <button className="login-icon-button" onClick={toggleLoginModal}>
-                🔐
-              </button>
+              <button className="login-icon-button" onClick={toggleLoginModal}>🔐</button>
             </li>
           </ul>
         </div>
       </nav>
 
-      {/* Admin Login Modal */}
+      {/* LOGIN MODAL */}
       {showLoginModal && (
         <div className="modal-overlay" onClick={toggleLoginModal}>
           <div className="login-modal" onClick={(e) => e.stopPropagation()}>
@@ -153,7 +142,7 @@ function Navbar() {
         </div>
       )}
 
-      {/* Admin Signup Modal */}
+      {/* SIGNUP MODAL */}
       {showSignupModal && (
         <div className="modal-overlay" onClick={closeSignupModal}>
           <div className="login-modal" onClick={(e) => e.stopPropagation()}>
@@ -174,13 +163,6 @@ function Navbar() {
                 onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
                 required
               />
-              <select
-                value={signupData.role}
-                onChange={(e) => setSignupData({ ...signupData, role: e.target.value })}
-              >
-                <option value="viewer">Viewer</option>
-                <option value="admin">Admin</option>
-              </select>
               <button type="submit">Register</button>
             </form>
             {error && <p style={{ color: "red" }}>{error}</p>}

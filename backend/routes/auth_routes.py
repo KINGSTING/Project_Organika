@@ -34,10 +34,16 @@ def login():
     username = data.get("username")
     password = data.get("password")
 
+    if not username or not password:
+        return jsonify({"msg": "Missing credentials"}), 400
+
     user = User.query.filter_by(username=username).first()
 
     if not user or not check_password_hash(user.password_hash, password):
         return jsonify({"msg": "Invalid credentials"}), 401
+
+    if user.role != "admin":
+        return jsonify({"msg": "Access restricted to admins only"}), 403
 
     access_token = create_access_token(identity={"id": user.id, "role": user.role})
     return jsonify(access_token=access_token, role=user.role)
