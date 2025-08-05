@@ -66,6 +66,16 @@ function Plantilla() {
     }
   }, [feedback]);
 
+  const token = localStorage.getItem("token");
+    await fetch("/create_plantilla_item", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
   const fetchItems = async () => {
     try {
       setLoading(true);
@@ -293,7 +303,7 @@ function Plantilla() {
 
       {/* Detail Modal */}
       {showDetailModal && selectedItem && (
-        <div className="modal-overlay" onClick={() => setShowDetailModal(false)}>
+        <div className="modal-overlay-plantilla" onClick={() => setShowDetailModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setShowDetailModal(false)}>❌</button>
             <h2>📄 Plantilla Item Detail</h2>

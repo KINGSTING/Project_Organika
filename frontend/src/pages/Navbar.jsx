@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import jwt_decode from "jwt-decode";
 import "./styles/Navbar.css";
 import logo from "../assets/lgu_kauswagan_logo.png";
 
@@ -10,7 +11,25 @@ function Navbar() {
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [signupData, setSignupData] = useState({ username: "", password: "", role: "admin" });
   const [error, setError] = useState("");
-  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
+  const [user, setUser] = useState(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+
+  const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
+
+  // Decode user from JWT
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwt_decode(token);
+        setUser(decoded.sub || decoded.identity); // flask-jwt-extended uses "sub" or "identity"
+      } catch (err) {
+        console.error("Invalid token");
+        localStorage.removeItem("token");
+        setUser(null);
+      }
+    }
+  }, []);
 
   const toggleLoginModal = () => {
     setError("");
@@ -28,7 +47,12 @@ function Navbar() {
     setShowSignupModal(false);
   };
 
-  // Handle login
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    window.location.reload();
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -42,10 +66,11 @@ function Navbar() {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.access_token);
+        const decoded = jwt_decode(data.access_token);
+        setUser(decoded.sub || decoded.identity);
         alert("Login successful");
         setLoginData({ username: "", password: "" });
         setShowLoginModal(false);
-        window.location.reload();
       } else {
         setError(data.msg || "Login failed");
       }
@@ -54,7 +79,6 @@ function Navbar() {
     }
   };
 
-  // Handle signup
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
@@ -98,9 +122,21 @@ function Navbar() {
             <li><Link to="/" className={pathname === "/" ? "active" : ""}>Dashboard</Link></li>
             <li><Link to="/plantilla" className={pathname === "/plantilla" ? "active" : ""}>Plantilla</Link></li>
             <li><Link to="/employee" className={pathname === "/employee" ? "active" : ""}>Employee</Link></li>
-            <li>
-              <button className="login-icon-button" onClick={toggleLoginModal}>🔐</button>
-            </li>
+            {user ? (
+              <>
+                <li className="user-greet">👋 {user.username}</li>
+                <li><button onClick={handleLogout}>Logout</button></li>
+              </>
+            ) : (
+              {user ? (
+              <li>
+                <button className="profile-icon-button" onClick={() => setShowProfileModal(true)}>👤</button>
+              </li>
+            ) : (
+              <li>
+                <button className="login-icon-button" onClick={toggleLoginModal}>🔐</button>
+              </li>
+            )}
           </ul>
         </div>
       </nav>
@@ -169,8 +205,19 @@ function Navbar() {
           </div>
         </div>
       )}
+
+        {showProfileModal && (
+          <div className="modal-overlay" onClick={() => setShowProfileModal(false)}>
+            <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+              <button className="modal-close" onClick={() => setShowProfileModal(false)}>✖</button>
+              <h2>Profile</h2>
+              <p><strong>Username:</strong> {user?.username || "Unknown"}</p>
+              <button onClick={handleLogout}>Logout</button>
+            </div>
+          </div>
+        )}
     </>
   );
-}
+  }
 
 export default Navbar;

@@ -29,3 +29,29 @@ function App() {
 }
 
 export default App;
+
+import { useEffect, useState } from "react";
+import API from "./api";
+import LoginPage from "./LoginPage";
+import Dashboard from "./Dashboard";
+
+function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        await API.get("/auth/verify");
+        setLoggedIn(true);
+      } catch (err) {
+        setLoggedIn(false);
+      }
+    };
+    verifyToken();
+  }, []);
+
+  return loggedIn ? <Dashboard /> : <LoginPage setLoggedIn={setLoggedIn} />;
+}
+
+export default App;
+

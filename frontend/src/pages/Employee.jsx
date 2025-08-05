@@ -228,6 +228,7 @@ function Employee({ setShowModal }) {
     };
 
 
+
   const applyFilters = () => {
       let filtered = employees;
 
@@ -289,7 +290,7 @@ function Employee({ setShowModal }) {
           </div>
 
       {showForm && (
-          <div className="modal-overlay">
+          <div className="modal-overlay-employee">
             <div className="modal-content">
               <button className="modal-close" onClick={() => setShowForm(false)}>&times;</button>
               <h3 className="form-title">Add New Employee</h3>
