@@ -87,6 +87,12 @@ function Employee({ setShowModal }) {
     }
   };
 
+  const formatDate = (dateString) => {
+  const date = new Date(dateString);
+      if (isNaN(date)) return ""; // handle invalid dates gracefully
+      return date.toISOString().split("T")[0]; // yyyy-MM-dd
+    };
+
   const fetchServiceRecords = async (employeeId) => {
     try {
       const res = await axios.get(`${API_BASE}/employees/service_records`, {
@@ -349,11 +355,7 @@ function Employee({ setShowModal }) {
                                   type={key.includes("date") ? "date" : "text"}
                                   id={key}
                                   name={key}
-                                  value={
-                                    key.includes("date")
-                                      ? new Date(val).toISOString().split("T")[0] // format to YYYY-MM-DD
-                                      : val
-                                  }
+                                  value={key.includes("date") ? formatDate(val) : val}
                                   onChange={handleFormChange}
                                 />
                             )}
@@ -474,11 +476,7 @@ function Employee({ setShowModal }) {
                           type={key.includes("date") ? "date" : "text"}
                           id={key}
                           name={key}
-                          value={
-                            key.includes("date")
-                              ? new Date(val).toISOString().split("T")[0] // format to YYYY-MM-DD
-                              : val
-                          }
+                          value={key.includes("date") ? formatDate(val) : val}
                           onChange={handleFormChange}
                         />
                     </div>
