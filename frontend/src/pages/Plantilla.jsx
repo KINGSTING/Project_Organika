@@ -325,30 +325,27 @@ function Plantilla() {
       )}
 
       {/* Floating Add Button */}
-        <button
-          className="floating-add-btn"
-          onClick={() => {
-            setShowForm(true);
-            setEditMode(false);
-            setFormData({
-              item_code: "",
-              position_title: "",
-              salary_grade: "",
-              office: "",
-              step: "",
-              annual_salary_authorized: "",
-              annual_salary_actual: "",
-              employee_id: "",
-            });
-          }}
-          disabled={!isLoggedIn}
-          style={{
-            opacity: isLoggedIn ? 1 : 0,
-            pointerEvents: isLoggedIn ? "auto" : "none",
-          }}
-        >
-          ➕
-        </button>
+       {user && (
+          <button
+            className="floating-add-btn"
+            onClick={() => {
+              setShowForm(true);
+              setEditMode(false);
+              setFormData({
+                item_code: "",
+                position_title: "",
+                salary_grade: "",
+                office: "",
+                step: "",
+                annual_salary_authorized: "",
+                annual_salary_actual: "",
+                employee_id: "",
+              });
+            }}
+          >
+            ➕
+          </button>
+        )}
 
       {/* Add/Edit Form Modal */}
       {showForm && (

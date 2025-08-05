@@ -6,55 +6,40 @@ import logo from "../assets/lgu_kauswagan_logo.png";
 
 function Navbar() {
   const { pathname } = useLocation();
+
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [signupData, setSignupData] = useState({ username: "", password: "", role: "admin" });
   const [error, setError] = useState("");
-  const [user, setUser] = useState(null);
-  const [showProfileModal, setShowProfileModal] = useState(false);
+
+  const [user, setUser] = useState(null); // ✅ Single source of truth for user
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
 
-  // Decode user from JWT
+  // ✅ On load: check token and user info
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    const storedUser = localStorage.getItem("user");
+    if (token && storedUser) {
       try {
-        const decoded = jwt_decode(token);
-        setUser(decoded.sub || decoded.identity); // flask-jwt-extended uses "sub" or "identity"
+        jwt_decode(token); // just to validate token
+        setUser(JSON.parse(storedUser));
       } catch (err) {
         console.error("Invalid token");
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         setUser(null);
       }
     }
   }, []);
 
-  const toggleLoginModal = () => {
-    setError("");
-    setShowLoginModal(!showLoginModal);
-  };
-
-  const openSignupModal = () => {
-    setError("");
-    setShowLoginModal(false);
-    setShowSignupModal(true);
-  };
-
-  const closeSignupModal = () => {
-    setError("");
-    setShowSignupModal(false);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-    window.location.reload();
-  };
-
+  // Login logic
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
       const response = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
@@ -65,12 +50,16 @@ function Navbar() {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("token", data.access_token);
         const decoded = jwt_decode(data.access_token);
-        setUser(decoded.sub || decoded.identity);
-        alert("Login successful");
+        const userObject = { username: loginData.username, id: decoded.sub || decoded.identity };
+
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("user", JSON.stringify(userObject));
+        setUser(userObject);
+
         setLoginData({ username: "", password: "" });
         setShowLoginModal(false);
+        alert("Login successful");
       } else {
         setError(data.msg || "Login failed");
       }
@@ -79,8 +68,11 @@ function Navbar() {
     }
   };
 
+  // Signup logic
   const handleSignup = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
       const response = await fetch(`${API_BASE}/auth/signup`, {
         method: "POST",
@@ -100,6 +92,14 @@ function Navbar() {
     } catch (err) {
       setError("Signup error");
     }
+  };
+
+  // Logout logic
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    window.location.reload();
   };
 
   return (
@@ -133,7 +133,7 @@ function Navbar() {
               </>
             ) : (
               <li>
-                <button className="login-icon-button" onClick={toggleLoginModal}>🔐</button>
+                <button className="login-icon-button" onClick={() => setShowLoginModal(true)}>🔐</button>
               </li>
             )}
           </ul>
@@ -142,9 +142,9 @@ function Navbar() {
 
       {/* LOGIN MODAL */}
       {showLoginModal && (
-        <div className="modal-overlay" onClick={toggleLoginModal}>
+        <div className="modal-overlay" onClick={() => setShowLoginModal(false)}>
           <div className="login-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={toggleLoginModal}>✖</button>
+            <button className="modal-close" onClick={() => setShowLoginModal(false)}>✖</button>
             <h2>Admin Login</h2>
             <form className="login-form" onSubmit={handleLogin}>
               <input
@@ -166,7 +166,10 @@ function Navbar() {
             <p style={{ marginTop: "10px" }}>
               Don’t have an account?{" "}
               <span
-                onClick={openSignupModal}
+                onClick={() => {
+                  setShowLoginModal(false);
+                  setShowSignupModal(true);
+                }}
                 style={{ color: "blue", cursor: "pointer", textDecoration: "underline" }}
               >
                 Sign up
@@ -179,9 +182,9 @@ function Navbar() {
 
       {/* SIGNUP MODAL */}
       {showSignupModal && (
-        <div className="modal-overlay" onClick={closeSignupModal}>
+        <div className="modal-overlay" onClick={() => setShowSignupModal(false)}>
           <div className="login-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeSignupModal}>✖</button>
+            <button className="modal-close" onClick={() => setShowSignupModal(false)}>✖</button>
             <h2>Admin Sign Up</h2>
             <form className="signup-form" onSubmit={handleSignup}>
               <input

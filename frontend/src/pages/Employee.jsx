@@ -287,14 +287,23 @@ function Employee({ setShowModal }) {
               )}
             </div>
 
-            <button
-              className="floating-add-btn"
-              onClick={() => setShowForm(true)}
-              disabled={!isLoggedIn}
-              style={{ opacity: isLoggedIn ? 1 : 0 }}
-            >
-              ＋
-            </button>
+            {user && (
+              <button
+                className="floating-add-btn"
+                onClick={() => {
+                  setShowForm(true);
+                  setEditMode(false);
+                  setFormData({
+                    firstname: "",
+                    middlename: "",
+                    lastname: "",
+                    // etc...
+                  });
+                }}
+              >
+                ＋
+              </button>
+            )}
           </div>
 
       {showForm && (

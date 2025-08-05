@@ -1,41 +1,41 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import jwt_decode from "jwt-decode";
+import { ToastContainer } from 'react-toastify';
 import Navbar from "./pages/Navbar";
 import Plantilla from "./pages/Plantilla";
 import Employee from "./pages/Employee";
 import Dashboard from "./pages/Dashboard";
-import API from "./api";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
+  // Decode JWT on load
   useEffect(() => {
-    const verifyToken = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
       try {
-        const res = await API.get("/auth/verify"); // Make sure this endpoint exists
-        if (res.status === 200) setLoggedIn(true);
-        else setLoggedIn(false);
-      } catch {
-        setLoggedIn(false);
+        const decoded = jwt_decode(token);
+        setUser(decoded.sub || decoded.identity);
+      } catch (err) {
+        console.error("Invalid token");
+        localStorage.removeItem("token");
+        setUser(null);
       }
-    };
-    verifyToken();
+    }
   }, []);
-
-  if (!loggedIn) return <LoginPage setLoggedIn={setLoggedIn} />;
 
   return (
     <Router>
       <ToastContainer />
       <div className="min-h-screen flex flex-col bg-gray-50">
-        {!showModal && <Navbar />}
+        {!showModal && <Navbar user={user} setUser={setUser} />}
         <main className="flex-grow p-6">
           <Routes>
-            <Route path="/" element={<Dashboard setShowModal={setShowModal} />} />
-            <Route path="/plantilla" element={<Plantilla setShowModal={setShowModal} />} />
-            <Route path="/employee" element={<Employee setShowModal={setShowModal} />} />
+            <Route path="/" element={<Dashboard setShowModal={setShowModal} user={user} />} />
+            <Route path="/plantilla" element={<Plantilla setShowModal={setShowModal} user={user} />} />
+            <Route path="/employee" element={<Employee setShowModal={setShowModal} user={user} />} />
             <Route path="*" element={<h1 className="text-red-600 text-xl">404 - Page Not Found</h1>} />
           </Routes>
         </main>
