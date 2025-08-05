@@ -350,8 +350,8 @@ function Employee({ setShowModal }) {
                                   id={key}
                                   name={key}
                                   value={
-                                    key.includes("date") && val
-                                      ? new Date(val).toISOString().split("T")[0] // format to yyyy-MM-dd
+                                    key.includes("date")
+                                      ? new Date(val).toISOString().split("T")[0] // format to YYYY-MM-DD
                                       : val
                                   }
                                   onChange={handleFormChange}
@@ -475,8 +475,8 @@ function Employee({ setShowModal }) {
                           id={key}
                           name={key}
                           value={
-                            key.includes("date") && val
-                              ? new Date(val).toISOString().split("T")[0] // format to yyyy-MM-dd
+                            key.includes("date")
+                              ? new Date(val).toISOString().split("T")[0] // format to YYYY-MM-DD
                               : val
                           }
                           onChange={handleFormChange}
