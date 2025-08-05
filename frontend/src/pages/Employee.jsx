@@ -227,6 +227,7 @@ function Employee({ setShowModal }) {
       });
     };
 
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
 
 
   const applyFilters = () => {
@@ -286,7 +287,14 @@ function Employee({ setShowModal }) {
               )}
             </div>
 
-            <button className="floating-add-btn" onClick={() => setShowForm(true)}>＋</button>
+            <button
+              className="floating-add-btn"
+              onClick={() => setShowForm(true)}
+              disabled={!isLoggedIn}
+              style={{ opacity: isLoggedIn ? 1 : 0 }}
+            >
+              ＋
+            </button>
           </div>
 
       {showForm && (

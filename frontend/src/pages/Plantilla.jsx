@@ -66,15 +66,6 @@ function Plantilla() {
     }
   }, [feedback]);
 
-  const token = localStorage.getItem("token");
-    await fetch("/create_plantilla_item", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
 
   const fetchItems = async () => {
     try {
@@ -178,6 +169,8 @@ function Plantilla() {
       setSubmitting(false);
     }
   };
+
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
 
   const applyFilters = () => {
     const filtered = plantillaItems.filter((item) => {
@@ -332,22 +325,30 @@ function Plantilla() {
       )}
 
       {/* Floating Add Button */}
-      <button className="floating-add-btn" onClick={() => {
-        setShowForm(true);
-        setEditMode(false);
-        setFormData({
-          item_code: "",
-          position_title: "",
-          salary_grade: "",
-          office: "",
-          step: "",
-          annual_salary_authorized: "",
-          annual_salary_actual: "",
-          employee_id: "",
-        });
-      }}>
-        ➕
-      </button>
+        <button
+          className="floating-add-btn"
+          onClick={() => {
+            setShowForm(true);
+            setEditMode(false);
+            setFormData({
+              item_code: "",
+              position_title: "",
+              salary_grade: "",
+              office: "",
+              step: "",
+              annual_salary_authorized: "",
+              annual_salary_actual: "",
+              employee_id: "",
+            });
+          }}
+          disabled={!isLoggedIn}
+          style={{
+            opacity: isLoggedIn ? 1 : 0,
+            pointerEvents: isLoggedIn ? "auto" : "none",
+          }}
+        >
+          ➕
+        </button>
 
       {/* Add/Edit Form Modal */}
       {showForm && (

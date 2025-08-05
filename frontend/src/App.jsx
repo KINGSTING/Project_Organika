@@ -1,19 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import Navbar from "./pages/Navbar";
 import Plantilla from "./pages/Plantilla";
 import Employee from "./pages/Employee";
 import Dashboard from "./pages/Dashboard";
+import API from "./api";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const res = await API.get("/auth/verify"); // Make sure this endpoint exists
+        if (res.status === 200) setLoggedIn(true);
+        else setLoggedIn(false);
+      } catch {
+        setLoggedIn(false);
+      }
+    };
+    verifyToken();
+  }, []);
+
+  if (!loggedIn) return <LoginPage setLoggedIn={setLoggedIn} />;
 
   return (
     <Router>
-        <ToastContainer />
+      <ToastContainer />
       <div className="min-h-screen flex flex-col bg-gray-50">
-        {/* Conditionally render Navbar */}
         {!showModal && <Navbar />}
         <main className="flex-grow p-6">
           <Routes>
@@ -29,29 +45,3 @@ function App() {
 }
 
 export default App;
-
-import { useEffect, useState } from "react";
-import API from "./api";
-import LoginPage from "./LoginPage";
-import Dashboard from "./Dashboard";
-
-function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        await API.get("/auth/verify");
-        setLoggedIn(true);
-      } catch (err) {
-        setLoggedIn(false);
-      }
-    };
-    verifyToken();
-  }, []);
-
-  return loggedIn ? <Dashboard /> : <LoginPage setLoggedIn={setLoggedIn} />;
-}
-
-export default App;
-

@@ -122,16 +122,15 @@ function Navbar() {
             <li><Link to="/" className={pathname === "/" ? "active" : ""}>Dashboard</Link></li>
             <li><Link to="/plantilla" className={pathname === "/plantilla" ? "active" : ""}>Plantilla</Link></li>
             <li><Link to="/employee" className={pathname === "/employee" ? "active" : ""}>Employee</Link></li>
+
             {user ? (
               <>
                 <li className="user-greet">👋 {user.username}</li>
                 <li><button onClick={handleLogout}>Logout</button></li>
+                <li>
+                  <button className="profile-icon-button" onClick={() => setShowProfileModal(true)}>👤</button>
+                </li>
               </>
-            ) : (
-              {user ? (
-              <li>
-                <button className="profile-icon-button" onClick={() => setShowProfileModal(true)}>👤</button>
-              </li>
             ) : (
               <li>
                 <button className="login-icon-button" onClick={toggleLoginModal}>🔐</button>
@@ -206,18 +205,19 @@ function Navbar() {
         </div>
       )}
 
-        {showProfileModal && (
-          <div className="modal-overlay" onClick={() => setShowProfileModal(false)}>
-            <div className="login-modal" onClick={(e) => e.stopPropagation()}>
-              <button className="modal-close" onClick={() => setShowProfileModal(false)}>✖</button>
-              <h2>Profile</h2>
-              <p><strong>Username:</strong> {user?.username || "Unknown"}</p>
-              <button onClick={handleLogout}>Logout</button>
-            </div>
+      {/* PROFILE MODAL */}
+      {showProfileModal && (
+        <div className="modal-overlay" onClick={() => setShowProfileModal(false)}>
+          <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowProfileModal(false)}>✖</button>
+            <h2>Profile</h2>
+            <p><strong>Username:</strong> {user?.username || "Unknown"}</p>
+            <button onClick={handleLogout}>Logout</button>
           </div>
-        )}
+        </div>
+      )}
     </>
   );
-  }
+}
 
 export default Navbar;
