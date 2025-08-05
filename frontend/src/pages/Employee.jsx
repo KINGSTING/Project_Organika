@@ -36,6 +36,7 @@ function Employee({ setShowModal }) {
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+  const formattedDate = date.toISOString().split('T')[0]; // "1997-08-13"
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const officeEmblems = {
@@ -297,7 +298,6 @@ function Employee({ setShowModal }) {
                     firstname: "",
                     middlename: "",
                     lastname: "",
-                    // etc...
                   });
                 }}
               >
@@ -346,12 +346,16 @@ function Employee({ setShowModal }) {
                               </select>
                             ) : (
                               <input
-                                type={key.includes("date") ? "date" : "text"}
-                                id={key}
-                                name={key}
-                                value={val}
-                                onChange={handleFormChange}
-                              />
+                                  type={key.includes("date") ? "date" : "text"}
+                                  id={key}
+                                  name={key}
+                                  value={
+                                    key.includes("date") && val
+                                      ? new Date(val).toISOString().split("T")[0] // format to yyyy-MM-dd
+                                      : val
+                                  }
+                                  onChange={handleFormChange}
+                                />
                             )}
                         </div>
                       );
@@ -467,11 +471,16 @@ function Employee({ setShowModal }) {
                     <div className="form-group" key={key}>
                       <label>{key.replace(/_/g, " ").toUpperCase()}</label>
                       <input
-                        type={key.includes("date") ? "date" : "text"}
-                        name={key}
-                        value={val || ""}
-                        onChange={handleEditChange}
-                      />
+                          type={key.includes("date") ? "date" : "text"}
+                          id={key}
+                          name={key}
+                          value={
+                            key.includes("date") && val
+                              ? new Date(val).toISOString().split("T")[0] // format to yyyy-MM-dd
+                              : val
+                          }
+                          onChange={handleFormChange}
+                        />
                     </div>
                   );
                 })}
