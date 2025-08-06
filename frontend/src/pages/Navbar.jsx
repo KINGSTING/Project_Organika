@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import "./styles/Navbar.css";
 import logo from "../assets/lgu_kauswagan_logo.png";
 
-function Navbar() {
+function Navbar({ user, setUser }) {
   const { pathname } = useLocation();
 
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -13,9 +13,6 @@ function Navbar() {
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [signupData, setSignupData] = useState({ username: "", password: "", role: "admin" });
   const [error, setError] = useState("");
-
-  const [user, setUser] = useState(null); // ✅ Single source of truth for user
-
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
 
   // ✅ On load: check token and user info
