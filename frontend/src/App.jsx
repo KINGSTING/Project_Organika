@@ -11,7 +11,7 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Decode JWT on load
+  // Decode JWT on load and set user appropriately
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -23,6 +23,8 @@ function App() {
         localStorage.removeItem("token");
         setUser(null);
       }
+    } else {
+      setUser(null); // <-- THIS IS IMPORTANT!
     }
   }, []);
 

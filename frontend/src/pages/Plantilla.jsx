@@ -312,6 +312,7 @@ function Plantilla({ setShowModal, user }) {
             </ul>
             {user && (
               <div className="form-footer">
+                  {console.log('user in Plantilla:', user)}
                 <button onClick={() => {
                   handleEditClick(selectedItem);
                   setShowDetailModal(false);
