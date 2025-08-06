@@ -180,9 +180,11 @@ function Plantilla({ setShowModal, user }) {
     setShowFilterMenu(false);
   };
 
-   console.log("user in Plantilla:", user);
+  console.log("user in Plantilla:", user, "isLoggedIn:", !!(user && Object.keys(user).length));
+
 
   return (
+      console.log("user in Plantilla:", user, "isLoggedIn:", !!(user && Object.keys(user).length));
     <section className="plantilla-section">
       {feedback.message && (
         <div className={`feedback-banner ${feedback.type}`}>
@@ -310,7 +312,7 @@ function Plantilla({ setShowModal, user }) {
               <li><strong>Annual Salary (Actual):</strong> {selectedItem.annual_salary_actual}</li>
               <li><strong>Employee:</strong> {selectedItem.employee_name || "Vacant"}</li>
             </ul>
-            {user !== null && typeof user === "object" && (
+            {user && Object.keys(user).length > 0 && (
               <div className="form-footer">
                 <button onClick={() => {handleEditClick(selectedItem);setShowDetailModal(false);}}>✏️ Edit</button>
                 <button onClick={() => {handleDeleteClick(selectedItem);setShowDetailModal(false);}}>🗑️ Delete</button>
