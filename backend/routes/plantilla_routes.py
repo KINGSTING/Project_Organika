@@ -1,5 +1,4 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
 from .. import db
 from ..models import PlantillaItem
 from sqlalchemy.orm import joinedload
@@ -9,7 +8,6 @@ from datetime import datetime
 plantilla_bp = Blueprint("plantilla", __name__)
 
 @plantilla_bp.route("/create_plantilla_item", methods=["POST"])
-@jwt_required()
 def create_plantilla_item():
     data = request.get_json()
     try:
@@ -53,7 +51,6 @@ def get_plantilla_items():
 
 
 @plantilla_bp.route("/update_plantilla_item/<int:item_id>", methods=["PUT"])
-@jwt_required()
 def update_plantilla_item(item_id):
     data = request.get_json()
     item = PlantillaItem.query.get(item_id)
@@ -84,7 +81,6 @@ def update_plantilla_item(item_id):
 
 
 @plantilla_bp.route("/delete_plantilla_item/<int:item_id>", methods=["DELETE"])
-@jwt_required()
 def delete_plantilla_item(item_id):
     item = PlantillaItem.query.get(item_id)
 

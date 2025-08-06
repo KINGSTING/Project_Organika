@@ -311,14 +311,16 @@ function Plantilla({ setShowModal, user }) {
               <li><strong>Employee:</strong> {selectedItem.employee_name || "Vacant"}</li>
             </ul>
             <div className="form-footer">
-              <button onClick={() => {
-                handleEditClick(selectedItem);
-                setShowDetailModal(false);
-              }}>✏️ Edit</button>
-              <button onClick={() => {
-                handleDeleteClick(selectedItem);
-                setShowDetailModal(false);
-              }}>🗑️ Delete</button>
+                {user && (
+                  <button onClick={() => {
+                    handleEditClick(selectedItem);
+                    setShowDetailModal(false);
+                  }}>✏️ Edit</button>
+                  <button onClick={() => {
+                    handleDeleteClick(selectedItem);
+                    setShowDetailModal(false);
+                  }}>🗑️ Delete</button>
+                )}
             </div>
           </div>
         </div>
