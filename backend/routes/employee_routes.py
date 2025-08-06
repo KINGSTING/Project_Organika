@@ -21,8 +21,9 @@ def create_employee():
             emblem_url=data.get("emblem_url"),
             date_of_birth=data.get("date_of_birth"),
             office=data["office"],
-            GSIS_BP = data["GSIS_BP_NR"],
+            GSIS_BP=data["GSIS_BP_NR"],
             TIN = data["TIN_NR"]
+
         )
         db.session.add(new_employee)
         db.session.commit()
@@ -76,15 +77,24 @@ def update_employee(emp_id):
         # Safely parse dates
         dob = data.get("date_of_birth")
         if dob:
-            employee.date_of_birth = datetime.strptime(dob, "%Y-%m-%d").date()
+            try:
+                employee.date_of_birth = datetime.strptime(dob, "%Y-%m-%d").date()
+            except ValueError:
+                return jsonify({"error": "Invalid date_of_birth format."}), 400
 
         original_appointment = data.get("original_appointment_date")
         if original_appointment:
-            employee.original_appointment_date = datetime.strptime(original_appointment, "%Y-%m-%d").date()
+            try:
+                employee.original_appointment_date = datetime.strptime(original_appointment, "%Y-%m-%d").date()
+            except ValueError:
+                return jsonify({"error": "Invalid original_appointment_date format."}), 400
 
         last_promotion = data.get("last_promotion_date")
         if last_promotion:
-            employee.last_promotion_date = datetime.strptime(last_promotion, "%Y-%m-%d").date()
+            try:
+                employee.last_promotion_date = datetime.strptime(last_promotion, "%Y-%m-%d").date()
+            except ValueError:
+                return jsonify({"error": "Invalid last_promotion_date format."}), 400
 
         db.session.commit()
         return jsonify({"msg": "Employee updated successfully!"}), 200

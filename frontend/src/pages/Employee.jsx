@@ -236,7 +236,6 @@ function Employee({ setShowModal }) {
 
   const isLoggedIn = Boolean(localStorage.getItem("token"));
 
-
   const applyFilters = () => {
       let filtered = employees;
 
