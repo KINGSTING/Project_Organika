@@ -36,7 +36,8 @@ function Employee({ setShowModal }) {
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-  const formattedDate = date.toISOString().split('T')[0]; // "1997-08-13"
+  const date = new Date();
+  const formatted = date.toISOString();
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const officeEmblems = {
