@@ -170,8 +170,6 @@ function Plantilla({ setShowModal, user }) {
     }
   };
 
-  const isLoggedIn = Boolean(localStorage.getItem("token"));
-
   const applyFilters = () => {
     const filtered = plantillaItems.filter((item) => {
       return (!filters.office || item.office === filters.office)
@@ -312,7 +310,7 @@ function Plantilla({ setShowModal, user }) {
               <li><strong>Annual Salary (Actual):</strong> {selectedItem.annual_salary_actual}</li>
               <li><strong>Employee:</strong> {selectedItem.employee_name || "Vacant"}</li>
             </ul>
-            {user && (
+            {user !== null && typeof user === "object" && (
               <div className="form-footer">
                 <button onClick={() => {handleEditClick(selectedItem);setShowDetailModal(false);}}>✏️ Edit</button>
                 <button onClick={() => {handleDeleteClick(selectedItem);setShowDetailModal(false);}}>🗑️ Delete</button>
