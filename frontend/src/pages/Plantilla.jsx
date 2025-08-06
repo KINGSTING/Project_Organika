@@ -28,6 +28,7 @@ function Plantilla({ setShowModal, user }) {
   const [filters, setFilters] = useState({ office: "", salary_grade: "" });
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [feedback, setFeedback] = useState({ message: "", type: "" });
+  const actualUser = user || JSON.parse(localStorage.getItem("user"));
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const officeList = [
@@ -65,20 +66,6 @@ function Plantilla({ setShowModal, user }) {
       return () => clearTimeout(timer);
     }
   }, [feedback]);
-
-  const [user, setUser] = useState(null);
-
-useEffect(() => {
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
-    try {
-      setUser(JSON.parse(storedUser));
-    } catch (e) {
-      console.error("Invalid user in localStorage:", e);
-    }
-  }
-}, []);
-
 
   const fetchItems = async () => {
     try {
@@ -193,11 +180,10 @@ useEffect(() => {
     setShowFilterMenu(false);
   };
 
-  console.log("user in Plantilla:", user, "isLoggedIn:", !!(user && Object.keys(user).length));
+  console.log("user in Plantilla:", actualUser, "isLoggedIn:", !!(actualUser && Object.keys(actualUser).length));
 
 
   return (
-      console.log("user in Plantilla:", user, "isLoggedIn:", !!(user && Object.keys(user).length));
     <section className="plantilla-section">
       {feedback.message && (
         <div className={`feedback-banner ${feedback.type}`}>
@@ -325,7 +311,7 @@ useEffect(() => {
               <li><strong>Annual Salary (Actual):</strong> {selectedItem.annual_salary_actual}</li>
               <li><strong>Employee:</strong> {selectedItem.employee_name || "Vacant"}</li>
             </ul>
-            {user && Object.keys(user).length > 0 && (
+            {actualUser && Object.keys(actualUser).length > 0 && (
               <div className="form-footer">
                 <button onClick={() => {handleEditClick(selectedItem);setShowDetailModal(false);}}>✏️ Edit</button>
                 <button onClick={() => {handleDeleteClick(selectedItem);setShowDetailModal(false);}}>🗑️ Delete</button>

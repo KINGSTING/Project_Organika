@@ -390,10 +390,12 @@ function Employee({ setShowModal, user }) {
                 <p><strong>GSIS_BP Number:</strong> {selectedEmployee.GSIS_BP_NR}</p>
                 <p><strong>TIN Number:</strong> {selectedEmployee.TIN_NR}</p>
                 <div className="details-actions">
-                    {user && (
-                      <button className="edit-btn" onClick={openEdit}>✏️ Edit</button>
-                      <button className="delete-btn" onClick={handleDelete}>🗑️ Delete</button>
-                      <button className="record-btn" onClick={() => fetchServiceRecords(selectedEmployee.id)}>📄 Show Service Record</button>
+                    {user && Object.keys(user).length > 0 && (
+                      <>
+                        <button className="edit-btn" onClick={openEdit}>✏️ Edit</button>
+                        <button className="delete-btn" onClick={handleDelete}>🗑️ Delete</button>
+                        <button className="record-btn" onClick={() => fetchServiceRecords(selectedEmployee.id)}>📄 Show Service Record</button>
+                      </>
                     )}
                 </div>
               </div>
