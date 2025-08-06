@@ -310,18 +310,18 @@ function Plantilla({ setShowModal, user }) {
               <li><strong>Annual Salary (Actual):</strong> {selectedItem.annual_salary_actual}</li>
               <li><strong>Employee:</strong> {selectedItem.employee_name || "Vacant"}</li>
             </ul>
-            <div className="form-footer">
-                {user && (
-                  <button onClick={() => {
-                    handleEditClick(selectedItem);
-                    setShowDetailModal(false);
-                  }}>✏️ Edit</button>
-                  <button onClick={() => {
-                    handleDeleteClick(selectedItem);
-                    setShowDetailModal(false);
-                  }}>🗑️ Delete</button>
-                )}
-            </div>
+            {user && (
+              <div className="form-footer">
+                <button onClick={() => {
+                  handleEditClick(selectedItem);
+                  setShowDetailModal(false);
+                }}>✏️ Edit</button>
+                <button onClick={() => {
+                  handleDeleteClick(selectedItem);
+                  setShowDetailModal(false);
+                }}>🗑️ Delete</button>
+              </div>
+            )}
           </div>
         </div>
       )}
