@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import "./styles/Dashboard.css";
 
-function Dashboard() {
+function Dashboard({ setShowModal, user }) {
   const [welcomeMessage, setWelcomeMessage] = useState("Welcome to the Dashboard!");
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);

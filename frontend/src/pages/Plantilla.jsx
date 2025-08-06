@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles/Plantilla.css";
 
-function Plantilla() {
+function Plantilla({ setShowModal, user }) {
   const [formData, setFormData] = useState({
     item_code: "",
     position_title: "",

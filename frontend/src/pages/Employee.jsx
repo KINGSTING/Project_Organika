@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles/Employee.css";
 
-function Employee({ setShowModal }) {
+function Employee({ setShowModal, user }) {
   const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredEmployees, setFilteredEmployees] = useState([]);
