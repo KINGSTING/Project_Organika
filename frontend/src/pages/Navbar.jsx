@@ -125,8 +125,6 @@ function Navbar() {
 
             {user ? (
               <>
-                <li className="user-greet">👋 {user.username}</li>
-                <li><button onClick={handleLogout}>Logout</button></li>
                 <li>
                   <button className="profile-icon-button" onClick={() => setShowProfileModal(true)}>👤</button>
                 </li>
