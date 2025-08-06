@@ -74,8 +74,8 @@ def update_employee(emp_id):
         employee.photo_url = data.get("photo_url", employee.photo_url)
         employee.emblem_url = data.get("emblem_url", employee.emblem_url)
         employee.office = data.get("office", employee.office)
-        employee.GSIS_BP_NR = int(data["GSIS_BP_NR"]) if data["GSIS_BP_NR"] != "" else None
-        employee.TIN_NR = int(data["TIN_NR"]) if data["TIN_NR"] != "" else None
+        employee.GSIS_BP_NR = int(data["GSIS_BP_NR"]) if data.get("GSIS_BP_NR") not in [None, ""] else None
+        employee.TIN_NR = int(data["TIN_NR"]) if data.get("TIN_NR") not in [None, ""] else None
 
         # Safely parse dates
         dob = data.get("date_of_birth")
