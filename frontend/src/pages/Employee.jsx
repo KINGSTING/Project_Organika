@@ -89,12 +89,16 @@ function Employee({ setShowModal }) {
 
   const formatDateForInput = (dateString) => {
       if (!dateString) return "";
-      if (typeof dateString === "string" && /^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
-        return dateString; // already formatted
-      }
+      if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return dateString;
       const date = new Date(dateString);
       return date.toISOString().split("T")[0];
     };
+    const prepareFormData = (employee) => ({
+      ...employee,
+      date_of_birth: formatDateForInput(employee.date_of_birth),
+      original_appointment_date: formatDateForInput(employee.original_appointment_date),
+      last_promotion_date: formatDateForInput(employee.last_promotion_date),
+    });
 
   const fetchServiceRecords = async (employeeId) => {
     try {
@@ -202,27 +206,8 @@ function Employee({ setShowModal }) {
     }
   };
 
-   const formatDateForInput = (dateString) => {
-      if (!dateString) return "";
-      const date = new Date(dateString);
-      return date.toISOString().split("T")[0]; // "YYYY-MM-DD"
-    };
-
   const openEdit = () => {
-      setEditFormData({
-        full_name: selectedEmployee.full_name || "",
-        position_title: selectedEmployee.position_title || "",
-        employment_status: selectedEmployee.employment_status || "",
-        eligibility: selectedEmployee.eligibility || "",
-        GSIS_BP_NR: selectedEmployee.GSIS_BP_NR || "",
-        TIN_NR: selectedEmployee.TIN_NR || "",
-        office: selectedEmployee.office || "",
-        date_of_birth: selectedEmployee.date_of_birth || "",
-        original_appointment_date: selectedEmployee.original_appointment_date || "",
-        last_promotion_date: selectedEmployee.last_promotion_date || "",
-        photo_url: selectedEmployee.photo_url || "",
-        id: selectedEmployee.id || ""
-      });
+      setEditFormData(prepareFormData(selectedEmployee));
       setEditMode(true);
     };
 
@@ -358,7 +343,7 @@ function Employee({ setShowModal }) {
                                   id={key}
                                   name={key}
                                   value={key.includes("date") ? formatDateForInput(val) : val}
-                                  onChange={handleFormChange}
+                                  onChange={handleEditChange}
                                 />
                             )}
                         </div>
@@ -479,7 +464,7 @@ function Employee({ setShowModal }) {
                           id={key}
                           name={key}
                           value={key.includes("date") ? formatDateForInput(val) : val}
-                          onChange={handleFormChange}
+                          onChange={handleEditChange}
                         />
                     </div>
                   );

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import "./styles/Navbar.css";
 import logo from "../assets/lgu_kauswagan_logo.png";
 
@@ -24,7 +24,7 @@ function Navbar() {
     const storedUser = localStorage.getItem("user");
     if (token && storedUser) {
       try {
-        jwt_decode(token); // just to validate token
+        jwtDecode(token); // just to validate token
         setUser(JSON.parse(storedUser));
       } catch (err) {
         console.error("Invalid token");
@@ -50,7 +50,7 @@ function Navbar() {
 
       const data = await response.json();
       if (response.ok) {
-        const decoded = jwt_decode(data.access_token);
+        const decoded = jwtDecode(data.access_token);
         const userObject = { username: loginData.username, id: decoded.sub || decoded.identity };
 
         localStorage.setItem("token", data.access_token);
