@@ -87,10 +87,13 @@ function Employee({ setShowModal }) {
     }
   };
 
-  const formatDate = (dateString) => {
-  const date = new Date(dateString);
-      if (isNaN(date)) return ""; // handle invalid dates gracefully
-      return date.toISOString().split("T")[0]; // yyyy-MM-dd
+  const formatDateForInput = (dateString) => {
+      if (!dateString) return "";
+      if (typeof dateString === "string" && /^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        return dateString; // already formatted
+      }
+      const date = new Date(dateString);
+      return date.toISOString().split("T")[0];
     };
 
   const fetchServiceRecords = async (employeeId) => {
@@ -354,7 +357,7 @@ function Employee({ setShowModal }) {
                                   type={key.includes("date") ? "date" : "text"}
                                   id={key}
                                   name={key}
-                                  value={key.includes("date") ? formatDate(val) : val}
+                                  value={key.includes("date") ? formatDateForInput(val) : val}
                                   onChange={handleFormChange}
                                 />
                             )}
@@ -475,7 +478,7 @@ function Employee({ setShowModal }) {
                           type={key.includes("date") ? "date" : "text"}
                           id={key}
                           name={key}
-                          value={key.includes("date") ? formatDate(val) : val}
+                          value={key.includes("date") ? formatDateForInput(val) : val}
                           onChange={handleFormChange}
                         />
                     </div>
