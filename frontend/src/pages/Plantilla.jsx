@@ -66,6 +66,19 @@ function Plantilla({ setShowModal, user }) {
     }
   }, [feedback]);
 
+  const [user, setUser] = useState(null);
+
+useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    try {
+      setUser(JSON.parse(storedUser));
+    } catch (e) {
+      console.error("Invalid user in localStorage:", e);
+    }
+  }
+}, []);
+
 
   const fetchItems = async () => {
     try {
