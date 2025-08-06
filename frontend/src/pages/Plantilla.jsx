@@ -182,6 +182,8 @@ function Plantilla({ setShowModal, user }) {
     setShowFilterMenu(false);
   };
 
+   console.log("user in Plantilla:", user);
+
   return (
     <section className="plantilla-section">
       {feedback.message && (
@@ -312,15 +314,8 @@ function Plantilla({ setShowModal, user }) {
             </ul>
             {user && (
               <div className="form-footer">
-                  {console.log('user in Plantilla:', user)}
-                <button onClick={() => {
-                  handleEditClick(selectedItem);
-                  setShowDetailModal(false);
-                }}>✏️ Edit</button>
-                <button onClick={() => {
-                  handleDeleteClick(selectedItem);
-                  setShowDetailModal(false);
-                }}>🗑️ Delete</button>
+                <button onClick={() => {handleEditClick(selectedItem);setShowDetailModal(false);}}>✏️ Edit</button>
+                <button onClick={() => {handleDeleteClick(selectedItem);setShowDetailModal(false);}}>🗑️ Delete</button>
               </div>
             )}
           </div>
