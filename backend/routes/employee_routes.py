@@ -59,6 +59,9 @@ def get_employees():
 def update_employee(emp_id):
     data = request.get_json()
 
+    # DEBUG: Print the incoming data
+    print("Received update data:", data)
+
     employee = Employee.query.get(emp_id)
     if not employee:
         return jsonify({"error": "Employee not found"}), 404
