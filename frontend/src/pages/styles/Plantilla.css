@@ -114,8 +114,7 @@
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: start;
-  padding-top: 1%;
+  align-items: center; /* Changed from start to center */
   z-index: 20;
 }
 
