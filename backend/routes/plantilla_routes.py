@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from .. import db
-from ..models import PlantillaItem
+from ..models import PlantillaItem, Employee
 from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
@@ -34,7 +34,11 @@ def create_plantilla_item():
 
 @plantilla_bp.route("/plantilla", methods=["GET"])
 def get_plantilla_items():
-    items = PlantillaItem.query.options(joinedload(PlantillaItem.employee)).order_by(PlantillaItem.id.desc()).all()
+    items = PlantillaItem.query.order_by(PlantillaItem.id.desc()).all()
+
+    # Fetch all employees as a dict for fast lookup by item_code
+    employees = {e.item_code: e.full_name for e in Employee.query.all()}
+
     return jsonify([{
         "id": item.id,
         "item_code": item.item_code,
@@ -44,8 +48,7 @@ def get_plantilla_items():
         "office": item.office,
         "annual_salary_authorized": str(item.annual_salary_authorized),
         "annual_salary_actual": str(item.annual_salary_actual),
-        "employee_id": item.employee_id,
-        "employee_name": item.employee.full_name if item.employee else None,
+        "employee_name": employees.get(item.item_code),
         "created_at": item.created_at.isoformat()
     } for item in items])
 
