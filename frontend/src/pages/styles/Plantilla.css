@@ -131,15 +131,6 @@
   align-items: center; /* center the columns */
 }
 
-.form-columns {
-  display: flex;
-  gap: 1rem;
-}
-
-.form-columns .form-group {
-  flex: 1;
-}
-
 .form-group {
   display: flex;
   flex-direction: column;
@@ -392,11 +383,12 @@
   0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(33, 92, 65, 0.4); }
   50% { transform: scale(1.08); box-shadow: 0 0 0 12px rgba(33, 92, 65, 0); }
 }
+
 .form-columns {
   display: flex;
   gap: 1rem;
   width: 100%;
-  max-width: 500px; /* reduce this to control field width */
+  max-width: 300px; /* reduce this to control field width */
 }
 
 .form-columns .form-group {
