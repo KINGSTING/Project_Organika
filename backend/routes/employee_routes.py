@@ -14,7 +14,7 @@ def create_employee():
     try:
         new_employee = Employee(
             full_name=data["full_name"],
-            position_title=data["position_title"],
+            item_code=data["item_code"],
             employment_status=data["employment_status"],
             eligibility=data["eligibility"],
             photo_url=data.get("photo_url"),
@@ -41,7 +41,7 @@ def get_employees():
             "full_name": emp.full_name,
             "photo_url": emp.photo_url,
             "emblem_url": emp.emblem_url,
-            "position_title": emp.position_title,
+            "item_code": emp.item_code,
             "employment_status": emp.employment_status,
             "date_of_birth": emp.date_of_birth,
             "eligibility": emp.eligibility,
@@ -68,7 +68,7 @@ def update_employee(emp_id):
 
     try:
         employee.full_name = data.get("full_name", employee.full_name)
-        employee.position_title = data.get("position_title", employee.position_title)
+        employee.item_code = data.get("item_code", employee.item_code)
         employee.employment_status = data.get("employment_status", employee.employment_status)
         employee.eligibility = data.get("eligibility", employee.eligibility)
         employee.photo_url = data.get("photo_url", employee.photo_url)
@@ -140,7 +140,7 @@ def get_service_records():
             "id": r.id,
             "start_date": r.start_date.isoformat() if r.start_date else None,
             "end_date": r.end_date.isoformat() if r.end_date else None,
-            "position_title": r.position_title,
+            "item_code": r.item_code,
             "status": r.status,
             "salary_monthly": float(r.salary_monthly) if r.salary_monthly else None,
             "office": r.office,

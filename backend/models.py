@@ -29,7 +29,7 @@ class Employee(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(150), nullable=False)
-    position_title = db.Column(db.String(100), nullable=True)
+    item_code = db.Column(db.String(100), nullable=True)
 
     # New fields
     date_of_birth = db.Column(db.Date, nullable=True)

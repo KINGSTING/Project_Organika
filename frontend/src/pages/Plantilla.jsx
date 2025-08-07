@@ -32,12 +32,13 @@ function Plantilla({ setShowModal, user }) {
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const officeList = {
-      SBO: "Sangguniang Bayan",
+      SBO: "Sangguniang Bayan Office",
       GSO: "General Services Office",
       MTO: "Municipal Treasury Office",
       MCRO: "Municipal Civil Registrar Office",
       MHO: "Municipal Health Office",
       MMO: "Municipal Mayor's Office",
+      MVMO: "Municipal Vice-Mayor's Office",
       MPDO: "Municipal Planning and Development Office",
       MBO: "Municipal Budget Office",
       MAO: "Municipal Assessor's Office",
@@ -48,7 +49,7 @@ function Plantilla({ setShowModal, user }) {
       LSO: "Legal Services Office",
       MENRO: "Municipal Environment and Natural Resources Office",
       MHRMDO: "Municipal Human Resource Management and Development Office",
-      SBT: "Secretary To the Sangguniang Bayan Office",
+      SSBO: "Secretary To the Sangguniang Bayan Office",
       MEEDO: "Municipal Economic Enterprise and Development Office",
       MSWDO: "Municipal Social Welfare and Development Office",
       MDRRMO: "Municipal Disaster Risk and Reduction and Management Office"
