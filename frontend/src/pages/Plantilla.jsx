@@ -77,14 +77,16 @@ function Plantilla({ setShowModal, user }) {
     const fetchEmployee = async () => {
       try {
         const res = await axios.get(`${API_BASE}/employees/get_employee`, { withCredentials: true });
+        console.log("Fetched employees:", res.data);  // <-- Check this
         setEmployee(res.data);
       } catch (err) {
         console.error("Failed to fetch employees:", err);
       }
     };
 
-  const getEmployeeName = (employee) => {
-      return employee && employee.full_name ? employee.full_name : "Vacant";
+  const getEmployeeName = (item) => {
+      const match = employee.find(e => String(e.item_code) === String(item.item_code));
+      return match ? match.full_name : "Vacant";
     };
 
   const fetchItems = async () => {
@@ -307,7 +309,7 @@ function Plantilla({ setShowModal, user }) {
                   <td>{item.position_title}</td>
                   <td>{item.salary_grade}</td>
                   <td>{item.office}</td>
-                  <td>{getEmployeeName(item) || "Vacant"}</td>
+                  <td>{getEmployeeName(item)}</td>
                 </tr>
               ))
             )}
