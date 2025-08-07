@@ -66,10 +66,8 @@ class PlantillaItem(db.Model):
     step = db.Column(db.Integer, nullable=False)
     annual_salary_authorized = db.Column(db.Numeric(12, 2), nullable=False)
     annual_salary_actual = db.Column(db.Numeric(12, 2), nullable=False)
-    employee_id = db.Column(db.Integer, db.ForeignKey('public.employees.id', ondelete='SET NULL'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    employee = db.relationship("Employee", back_populates="plantilla_item", lazy="joined")
 
 class ServiceRecord(db.Model):
     __tablename__ = "service_records"

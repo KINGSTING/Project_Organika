@@ -54,6 +54,7 @@ function Plantilla({ setShowModal, user }) {
       MSWDO: "Municipal Social Welfare and Development Office",
       MDRRMO: "Municipal Disaster Risk and Reduction and Management Office"
     };
+  const [employee, setEmployee] = useState([]);
 
   useEffect(() => {
     fetchItems();
@@ -67,6 +68,24 @@ function Plantilla({ setShowModal, user }) {
       return () => clearTimeout(timer);
     }
   }, [feedback]);
+
+  useEffect(() => {
+      fetchEmployee();
+    }, []);
+
+    const fetchEmployee = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/employee/'get_employee`', { withCredentials: true });
+        setEmployee(res.data);
+      } catch (err) {
+        console.error("Failed to fetch employees:", err);
+      }
+    };
+
+  const getEmployeePosition = (employee) => {
+      const match = plantilla.find(p => p.item_code === employee.item_code);
+      return match ? match.position_title : employee.position_title;
+    };
 
   const fetchItems = async () => {
     try {
@@ -288,7 +307,7 @@ function Plantilla({ setShowModal, user }) {
                   <td>{item.position_title}</td>
                   <td>{item.salary_grade}</td>
                   <td>{item.office}</td>
-                  <td>{item.employee_name || "Vacant"}</td>
+                  <td>{getEmployeePosition(item) || "Vacant"}</td>
                 </tr>
               ))
             )}
@@ -310,7 +329,7 @@ function Plantilla({ setShowModal, user }) {
               <li><strong>Office:</strong> {selectedItem.office}</li>
               <li><strong>Annual Salary (Authorized):</strong> {selectedItem.annual_salary_authorized}</li>
               <li><strong>Annual Salary (Actual):</strong> {selectedItem.annual_salary_actual}</li>
-              <li><strong>Employee:</strong> {selectedItem.employee_name || "Vacant"}</li>
+              <li><strong>Employee:</strong> {getEmployeePosition(selectedItem) || "Vacant"}</li>
             </ul>
             {actualUser && Object.keys(actualUser).length > 0 && (
               <div className="form-footer">
