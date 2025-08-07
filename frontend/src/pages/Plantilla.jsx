@@ -16,6 +16,7 @@ function Plantilla({ setShowModal, user }) {
   });
 
   const [plantillaItems, setPlantillaItems] = useState([]);
+  const [plantilla, setPlantilla] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
