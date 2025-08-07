@@ -1,6 +1,4 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
-
 from ..models import Employee, db
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from backend.models import ServiceRecord
@@ -35,6 +33,7 @@ def create_employee():
 @employee_bp.route("/get_employee", methods=["GET"])
 def get_employees():
     employees = Employee.query.order_by(Employee.full_name.asc()).all()
+
     return jsonify([
         {
             "id": emp.id,

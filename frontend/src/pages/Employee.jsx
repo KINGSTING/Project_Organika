@@ -38,6 +38,7 @@ function Employee({ setShowModal, user }) {
   const handleCloseModal = () => setShowModal(false);
   const date = new Date();
   const formatted = date.toISOString();
+  const [plantilla, setPlantilla] = useState([]);
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const officeEmblems = {
@@ -77,6 +78,24 @@ function Employee({ setShowModal, user }) {
       );
       setFilteredEmployees(filtered);
     }, [searchTerm, employees]);
+
+  useEffect(() => {
+      fetchPlantilla();
+    }, []);
+
+    const fetchPlantilla = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/plantilla/plantilla`, { withCredentials: true });
+        setPlantilla(res.data);
+      } catch (err) {
+        console.error("Failed to fetch plantilla:", err);
+      }
+    };
+
+  const getPlantillaPosition = (employee) => {
+      const match = plantilla.find(p => p.item_code === employee.item_code);
+      return match ? match.position_title : employee.position_title;
+    };
 
   const fetchEmployees = async () => {
     try {
@@ -375,7 +394,7 @@ function Employee({ setShowModal, user }) {
                 <img src={selectedEmployee.photo_url} alt={selectedEmployee.full_name} className="details-photo" />
                 <h2>{selectedEmployee.full_name}</h2>
                 <p><strong>Employee ID No:</strong> {selectedEmployee.id}</p>
-                <p><strong>Position:</strong> {selectedEmployee.position_title}</p>
+                <p><strong>Position:</strong> {getPlantillaPosition(selectedEmployee)}</p>
                 <p><strong>Office:</strong> {selectedEmployee.office}</p>
                 <p><strong>Status:</strong> {selectedEmployee.employment_status}</p>
                 <p><strong>Eligibility:</strong> {selectedEmployee.eligibility}</p>
