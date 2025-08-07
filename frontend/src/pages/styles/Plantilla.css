@@ -80,15 +80,18 @@
 /* ==============================
    Modal Layout
 ============================== */
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 95%;
-  max-width: 800px; /* ⬅️ Increased from 600px to 800px */
-  animation: scaleFadeIn 0.4s ease;
-  position: relative;
-  box-sizing: border-box;
+.modal-overlay-plantilla {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999; /* Important */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 3rem;
 }
 
 .modal-content {
@@ -96,9 +99,10 @@
   padding: 2rem;
   border-radius: 12px;
   width: 95%;
-  max-width: 600px;
+  max-width: 1000px; /* ⬅️ Increased width from 600px or 800px to 1000px */
   animation: scaleFadeIn 0.4s ease;
   position: relative;
+  box-sizing: border-box;
 }
 
 .modal-close {
