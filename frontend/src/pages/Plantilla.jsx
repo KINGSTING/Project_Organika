@@ -31,28 +31,28 @@ function Plantilla({ setShowModal, user }) {
   const actualUser = user || JSON.parse(localStorage.getItem("user"));
 
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
-  const officeList = [
-    "Sangguniang Bayan",
-    "General Services Office",
-    "Municipal Treasury Office",
-    "Municipal Civil Registrar Office",
-    "Municipal Health Office",
-    "Municipal Mayor's Office",
-    "Municipal Planning and Development Office",
-    "Municipal Budget Office",
-    "Municipal Assessor's Office",
-    "Municipal Agriculture's Office",
-    "Public Employment Services Office",
-    "Municipal Accounting",
-    "Municipal Engineering Office",
-    "Legal Services Office",
-    "Municipal Environment and Natural Resources Office",
-    "Municipal Human Resource Management and Development Office",
-    "Secretary To the Sangguniang Bayan Office",
-    "Municipal Economic Enterprise and Development Office",
-    "Municipal Social Welfare and Development Office",
-    "Municipal Disaster Risk and Reduction and Management Office"
-  ];
+  const officeList = {
+      SBO: "Sangguniang Bayan",
+      GSO: "General Services Office",
+      MTO: "Municipal Treasury Office",
+      MCRO: "Municipal Civil Registrar Office",
+      MHO: "Municipal Health Office",
+      MMO: "Municipal Mayor's Office",
+      MPDO: "Municipal Planning and Development Office",
+      MBO: "Municipal Budget Office",
+      MAO: "Municipal Assessor's Office",
+      MAGRO: "Municipal Agriculture's Office",
+      PESO: "Public Employment Services Office",
+      MACC: "Municipal Accounting",
+      MEO: "Municipal Engineering Office",
+      LSO: "Legal Services Office",
+      MENRO: "Municipal Environment and Natural Resources Office",
+      MHRMDO: "Municipal Human Resource Management and Development Office",
+      SBT: "Secretary To the Sangguniang Bayan Office",
+      MEEDO: "Municipal Economic Enterprise and Development Office",
+      MSWDO: "Municipal Social Welfare and Development Office",
+      MDRRMO: "Municipal Disaster Risk and Reduction and Management Office"
+    };
 
   useEffect(() => {
     fetchItems();
@@ -357,12 +357,20 @@ function Plantilla({ setShowModal, user }) {
                 <div className="form-group">
                   <label>Item Code</label>
                   <input
-                    type="text"
-                    name="item_code"
-                    value={formData.item_code}
-                    onChange={(e) => setFormData({ ...formData, item_code: e.target.value })}
-                    required
-                  />
+                      type="text"
+                      name="item_code"
+                      value={formData.item_code}
+                      onChange={(e) => {
+                        const inputNumber = e.target.value.replace(/\D/g, ""); // only digits
+                        const officeCode = Object.keys(officeList).find(
+                          key => officeList[key] === formData.office
+                        );
+                        const formattedCode = officeCode ? `${officeCode}-${inputNumber}` : inputNumber;
+
+                        setFormData({ ...formData, item_code: formattedCode });
+                      }}
+                      required
+                    />
                 </div>
 
                 <div className="form-group">
@@ -392,16 +400,28 @@ function Plantilla({ setShowModal, user }) {
                 <div className="form-group">
                   <label>Office</label>
                   <select
-                    name="office"
-                    value={formData.office}
-                    onChange={(e) => setFormData({ ...formData, office: e.target.value })}
-                    required
-                  >
-                    <option value="">Select an office</option>
-                    {officeList.map((office) => (
-                      <option key={office} value={office}>{office}</option>
-                    ))}
-                  </select>
+                  name="office"
+                  value={formData.office}
+                  onChange={(e) => {
+                    const selectedOffice = e.target.value;
+                    const officeCode = Object.keys(officeList).find(key => officeList[key] === selectedOffice);
+
+                    // Extract numeric part from current item_code (e.g., from "MMO-5" get "5")
+                    const currentCodeNumber = formData.item_code.split("-")[1] || "";
+
+                    setFormData({
+                      ...formData,
+                      office: selectedOffice,
+                      item_code: officeCode ? `${officeCode}-${currentCodeNumber}` : currentCodeNumber
+                    });
+                  }}
+                  required
+                >
+                  <option value="">Select an office</option>
+                  {Object.entries(officeList).map(([code, name]) => (
+                    <option key={code} value={name}>{name}</option>
+                  ))}
+                </select>
                 </div>
               </div>
 
