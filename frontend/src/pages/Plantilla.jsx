@@ -353,6 +353,7 @@ function Plantilla({ setShowModal, user }) {
               </h2>
 
               <form onSubmit={handleSubmit} className="plantilla-form">
+              <div className="form-columns">
                 <div className="form-group">
                   <label>Item Code</label>
                   <input
@@ -374,7 +375,9 @@ function Plantilla({ setShowModal, user }) {
                     required
                   />
                 </div>
+              </div>
 
+              <div className="form-columns">
                 <div className="form-group">
                   <label>Salary Grade</label>
                   <input
@@ -400,7 +403,9 @@ function Plantilla({ setShowModal, user }) {
                     ))}
                   </select>
                 </div>
+              </div>
 
+              <div className="form-columns">
                 <div className="form-group">
                   <label>Step</label>
                   <input
@@ -422,7 +427,9 @@ function Plantilla({ setShowModal, user }) {
                     required
                   />
                 </div>
+              </div>
 
+              <div className="form-columns">
                 <div className="form-group">
                   <label>Annual Salary (Actual)</label>
                   <input
@@ -443,14 +450,15 @@ function Plantilla({ setShowModal, user }) {
                     onChange={(e) => setFormData({ ...formData, employee_id: e.target.value })}
                   />
                 </div>
+              </div>
 
-                <div className="form-footer">
-                  <button type="submit" disabled={submitting}>
-                    {submitting ? "Submitting..." : editMode ? "Update" : "Submit"}
-                  </button>
-                </div>
-              </form>
-            </div>
+              <div className="form-footer">
+                <button type="submit" disabled={submitting}>
+                  {submitting ? "Submitting..." : editMode ? "Update" : "Submit"}
+                </button>
+              </div>
+            </form>
+           </div>
           </div>
         )}
     </section>
