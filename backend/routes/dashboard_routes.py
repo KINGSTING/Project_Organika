@@ -5,12 +5,15 @@ from datetime import datetime, timedelta
 dashboard_bp = Blueprint("dashboard", __name__)
 
 
-### ✅ Utility function (not a route)
 def get_upcoming_birthdays_data():
     today = datetime.today().date()
     end_date = today + timedelta(days=30)
 
     employees = Employee.query.filter(Employee.date_of_birth.isnot(None)).all()
+    plantilla_items = PlantillaItem.query.all()
+
+    # Build a dictionary to lookup position_title by item_code
+    plantilla_dict = {item.item_code: item.position_title for item in plantilla_items}
 
     upcoming = []
 
@@ -19,7 +22,7 @@ def get_upcoming_birthdays_data():
         try:
             birthday_this_year = dob.replace(year=today.year)
         except ValueError:
-            birthday_this_year = dob.replace(year=today.year, day=28)
+            birthday_this_year = dob.replace(year=today.year, day=28)  # for Feb 29
 
         if birthday_this_year < today:
             try:
@@ -28,17 +31,19 @@ def get_upcoming_birthdays_data():
                 birthday_this_year = dob.replace(year=today.year + 1, day=28)
 
         days_until_birthday = (birthday_this_year - today).days
+
         if 0 <= days_until_birthday <= 30:
+            position_title = plantilla_dict.get(emp.item_code, "N/A")
+
             upcoming.append({
                 "full_name": emp.full_name,
-                "position_title": emp.position_title,
+                "position_title": position_title,
                 "office": emp.office,
                 "date": birthday_this_year.isoformat(),
                 "age": birthday_this_year.year - dob.year
             })
 
     return sorted(upcoming, key=lambda x: x["date"])
-
 
 ### ✅ Dashboard overview route
 @dashboard_bp.route("/", methods=["GET"])
