@@ -83,9 +83,8 @@ function Plantilla({ setShowModal, user }) {
       }
     };
 
-  const getEmployeePosition = (employee) => {
-      const match = plantilla.find(p => p.item_code === employee.item_code);
-      return match ? match.position_title : employee.position_title;
+  const getEmployeeName = (employee) => {
+      return employee && employee.full_name ? employee.full_name : "Vacant";
     };
 
   const fetchItems = async () => {
@@ -308,7 +307,7 @@ function Plantilla({ setShowModal, user }) {
                   <td>{item.position_title}</td>
                   <td>{item.salary_grade}</td>
                   <td>{item.office}</td>
-                  <td>{getEmployeePosition(item) || "Vacant"}</td>
+                  <td>{getEmployeeName(item) || "Vacant"}</td>
                 </tr>
               ))
             )}
@@ -330,7 +329,7 @@ function Plantilla({ setShowModal, user }) {
               <li><strong>Office:</strong> {selectedItem.office}</li>
               <li><strong>Annual Salary (Authorized):</strong> {selectedItem.annual_salary_authorized}</li>
               <li><strong>Annual Salary (Actual):</strong> {selectedItem.annual_salary_actual}</li>
-              <li><strong>Employee:</strong> {getEmployeePosition(selectedItem) || "Vacant"}</li>
+              <li><strong>Employee:</strong> {getEmployeeName(selectedItem) || "Vacant"}</li>
             </ul>
             {actualUser && Object.keys(actualUser).length > 0 && (
               <div className="form-footer">
