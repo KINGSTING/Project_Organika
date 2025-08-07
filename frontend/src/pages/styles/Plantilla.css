@@ -127,7 +127,7 @@
 .plantilla-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center; /* center the columns */
 }
 
@@ -386,16 +386,39 @@
 
 .form-columns {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   width: 100%;
-  max-width: 300px; /* reduce this to control field width */
+  max-width: 100%; /* Allow it to take the full width */
 }
 
 .form-columns .form-group {
-  flex: 1;
+  flex: 1 1 45%; /* Each field will try to take ~45% of the space */
+  min-width: 200px; /* Prevents it from getting too small */
 }
+
 @media (max-width: 768px) {
   .form-columns {
     flex-direction: column;
   }
+
+  .form-columns .form-group {
+    flex: 1 1 100%;
+  }
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  white-space: normal;
 }
