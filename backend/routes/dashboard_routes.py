@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from ..models import db, PlantillaItem, Employee
 from datetime import datetime, timedelta
+from sqlalchemy import func
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
@@ -50,7 +51,9 @@ def get_upcoming_birthdays_data():
 def dashboard_overview():
     total_items = PlantillaItem.query.count()
 
-    total_employed = PlantillaItem.query.filter(PlantillaItem.employee_id.isnot(None)).count()
+    total_employed = db.session.query(func.count(PlantillaItem.id)) \
+        .join(Employee, PlantillaItem.item_code == Employee.item_code) \
+        .scalar()
     total_elected = Employee.query.filter(Employee.employment_status == "Elected").count()
     total_permanent = Employee.query.filter(Employee.employment_status == "Permanent").count()
     total_conterminous = Employee.query.filter(Employee.employment_status == "Conterminous").count()

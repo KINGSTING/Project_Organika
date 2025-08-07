@@ -19,7 +19,6 @@ def create_plantilla_item():
             step=data["step"],
             annual_salary_authorized=data["annual_salary_authorized"],
             annual_salary_actual=data["annual_salary_actual"],
-            employee_id=data.get("employee_id")
         )
         db.session.add(new_item)
         db.session.commit()
@@ -69,7 +68,6 @@ def update_plantilla_item(item_id):
         item.office = data["office"]
         item.annual_salary_authorized = data["annual_salary_authorized"]
         item.annual_salary_actual = data["annual_salary_actual"]
-        item.employee_id = data.get("employee_id")
 
         db.session.commit()
         return jsonify({"msg": "Plantilla item updated successfully!"}), 200
