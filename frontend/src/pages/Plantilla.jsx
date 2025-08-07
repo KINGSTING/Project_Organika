@@ -75,7 +75,7 @@ function Plantilla({ setShowModal, user }) {
 
     const fetchEmployee = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/employee/'get_employee`', { withCredentials: true });
+        const res = await axios.get(`${API_BASE}/employee/get_employee`, { withCredentials: true });
         setEmployee(res.data);
       } catch (err) {
         console.error("Failed to fetch employees:", err);
