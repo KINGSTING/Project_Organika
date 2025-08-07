@@ -58,18 +58,20 @@ def dashboard_overview():
     total_permanent = Employee.query.filter(Employee.employment_status == "Permanent").count()
     total_conterminous = Employee.query.filter(Employee.employment_status == "Conterminous").count()
     total_temporary = Employee.query.filter(Employee.employment_status == "Temporary").count()
+    occupied_item_codes_subquery = db.session.query(Employee.item_code)
 
     office_data = db.session.query(
         PlantillaItem.office,
         db.func.count(PlantillaItem.id)
     ).group_by(PlantillaItem.office).all()
 
+
     vacancy_data = db.session.query(
         PlantillaItem.salary_grade,
-        db.func.count(PlantillaItem.id).label("vacancies")
-    ).filter(PlantillaItem.employee_id.is_(None)) \
-     .group_by(PlantillaItem.salary_grade) \
-     .order_by(PlantillaItem.salary_grade).all()
+        func.count(PlantillaItem.id).label("vacancies")
+    ).filter(PlantillaItem.item_code.notin_(occupied_item_codes_subquery)) \
+        .group_by(PlantillaItem.salary_grade) \
+        .order_by(PlantillaItem.salary_grade).all()
 
     # Longest Serving Employee
     longest_serving = Employee.query \
