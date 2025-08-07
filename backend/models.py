@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from sqlalchemy.orm import relationship
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -44,13 +42,6 @@ class Employee(db.Model):
     emblem_url = db.Column(db.String, nullable=True)
     office = db.Column(db.String(100), nullable=True)
 
-    # One-to-one relationship
-    plantilla_item = db.relationship(
-        "PlantillaItem",
-        back_populates="employee",
-        uselist=False
-    )
-
     def __repr__(self):
         return f"<Employee {self.full_name}>"
 
@@ -86,8 +77,6 @@ class ServiceRecord(db.Model):
     separation_date = db.Column(db.Date, nullable=True)
     separation_cause = db.Column(db.String(150), nullable=True)
     leave_without_pay = db.Column(db.Integer, nullable=True)
-
-    employee = relationship("Employee", backref="service_records", lazy="joined")
 
     def __repr__(self):
         return f"<ServiceRecord {self.position_title} for Employee {self.employee_id}>"
