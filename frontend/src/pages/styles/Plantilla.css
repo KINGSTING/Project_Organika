@@ -80,17 +80,15 @@
 /* ==============================
    Modal Layout
 ============================== */
-.modal-overlay-plantilla {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.45);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 20;
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 800px; /* ⬅️ Increased from 600px to 800px */
+  animation: scaleFadeIn 0.4s ease;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .modal-content {
@@ -387,15 +385,17 @@
 .form-columns {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   gap: 1rem;
   width: 100%;
-  max-width: 100%; /* Allow it to take the full width */
+  box-sizing: border-box;
 }
 
 .form-columns .form-group {
-  flex: 1 1 45%; /* Each field will try to take ~45% of the space */
-  min-width: 200px; /* Prevents it from getting too small */
-}
+  flex: 1 1 calc(50% - 0.5rem); /* Two columns with gap accounted for */
+  min-width: 220px;
+  box-sizing: border-box;
+}000
 
 @media (max-width: 768px) {
   .form-columns {
