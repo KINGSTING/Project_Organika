@@ -288,11 +288,6 @@ function Employee({ setShowModal, user }) {
                 onClick={() => {
                   setShowForm(true);
                   setEditMode(false);
-                  setFormData({
-                    firstname: "",
-                    middlename: "",
-                    lastname: "",
-                  });
                 }}
               >
                 ＋
