@@ -65,7 +65,6 @@ def dashboard_overview():
         db.func.count(PlantillaItem.id)
     ).group_by(PlantillaItem.office).all()
 
-
     vacancy_data = db.session.query(
         PlantillaItem.salary_grade,
         func.count(PlantillaItem.id).label("vacancies")
@@ -122,14 +121,27 @@ def get_upcoming_birthdays_route():
 
 
 ### ✅ Employees by status route
-@dashboard_bp.route("/employees/<status>", methods=["GET"])
-def get_employees_by_status(status):
-    employees = Employee.query \
-        .filter(Employee.employment_status.ilike(status)) \
-        .with_entities(Employee.full_name, Employee.position_title) \
-        .order_by(Employee.full_name).all()
+@dashboard_bp.route("/employees-by-status/<status>", methods=["GET"])
+def get_employees_by_status_route(status):
+    query = db.session.query(
+        Employee.full_name,
+        PlantillaItem.position_title
+    ).join(
+        PlantillaItem, Employee.item_code == PlantillaItem.item_code
+    )
+
+    if status.lower() != "employed":
+        query = query.filter(Employee.employment_status.ilike(status))
+    else:
+        query = query.filter(Employee.employment_status.isnot(None))
+
+    employees = query.order_by(Employee.full_name).all()
 
     return jsonify([
-        {"full_name": emp.full_name, "position_title": emp.position_title}
+        {
+            "full_name": emp.full_name,
+            "position_title": emp.position_title
+        }
         for emp in employees
     ])
+

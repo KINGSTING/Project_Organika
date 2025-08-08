@@ -25,15 +25,9 @@ function Dashboard({ setShowModal, user }) {
 
   const openModal = async (status) => {
       try {
-        const res = await axios.get(`${API_BASE}/employees/${status}`);
-
-        // Filter so only matching employees are stored
-        const filteredData = res.data.filter(
-          emp => emp.item_code === emp.plantilla_item_code
-        );
-
-        setModalData(filteredData);
-        setShowModal(true);
+        const res = await axios.get(`${API_BASE}/employees-by-status/${status}`);
+        setModalData(res.data);
+        setModalOpen(true);
         setModalTitle(status);
       } catch (err) {
         console.error("Error fetching modal data:", err);
