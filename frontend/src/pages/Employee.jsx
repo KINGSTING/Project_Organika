@@ -64,6 +64,30 @@ function Employee({ setShowModal, user }) {
       "Municipal Disaster Risk and Reduction and Management Office": "https://res.cloudinary.com/dzn6wdijk/image/upload/v1751521019/lgu-kauswagan-logo_cmqgz6.png",
     };
 
+    const officeList = {
+      SBO: "Sangguniang Bayan Office",
+      GSO: "General Services Office",
+      MTO: "Municipal Treasury Office",
+      MCRO: "Municipal Civil Registrar Office",
+      MHO: "Municipal Health Office",
+      MMO: "Municipal Mayor's Office",
+      MVMO: "Municipal Vice-Mayor's Office",
+      MPDO: "Municipal Planning and Development Office",
+      MBO: "Municipal Budget Office",
+      MAO: "Municipal Assessor's Office",
+      MAGRO: "Municipal Agriculture's Office",
+      PESO: "Public Employment Services Office",
+      MACC: "Municipal Accounting",
+      MEO: "Municipal Engineering Office",
+      LSO: "Legal Services Office",
+      MENRO: "Municipal Environment and Natural Resources Office",
+      MHRMDO: "Municipal Human Resource Management and Development Office",
+      SSBO: "Secretary To the Sangguniang Bayan Office",
+      MEEDO: "Municipal Economic Enterprise and Development Office",
+      MSWDO: "Municipal Social Welfare and Development Office",
+      MDRRMO: "Municipal Disaster Risk and Reduction and Management Office"
+    };
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -338,13 +362,48 @@ function Employee({ setShowModal, user }) {
                                 {val && <img src={val} alt="Preview" style={{ width: "100px", marginTop: "8px" }} />}
                               </>
                             ) : key === "office" ? (
-                              <select id={key} name={key} value={val} onChange={handleFormChange}>
-                                <option value="" disabled>Select an office</option>
-                                {Object.keys(officeEmblems).map((office) => (
-                                  <option key={office} value={office}>{office}</option>
-                                ))}
-                              </select>
-                            ) : key === "employment_status" ? (
+                              <select
+                                  id={key}
+                                  name={key}
+                                  value={val}
+                                  onChange={(e) => {
+                                    const selectedOffice = e.target.value;
+                                    const officeCode = Object.keys(officeList).find(
+                                      code => officeList[code] === selectedOffice
+                                    );
+
+                                    // Extract current numeric part from existing item_code
+                                    const currentCodeNumber = (formData.item_code || "").split("-")[1] || "";
+
+                                    setFormData({
+                                      ...formData,
+                                      office: selectedOffice,
+                                      item_code: officeCode ? `${officeCode}-${currentCodeNumber}` : currentCodeNumber
+                                    });
+                                  }}
+                                >
+                                  <option value="" disabled>Select an office</option>
+                                  {Object.values(officeList).map((officeName) => (
+                                    <option key={officeName} value={officeName}>{officeName}</option>
+                                  ))}
+                                </select>
+                            ) : {key === "item_code" ? (
+                                  <input
+                                    type="text"
+                                    id={key}
+                                    name={key}
+                                    value={val}
+                                    onChange={(e) => {
+                                      const inputNumber = e.target.value.replace(/\D/g, ""); // only digits
+                                      const officeCode = Object.keys(officeList).find(
+                                        code => officeList[code] === formData.office
+                                      );
+                                      const formattedCode = officeCode ? `${officeCode}-${inputNumber}` : inputNumber;
+                                      setFormData({ ...formData, item_code: formattedCode });
+                                    }}
+                                  />
+                                ) :
+                                key === "employment_status" ? (
                               <select id={key} name={key} value={val} onChange={handleFormChange}>
                                 <option value="" disabled>Select Status</option>
                                 <option value="Elected">Elected</option>
