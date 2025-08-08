@@ -8,7 +8,7 @@ function Employee({ setShowModal, user }) {
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [formData, setFormData] = useState({
     full_name: "",
-    position_title: "",
+    item_code: "",
     employment_status: "",
     eligibility: "",
     emblem_url: "",
@@ -187,7 +187,7 @@ function Employee({ setShowModal, user }) {
       setMessage(res.data.msg || "Employee added successfully!");
       setFormData({
         full_name: "",
-        position_title: "",
+        item_code: "",
         employment_status: "",
         eligibility: "",
         photo_url: "",
@@ -387,7 +387,7 @@ function Employee({ setShowModal, user }) {
                                     <option key={officeName} value={officeName}>{officeName}</option>
                                   ))}
                                 </select>
-                            ) : {key === "item_code" ? (
+                            ) : key === "item_code" ? (
                                   <input
                                     type="text"
                                     id={key}
