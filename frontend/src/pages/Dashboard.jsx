@@ -23,20 +23,22 @@ function Dashboard({ setShowModal, user }) {
   const API_BASE = import.meta.env.VITE_API_BASE || "https://project-organika.onrender.com";
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28FD0', '#FF6B6B'];
 
-  const openModal = async (title) => {
-    setModalTitle(title);
-    setModalOpen(true);
-    setModalLoading(true);
-    try {
-      const status = title.toLowerCase().split(" ")[0];
-      const res = await axios.get(`${API_BASE}/employees/${status}`);
-      setModalData(res.data);
-    } catch (err) {
-      setModalData([]);
-    } finally {
-      setModalLoading(false);
-    }
-  };
+  const openModal = async (status) => {
+      try {
+        const res = await axios.get(`${API_BASE}/employees/${status}`);
+
+        // Filter so only matching employees are stored
+        const filteredData = res.data.filter(
+          emp => emp.item_code === emp.plantilla_item_code
+        );
+
+        setModalData(filteredData);
+        setShowModal(true);
+        setModalTitle(status);
+      } catch (err) {
+        console.error("Error fetching modal data:", err);
+      }
+    };
 
   const closeModal = () => {
     setModalOpen(false);
