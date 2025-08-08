@@ -417,7 +417,13 @@ function Employee({ setShowModal, user }) {
                                   id={key}
                                   name={key}
                                   value={key.includes("date") ? formatDateForInput(val) : val}
-                                  onChange={handleEditChange}
+                                  onChange={(e) => {
+                                  const { name, value } = e.target;
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    [name]: value,
+                                  }));
+                                }}
                                 />
                             )}
                         </div>
