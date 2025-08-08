@@ -19,8 +19,8 @@ def create_employee():
             emblem_url=data.get("emblem_url"),
             date_of_birth=data.get("date_of_birth"),
             office=data["office"],
-            GSIS_BP=data["GSIS_BP_NR"],
-            TIN = data["TIN_NR"]
+            GSIS_BP_NR=data["GSIS_BP_NR"],
+            TIN_NR = data["TIN_NR"]
 
         )
         db.session.add(new_employee)
