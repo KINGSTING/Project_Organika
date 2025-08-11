@@ -20,7 +20,10 @@ def create_app():
     migrate.init_app(app, db)
 
     # ✅ Apply CORS to all routes, allow frontend origin
-    CORS(app, origins=["https://project-organika.netlify.app"], supports_credentials=True)
+    CORS(app, origins=[
+        "http://localhost:5173",  # Local dev
+        "https://project-organika.netlify.app"  # Production frontend
+    ], supports_credentials=True)
 
     from .routes.auth_routes import auth_bp
     from .routes.plantilla_routes import plantilla_bp

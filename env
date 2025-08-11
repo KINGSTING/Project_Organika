@@ -5,4 +5,4 @@ DB_USER=yourusername
 DB_PASSWORD=Bltr1423!
 DB_HOST=yourproject-name.pooler.neon.tech
 DB_PORT=5432
-VITE_API_BASE=https://project-organika.onrender.com
+VITE_API_BASE=http://127.0.0.1:5000
