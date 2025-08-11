@@ -1,4 +1,4 @@
-DATABASE_URL=postgresql://neondb_owner:npg_zFejt23GdDuO@ep-withered-night-a8w2ojls-pooler.eastus2.azure.neon.tech/project_organika_db?sslmode=require
+DATABASE_URL=postgresql://postgres:mmolgukauswagan@db.orfmlbxksepeiwgphjgo.supabase.co:5432/postgres?sslmode=require
 CLOUDINARY_URL=cloudinary://218688795499328:1Ijx_QLGLHNjc5_B1aiKsADBD10@dzn6wdijk
 DB_NAME=project_organika_db
 DB_USER=yourusername
