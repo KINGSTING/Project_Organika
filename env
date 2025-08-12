@@ -1,8 +1,11 @@
-DATABASE_URL=postgresql://postgres:mmolgukauswagan@db.orfmlbxksepeiwgphjgo.supabase.co:5432/postgres?sslmode=require
+DATABASE_URL=postgresql+psycopg2://postgres:mmolgukauswagan@db.orfmlbxksepeiwgphjgo.supabase.co:5432/postgres?sslmode=require
 CLOUDINARY_URL=cloudinary://218688795499328:1Ijx_QLGLHNjc5_B1aiKsADBD10@dzn6wdijk
-DB_NAME=project_organika_db
-DB_USER=yourusername
-DB_PASSWORD=Bltr1423!
-DB_HOST=postgresql://postgres.orfmlbxksepeiwgphjgo:mmolgukauswagan@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres
-DB_PORT=5432
+# Supabase Postgres credentials
+user=postgres
+password=mmolgukauswagan   # use the real password from Supabase "Database settings"
+host=db.orfmlbxksepeiwgphjgo.supabase.co
+port=5432
+dbname=postgres
 VITE_API_BASE=https://project-organika.onrender.com
+VITE_SUPABASE_URL=https://orfmlbxksepeiwgphjgo.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yZm1sYnhrc2VwZWl3Z3BoamdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4OTk5ODksImV4cCI6MjA3MDQ3NTk4OX0.oZEx2dMtu-0GwZ4cBb_5k3a4jtIvBm1Q9hRqjAu7SaY
