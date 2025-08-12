@@ -1,4 +1,4 @@
-DATABASE_URL=postgresql+psycopg2://postgres:mmolgukauswagan@db.orfmlbxksepeiwgphjgo.supabase.co:5432/postgres?sslmode=require
+DATABASE_URL=postgresql://postgres.orfmlbxksepeiwgphjgo:mmolgukauswagan@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres
 CLOUDINARY_URL=cloudinary://218688795499328:1Ijx_QLGLHNjc5_B1aiKsADBD10@dzn6wdijk
 # Supabase Postgres credentials
 user=postgres
